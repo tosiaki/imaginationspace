@@ -1,24 +1,13 @@
-# README
+# Fancomics
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This will be an app for fancomics.
 
-Things you may want to cover:
+## License
 
-* Ruby version
+All source code for Fancomics
+is available jointly under the MIT License and the Beerware License. See
+[LICENSE.md](LICENSE.md) for details.
 
-* System dependencies
+## Getting starded
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+(Instructions here)
