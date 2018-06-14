@@ -21,7 +21,9 @@ group :development, :test do
   gem 'byebug',  '~> 10.0.2', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.7'
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
+  gem 'capybara', '~> 3.2.1'
+  gem 'database_cleaner', '~> 1.7.0'
+  gem 'cucumber-rails', '~> 1.6.0', require: false
 end
 
 group :development do
