@@ -20,6 +20,8 @@ group :development, :test do
   gem 'sqlite3', '1.3.13'
   gem 'byebug',  '9.0.6', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.7'
+  gem 'database_cleaner', '~> 1.7.0'
+  gem 'cucumber-rails', '~> 1.6.0', require: false
 end
 
 group :development do
