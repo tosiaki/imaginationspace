@@ -5,4 +5,9 @@ RSpec.describe "home page" do
     visit '/'
     expect(page.body).to include("Fancomics")
   end
+
+  it 'contains Home | Fancomics in the title' do
+    visit '/'
+    expect(page.title).to eq("Home | Fancomics")
+  end
 end

@@ -5,9 +5,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
 
   # GET /register
-  def new
-    @user = User.new
-  end
+  # def new
+  #   @user = User.new
+  # end
 
   # POST /resource
   # def create
