@@ -10,4 +10,6 @@ RSpec.describe "home page" do
     visit '/'
     expect(page.title).to eq("Home | Fancomics")
   end
+
+  pending 'greets the user when logged in'
 end

@@ -1,0 +1,83 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+/* universal */
+
+body {
+	padding-top: 60px;
+	font-family: Lucida Grande;
+}
+
+section {
+	overflow: auto;
+}
+
+textarea {
+	resize: vertical;
+}
+
+.center {
+	text-align: center;
+}
+
+.center h1 {
+	margin-bottom: 10px;
+}
+
+div#main {
+	padding: 3.5em 3.5%;
+}
+
+/* header */
+.top-header {
+	margin-bottom: 1em;
+}
+h1.heading {
+	padding: 0.375em;
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 0.875em;
+	float: left;
+}
+a#logo, a:link#logo, a:visited:hover#logo {
+	color: #900;
+	text-decoration: none;
+	font-size: 1.714em;
+	line-height: 1.25em;
+	font-family: Georgia,serif;
+}
+#greeting {
+	float: right;
+}
+ul.user-navigation-actions {
+	list-style: none;
+}
+ul.primary-navigation {
+	display: block;
+	float: right !important;
+	list-style: none;
+	background-color: rgb(153,0,0);
+    width: 100%;
+    font-size: 100%;
+    a {
+    	color: rgb(255,255,255);
+    	padding: 0.429em 0.75em;
+    }
+    li {
+    	float: left
+    }
+}
+
+/* Navigation modules */
+.module {
+	margin-bottom: 1.571em;
+}
+h3.heading {
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: rgb(200,200,200);
+	color: rgb(153,0,0);
+	font-family: Georgia,serif;
+	font-weight: 400;
+	margin-top: 0.05375em;
+}
