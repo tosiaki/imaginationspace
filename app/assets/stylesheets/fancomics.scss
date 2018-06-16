@@ -4,8 +4,12 @@
 /* universal */
 
 body {
-	padding-top: 60px;
 	font-family: Lucida Grande;
+	line-height: 1.286;
+}
+
+p {
+	line-height: 1.5;
 }
 
 section {
@@ -25,12 +29,24 @@ textarea {
 }
 
 div#main {
-	padding: 3.5em 3.5%;
+	padding: 0.5em 2.5em 3.5em;
+}
+
+label {
+	font-weight: inherit;
+	margin-bottom: 0;
 }
 
 /* header */
 .top-header {
 	margin-bottom: 1em;
+	overflow: hidden;
+	border-width: 0 0 1px;
+}
+.clear:after {
+    clear: both;
+    content: "";
+    display: table;
 }
 h1.heading {
 	padding: 0.375em;
@@ -51,14 +67,19 @@ a#logo, a:link#logo, a:visited:hover#logo {
 }
 ul.user-navigation-actions {
 	list-style: none;
+	a {
+		display: inline;
+	}
 }
 ul.primary-navigation {
 	display: block;
 	float: right !important;
 	list-style: none;
-	background-color: rgb(153,0,0);
+	background: #900 url(asset-path('skins/textures/tiles/red-ao3.png'));
+	box-shadow: inset 0 -6px 10px rgba(0,0,0,.35), 1px 1px 3px -1px rgba(0,0,0,.25), inset 0 -1px 0 rgba(0,0,0,.85);
     width: 100%;
     font-size: 100%;
+    overflow: hidden;
     a {
     	color: rgb(255,255,255);
     	padding: 0.429em 0.75em;
@@ -72,12 +93,140 @@ ul.primary-navigation {
 .module {
 	margin-bottom: 1.571em;
 }
-h3.heading {
+div.module h3.heading {
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: rgb(200,200,200);
 	color: rgb(153,0,0);
 	font-family: Georgia,serif;
 	font-weight: 400;
-	margin-top: 0.05375em;
+	margin-top: 0.5375em;
+}
+
+/* Account forms */
+.submission {
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+form#new_user, form#edit_user, form#new_drawing, form#edit_drawing {
+	h3.heading {
+		font-family: Georgia-serif;
+		font-weight: 400;
+	}
+	legend {
+		border-bottom: none;
+	}
+	.form-input-box {
+		background: #ddd;
+		border: 2px solid #f3efec;
+		margin: .643em;
+		padding: .643em;
+		box-shadow: inset 1px 0 5px #999;
+
+		ul.form-inputs {
+			list-style: none;
+			padding-left: 0;
+		}
+
+		li.form-element {
+			overflow: hidden;
+			display: block;
+		}
+
+		div.form-label {
+			float: left;
+			clear: left;
+			width: 25%;
+			padding: .25em .5625em 0 0;
+		}
+		div.field label {
+			width: 100%;
+			border-bottom: 1px solid #f3efec;
+		}
+		div.form-input {
+			overflow: hidden;
+			float: left;
+			margin: .643em 0;
+			width: 72.5%;
+		}
+		div.field input, textarea {
+			width: 100%;
+			font: 100% 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
+			border: 1px solid #bbb;
+			box-shadow: inset 0 1px 2px #ccc;
+		}
+		div.field textarea {
+			min-height: 12em;
+		}
+		div.field input[type="checkbox"] {
+			width: auto;
+			margin: 3px 3px 3px 4px;
+		}
+		div.field input[type="file"] {
+			width: auto;
+		}
+		div.actions {
+			text-align: right;
+			padding: .429em .25em .25em 0;
+			width: 72.5%;
+			margin-left: auto;
+			input {
+				width: auto;
+				padding: .25em .75em;
+				height: auto;
+				line-height: 1.286;
+				border-bottom: 1px solid #aaa;
+				box-shadow: none;
+				background-image: -webkit-linear-gradient(#fff 2%, #ddd 95%, #bbb 100%);
+				border: 1px solid #bbb;
+			}
+		}
+	}
+}
+
+/* Flash messages */
+p.notice, div#error_explanation {
+	margin-top: 40px;
+	margin-bottom: -10px;
+	margin-left: auto;
+	margin-right: auto;
+	padding: .25em .375em;
+	border: 1px solid #c2d2df;
+	border-radius: .25em;
+	border-color: #900;
+	color: #900;
+	background: #efd1d1;
+	box-shadow: 1px 1px 2px;
+	width: 90%;
+	margin: .643em auto;
+	ul {
+		list-style: none;
+	}
+}
+
+/* Normal display */
+div.preface {
+	margin: 1.5em 3em;
+	padding: .643em .643em 0;
+	font-size: 0.8439375em;
+	h2.heading {
+		text-align: center;
+	}
+	h3 {
+		margin: .5375em 0;
+		line-height: 1;
+	}
+	h3.byline {
+		text-align: center;
+	}
+	h3.heading {
+		border-bottom: 1px solid;
+	}
+}
+.normal-display {
+	max-width: 95%;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
 }

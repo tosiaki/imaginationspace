@@ -1,7 +1,8 @@
 <nav id="greeting">
 	<ul class="user-navigation-actions nav navbar-nav">
 		<% if user_signed_in? %>
-			<li>Hi, (user name here)</li>
+			<li>Hi, <%= current_user.name %>!</li>
+			<li><%= link_to "Post drawing", new_drawing_path %></li>
 			<li><%= link_to "Logout", logout_path %></li>
 		<% else %>
 			<li><%= link_to "Login", login_path %></li>

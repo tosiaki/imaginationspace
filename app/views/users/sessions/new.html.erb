@@ -1,26 +1,53 @@
-<h2>Log in</h2>
+<div class="submission-form" id="signin-form">
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: login_path) do |f| %>
+    <legend><h3 class="heading">Log in</h3></legend>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+    <div class="form-input-box">
+      <ul class="form-inputs">
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :email %>
+            </div>
+            <div class="form-input">
+              <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+            </div>
+          </div>
+        </li>
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :password %>
+            </div>
+            <div class="form-input">
+              <%= f.password_field :password, autocomplete: "off" %>
+            </div>
+          </div>
+        </li>
+
+        <% if devise_mapping.rememberable? -%>
+          <li class="form-element">
+            <div class="field">
+              <div class="form-label">
+                <%= f.label :remember_me %>
+              </div>
+              <div class="form-input">
+                <%= f.check_box :remember_me %>
+              </div>
+            </div>
+          </li>
+        <% end -%>
+
+        <li class="form-element">
+          <div class="actions">
+            <%= f.submit "Log in" %>
+          </div>
+        </li>
+      </ul>
     </div>
-  <% end -%>
+  <% end %>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
-
-<%= render "users/shared/links" %>
+  <%= render "users/shared/links" %>
+</div>

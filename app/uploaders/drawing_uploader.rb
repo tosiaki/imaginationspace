@@ -4,8 +4,14 @@ class DrawingUploader < CarrierWave::Uploader::Base
   # include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  storage :file
+  # storage :file
   # storage :fog
+
+  if Rails.env.production?
+    storage :fog
+  else
+    storage :file
+  end
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -44,4 +50,9 @@ class DrawingUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
+
+  # Add a white list of extensions which are allowed to be uploaded.
+  def extension_white_list
+    %w(jpg jpeg gif png)
+  end
 end

@@ -1,0 +1,39 @@
+<div class="submission-form" id="post-drawing-form">
+  <%= form_for(@drawing) do |f| %>
+
+    <legend><h3 class="heading">Post new drawing</h3></legend>
+
+    <div class="form-input-box">
+      <ul class="form-inputs clear">
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :title %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :title %>
+            </div>
+            <div class="form-label">
+              <%= f.label :drawing %>
+            </div>
+            <div class="form-input">
+              <%= f.file_field :drawing, accept: 'image/jpeg,image/gif,image/png' %>
+            </div>
+            <div class="form-label">
+              <%= f.label :caption %>
+            </div>
+            <div class="form-input">
+              <%= f.text_area :caption %>
+            </div>
+          </div>
+        </li>
+        <li class="form-element">
+          <div class="actions">
+            <%= f.submit "Post" %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+</div>
