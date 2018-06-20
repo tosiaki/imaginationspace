@@ -1,0 +1,34 @@
+<div class="submission-form" id="post-drawing-form">
+  <%= form_for(@comic_page, html: { multipart: true }, url: new_comic_page_path(@comic.id)) do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+    <legend><h3 class="heading">Add page</h3></legend>
+
+    <div class="form-input-box">
+      <ul class="form-inputs clear">
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :new_page %>
+            </div>
+            <div class="form-input">
+              <%= f.file_field :new_page, accept: 'image/jpeg,image/gif,image/png' %>
+            </div>
+            <div class="form-label">
+              <%= f.label :page_number %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :page_number, class: "pages", value: @current_page %>
+            </div>
+          </div>
+        </li>
+        <li class="form-element">
+          <div class="actions">
+            <%= f.submit "Post" %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+</div>

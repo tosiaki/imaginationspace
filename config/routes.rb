@@ -23,5 +23,19 @@ Rails.application.routes.draw do
   }
   resources :users, only: :show
 
-  resources :drawings
+  resources :drawings, only: [:new, :create, :show, :index, :edit, :update, :destroy]
+  get 'drawings/tags/:tags', to: 'drawings#index', as: :drawings_by_tags
+
+  resources :comics, only: [:new, :create, :show, :index, :edit, :update, :destroy]
+  get 'comics/tags/:tags', to: 'comics#index', as: :comics_by_tags
+
+  get 'comics/:id/new_page', to: 'comic_pages#new', as: :new_comic_page
+  get 'comics/:id/new_page/:page', to: 'comic_pages#new', as: :new_comic_page_at
+  post 'comics/:id/new_page', to: 'comic_pages#create'
+  delete 'comics/:id/delete_page/:page', to: 'comic_pages#destroy', as: :delete_comic_page
+
+  get 'users/:id/drawings', to: 'users#drawings', as: :user_drawings
+  get 'users/:id/drawings/tags/:tags', to: 'users#drawings', as: :user_drawings_by_tags
+  get 'users/:id/comics', to: 'users#comics', as: :user_comics
+  get 'users/:id/comic/tags/:tags', to: 'users#comics', as: :user_comics_by_tags
 end

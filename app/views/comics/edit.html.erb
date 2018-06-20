@@ -1,0 +1,11 @@
+<div class="action-menu">
+  <ul class="actions">
+    <li>
+      <%= link_to "Add page", new_comic_page_path(@comic.id) %>
+    </li>
+    <li>
+      <%= link_to "Delete comic", @comic, method: :delete, data: { confirm: "You sure?" } %>
+    </li>
+  </ul>
+</div>
+<%= render 'form' %>

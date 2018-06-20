@@ -1,14 +1,24 @@
 <% provide(:title, "Home") %>
 <div class="module">
 	<h3 class="heading">Find your favorites</h3>
-	<p class="note">Browse fandoms by media!</p>
+	<p class="note">Browse fandoms!</p>
+		<ul class="fandom-list">
+			<% @fandoms.each do |fandom| %>
+				<li><%= link_to "#{fandom.name}, (#{fandom.taggings_count})", drawings_by_tags_path(fandom.name) %></li>
+			<% end %>
+		</ul>
 </div>
-<div class="module">
+<!-- <div class="module">
 	<h3 class="heading">Top tags</h3>
+</div> -->
+<div class="module">
+	<h3 class="heading">Latest fancomics</h3>
+	<%= render 'shared/comics' %>
 </div>
 <div class="module">
-	<h3 class="heading">Latest works</h3>
+	<h3 class="heading">Latest fanart</h3>
+	<%= render 'shared/drawings' %>
 </div>
-<div class="module">
+<!--  <div class="module">
 	<h3 class="heading">Rankings</h3>
-</div>
+</div> -->

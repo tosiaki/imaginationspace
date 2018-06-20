@@ -1,0 +1,13 @@
+<li>
+	<figure>
+		<p><%= link_to (image_tag drawing.drawing.url, class: "summary-display"), drawing %></p>
+		<figcaption>
+			<ul>
+				<li><%= link_to drawing.title, drawing %></li>
+				<% unless user_page %>
+					<li><%= link_to drawing.user.name, drawing.user %></li>
+				<% end %>
+			</ul>
+		</figcaption>
+	</figure>
+</li>

@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   has_many :drawings
+  has_many :comics
 
   validates :name, presence: true
 end

@@ -1,0 +1,6 @@
+<ul class="stats">
+	<li>Published: <%= published_display(object) %></li>
+	<% if object.has_pages? %>
+		<li>Pages: <%= pages_display(object) %></li>
+	<% end %>
+</ul>

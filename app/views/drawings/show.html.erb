@@ -1,13 +1,23 @@
+<div class="action-menu">
+	<ul class="actions">
+		<li>
+			<%= link_to "Edit details", edit_drawing_path(@drawing) if @drawing.user == current_user %>
+		</li>
+	</ul>
+</div>
+<%= render 'shared/info_display', object: @drawing %>
 <div class="preface">
 	<% if @drawing.title %>
 		<h2 class="heading"><%= @drawing.title %></h2>
 	<% end %>
-	<h3 class="byline"><%= @drawing.user.name %></h3>
+	<h3 class="byline"><%= link_to @drawing.user.name, @drawing.user %></h3>
 	<div class="complentary">
-		<h3 class="heading">Caption</h3>
+		<h3 class="heading">Caption:</h3>
 		<blockquote class="user-summary">
 			<p><%= @drawing.caption %></p>
 		</blockquote>
 	</div>
 </div>
-<%= image_tag @drawing.drawing.url, class: "normal-display" %>
+<div class="page-display">
+	<%= image_tag @drawing.drawing.url, class: "normal-display" %>
+</div>

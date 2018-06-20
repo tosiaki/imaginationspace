@@ -1,0 +1,8 @@
+<div class="action-menu">
+  <ul class="actions">
+    <li>
+      <%= link_to "Delete fanart", @drawing, method: :delete, data: { confirm: "You sure?" } %>
+    </li>
+  </ul>
+</div>
+<%= render 'form' %>
