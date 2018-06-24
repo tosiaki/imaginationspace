@@ -1,10 +1,16 @@
 <% provide(:title, "Home") %>
+<% if notice %>
+  <p class="notice"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="notice"><%= alert %></p>
+<% end %>
 <div class="module">
 	<h3 class="heading">Find your favorites</h3>
 	<p class="note">Browse fandoms!</p>
-		<ul class="fandom-list">
+		<ul class="front-fandom-list">
 			<% @fandoms.each do |fandom| %>
-				<li><%= link_to "#{fandom.name}, (#{fandom.taggings_count})", drawings_by_tags_path(fandom.name) %></li>
+				<li><%= link_to "#{fandom.name}", drawings_by_tags_path(fandom.name) %> (<%= fandom.taggings_count %>)</li>
 			<% end %>
 		</ul>
 </div>
@@ -13,13 +19,13 @@
 </div> -->
 <% if @feed_comics && @feed_comics.any? %>
 	<div class="module">
-		<h3 class="heading">Latest fancomics from your subscriptions feed</h3>
+		<h3 class="heading">Latest fancomics from your subscriptions</h3>
 		<%= render 'shared/comics_list', comics: @feed_comics %>
 	</div>
 <% end %>
 <% if @feed_drawings && @feed_drawings.any? %>
 	<div class="module">
-		<h3 class="heading">Latest fanart from your subscriptions feed</h3>
+		<h3 class="heading">Latest fanart from your subscriptions</h3>
 		<%= render 'shared/drawings_list', drawings: @feed_drawings %>
 	</div>
 <% end %>

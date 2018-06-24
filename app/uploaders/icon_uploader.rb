@@ -1,13 +1,8 @@
-class DrawingUploader < CarrierWave::Uploader::Base
+class IconUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   include CarrierWave::MiniMagick
-  version :thumb do
-    process resize_to_limit: [200, 200]
-  end
-  version :show_page do
-    process resize_to_limit: [2000, 2000]
-  end
+  process resize_to_limit: [100, 100]
 
   # Choose what kind of storage to use for this uploader:
   # storage :file
@@ -56,8 +51,6 @@ class DrawingUploader < CarrierWave::Uploader::Base
   # def filename
   #   "something.jpg" if original_filename
   # end
-
-  # Add a white list of extensions which are allowed to be uploaded.
   def extension_white_list
     %w(jpg jpeg gif png)
   end

@@ -10,7 +10,7 @@
       <ul class="primary-navigation">
         <li><%= link_to "Home",   root_path %></li>
         <li><%= link_to "Browse",   works_path %></li>
-        <li><%= link_to "About", '#' %></li>
+        <li><%= link_to "About", about_path %></li>
       </ul>
       <%= form_tag works_search_path, method: :get, id: 'search-works-form' do %>
         <label class="landmark" for="site_search">Work Search:</label>

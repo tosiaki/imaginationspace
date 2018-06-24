@@ -9,4 +9,7 @@ class PagesController < ApplicationController
       @feed_comics = current_user.feed_comics
     end
   end
+
+  def about
+  end
 end

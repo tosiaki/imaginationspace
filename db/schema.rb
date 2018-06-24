@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_23_002701) do
+ActiveRecord::Schema.define(version: 2018_06_24_174911) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2018_06_23_002701) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable_type_and_bookmarkable_id"
+    t.index ["user_id", "bookmarkable_id", "bookmarkable_type"], name: "user_bookmark_index", unique: true
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
@@ -103,6 +104,7 @@ ActiveRecord::Schema.define(version: 2018_06_23_002701) do
     t.string "ip_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "work_id", "work_type"], name: "user_kudos_index", unique: true
     t.index ["user_id"], name: "index_kudos_on_user_id"
     t.index ["work_type", "work_id"], name: "index_kudos_on_work_type_and_work_id"
   end

@@ -1,1 +1,11 @@
+<% provide(:title, "Latest drawings") %>
+<% if notice %>
+  <p class="notice"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="notice"><%= alert %></p>
+<% end %>
+<h2 class="heading">Latest drawings</h2>
+<%= will_paginate @drawings, class: "pagination actions", param_name: :page %>
 <%= render 'shared/drawings_list', drawings: @drawings %>
+<%= will_paginate @drawings, class: "pagination actions", param_name: :page %>

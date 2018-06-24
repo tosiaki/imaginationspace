@@ -1,9 +1,12 @@
+<% provide(:title, "#{@drawing.title} - #{@drawing.user.name}") %>
 <%= render 'shared/flash_messages' %>
 <%= render 'shared/work_headings' %>
 <div class="page-display">
-	<%= image_tag @drawing.drawing.url, class: "normal-display" %>
+	<%= link_to image_tag(@drawing.drawing.url(:show_page), class: "normal-display"), @drawing.drawing.url %>
 </div>
 <%= render 'shared/action_menu_bottom' %>
 <%= render 'shared/kudos_display', work: @drawing %>
 <%= render 'shared/comment_form', commentable: @drawing %>
+<%= will_paginate @comments, class: "pagination actions", param_name: :comments_page %>
 <%= render 'shared/comments', comments: @comments %>
+<%= will_paginate @comments, class: "pagination actions", param_name: :comments_page %>

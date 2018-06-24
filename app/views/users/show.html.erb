@@ -1,11 +1,12 @@
+<% provide(:title, @user.name) %>
 <% content_for :user_page_content do %>
 	<%= render 'user_header' %>
 	<% if @user_comics.any? %>
 		<div class="listbox">
-			<h3 class="listbox-heading">Fandoms</h3>
+			<h3 class="listbox-heading">Fandoms (comics)</h3>
 			<ul class="fandom-list">
 				<% @comic_fandoms.each do |fandom| %>
-					<li><%= link_to "#{fandom.name}, (#{fandom.count})", user_comics_by_tags_path(id: @user.id, tags: fandom.name) %></li>
+					<li><%= link_to "#{fandom.name}", user_comics_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
 				<% end %>
 			</ul>
 		</div>
@@ -19,10 +20,10 @@
 	<% end %>
 	<% if @user_drawings.any? %>
 		<div class="listbox">
-			<h3 class="listbox-heading">Fandoms</h3>
+			<h3 class="listbox-heading">Fandoms (drawings)</h3>
 			<ul class="fandom-list">
 				<% @drawing_fandoms.each do |fandom| %>
-					<li><%= link_to "#{fandom.name}, (#{fandom.count})", user_drawings_by_tags_path(id: @user.id, tags: fandom.name) %></li>
+					<li><%= link_to "#{fandom.name}", user_drawings_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
 				<% end %>
 			</ul>
 		</div>

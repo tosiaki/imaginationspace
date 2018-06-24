@@ -23,6 +23,8 @@ class Comic < ApplicationRecord
 
   is_impressionable
 
+  default_scope -> { order updated_at: :desc }
+
   validate :has_fandoms
   validate :check_pages
 

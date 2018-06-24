@@ -19,7 +19,7 @@ class ComicsController < ApplicationController
       flash[:success] = "Comic posted!"
       redirect_to @comic
     else
-      render 'comics/new'
+      render 'new'
     end
   end
 

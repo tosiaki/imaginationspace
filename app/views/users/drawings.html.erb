@@ -1,4 +1,8 @@
+<% provide(:title, "#{@user.name} - Drawings") %>
 <% content_for :user_page_content do %>
+	<h2 class="heading"><%= @bookmarks ? "Bookmarked drawings" : "Drawings" %> by <%= current_user.name %></h2>
+	<%= will_paginate @drawings, class: "pagination actions", param_name: :page %>
 	<%= render 'shared/drawings_list', drawings: @drawings %>
+	<%= will_paginate @drawings, class: "pagination actions", param_name: :page %>
 <% end %>
 <%= render 'display' %>

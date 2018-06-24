@@ -55,7 +55,7 @@ module ApplicationHelper
     else
       object_name = 'fancomic'
     end
-    if action_name == 'new'
+    if action_name == 'new' || action_name == 'create'
       "Post new #{object_name}"
     else
       "Edit #{object_name} details"
@@ -63,7 +63,7 @@ module ApplicationHelper
   end
 
   def submit_button
-    if action_name == 'new'
+    if action_name == 'new' || action_name == 'create'
       'Post'
     else
       'Update'
@@ -80,9 +80,9 @@ module ApplicationHelper
 
   def thumbnail_image(work)
     if work.class.name == 'Drawing'
-      work.drawing.url
+      work.drawing.url(:thumb)
     else
-      work.comic_pages.first.drawing.url
+      work.comic_pages.first.drawing.url(:thumb)
     end
   end
 

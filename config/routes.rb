@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'pages/home'
   root 'pages#home'
+  get 'about', to: 'pages#about'
 
   devise_scope :user do
     get 'signup', to: 'users/registrations#new', as: :registration

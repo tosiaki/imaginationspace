@@ -1,1 +1,11 @@
+<% provide(:title, "Latest comics") %>
+<% if notice %>
+  <p class="notice"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="notice"><%= alert %></p>
+<% end %>
+<h2 class="heading">Latest comics</h2>
+<%= will_paginate @comics, class: "pagination actions", param_name: :page %>
 <%= render 'shared/comics_list', comics: @comics %>
+<%= will_paginate @comics, class: "pagination actions", param_name: :page %>

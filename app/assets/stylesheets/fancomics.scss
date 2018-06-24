@@ -143,7 +143,7 @@ span.byline {
 
 /* Flash messages */
 p.notice, div#error_explanation, div.alert {
-	margin-top: 40px;
+	margin-top: 0;
 	margin-bottom: -10px;
 	margin-left: auto;
 	margin-right: auto;
@@ -224,6 +224,12 @@ ul.user-navigation-actions {
 		border-radius: .25em .25em;
 		background: #ddd;
 	}
+	a:active {
+		color: #111;
+		background: #ccc;
+		border-color: #fff;
+		box-shadow: inset 1px 1px 3px #333;
+	}
 }
 .lower-header {
 	display: flex;
@@ -250,6 +256,12 @@ ul.primary-navigation {
     	background: #ddd;
     	color: #111;
     }
+	a:active {
+		color: #111;
+		background: #ccc;
+		border-color: #fff;
+		box-shadow: inset 1px 1px 3px #333;
+	}
     li {
     	color: #2a2a2a;
     	font: 100%/1.125 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
@@ -304,6 +316,22 @@ div.module h3.heading {
 	font-family: Georgia,serif;
 	font-weight: 400;
 	margin-top: 0.5375em;
+}
+.front-fandom-list a {
+	color: #111;
+	line-height: 1.5;
+	text-decoration: none;
+	padding: 0;
+	border-bottom: 1px dotted;
+}
+.front-fandom-list a:visited {
+	color: #666;
+	text-deoration: none;
+	border-bottom: dashed;
+}
+.front-fandom-list a:hover {
+	color: #fff;
+	background: #900;
 }
 
 /* Forms */
@@ -482,6 +510,12 @@ ul.actions {
 		border-top: 1px solid #999;
 		border-left: 1px solid #999;
 		box-shadow: inset 2px 2px 2px #bbb;
+	}
+	a:active {
+		color: #111;
+		background: #ccc;
+		border-color: #fff;
+		box-shadow: inset 1px 1px 3px #333;
 	}
 	.current {
 		color: #111;
@@ -843,14 +877,26 @@ div.post-comment-form, li.comment-group {
 		padding: .25em;
 		font-size: 1.2859275em;
 	}
-	ul {
-		width: auto;
+	ul.fandom-list, ul.drawing-list {
 		padding: .643em;
 		float: none;
 		clear: right;
 		background: #fff;
-		boxshadow: inset 1px 1px 3px #bbb;
+		box-shadow: inset 1px 1px 3px #bbb;
 		margin: 0;
+		a {
+			border-bottom: 1px solid;
+			cursor: pointer;
+			color: #111;
+		}
+		a:hover {
+			color: #999;
+		}
+		a:visited {
+			color: #666;
+			text-decoration: none;
+			border-bottom: 1px dashed;
+		}
 	}
 }
 .subscription-index {
@@ -947,6 +993,12 @@ p.character_counter {
 		cursor: auto;
 		box-shadow: none;
 	}
+	li a:active {
+		color: #111;
+		background: #ccc;
+		border-color: #fff;
+		box-shadow: inset 1px 1px 3px #333;
+	}
 }
 
 /* Filter panel */
@@ -1033,4 +1085,10 @@ p.caution {
 }
 .gray::after {
 	content: "Click to display";
+}
+
+/* Other pages */
+.explanation {
+	max-width: 72em;
+	margin: auto;
 }

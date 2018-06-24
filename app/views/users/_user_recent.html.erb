@@ -1,0 +1,17 @@
+<% if @user_comics.any? %>
+	<div class="listbox">
+		<h3 class="listbox-heading">Fandoms (comics)</h3>
+		<ul class="fandom-list">
+			<% @comic_fandoms.each do |fandom| %>
+				<li><%= link_to "#{fandom.name}", user_comics_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
+			<% end %>
+		</ul>
+	</div>
+
+	<div class="listbox">
+		<h3 class="listbox-heading">Recent comics</h3>
+		<ul class="drawing-list">
+			<%= render @user_comics, user_page: true %>
+		</ul>
+	</div>
+<% end %>

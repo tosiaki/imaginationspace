@@ -5,7 +5,7 @@ module Concerns::WorksFunctionality
     @work = class_var.find(params[:id])
     instance_variable_set instance_variable_name(class_var), @work
     check_adult @work
-    @comments = @work.comments
+    @comments = @work.comments.paginate(page: params[:comments_page], per_page: 20)
 
     @comment = @work.comments.build
   end
@@ -15,9 +15,9 @@ module Concerns::WorksFunctionality
 
     if params[:tags]
       tag_list = params[:tags].split(",").map(&:strip)
-      instance_variable_set instance_var_name, class_var.tagged_with(tag_list)
+      instance_variable_set instance_var_name, class_var.tagged_with(tag_list).paginate(page: params[:page], per_page: 100)
     else
-      instance_variable_set instance_var_name, class_var.all
+      instance_variable_set instance_var_name, class_var.all.paginate(page: params[:page], per_page: 100)
     end
   end
 

@@ -1,6 +1,12 @@
+<% if notice %>
+  <p class="notice"><%= notice %></p>
+<% end %>
+<% if alert %>
+  <p class="notice"><%= alert %></p>
+<% end %>
 <% if comics.any? %>
 	<div class="module">
-		<h2 class="heading"><%= fancomics_heading %></h3>
+		<h2 class="heading"><%= fancomics_heading %></h2>
 		<%= will_paginate comics, class: "pagination actions", param_name: :comics_page %>
 		<%= render 'shared/comics_list', comics: comics %>
 		<%= will_paginate comics, class: "pagination actions", param_name: :comics_page %>
@@ -8,7 +14,7 @@
 <% end %>
 <% if drawings.any? %>
 	<div class="module">
-		<h2 class="heading"><%= fanart_heading %></h3>
+		<h2 class="heading"><%= fanart_heading %></h2>
 		<%= will_paginate drawings, class: "pagination actions", param_name: :drawings_page %>
 		<%= render 'shared/drawings_list', drawings: drawings %>
 		<%= will_paginate drawings, class: "pagination actions", param_name: :drawings_page %>

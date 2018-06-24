@@ -19,7 +19,7 @@ class DrawingsController < ApplicationController
       flash[:success] = "Drawing posted!"
       redirect_to @drawing
     else
-      render 'drawings/new'
+      render 'new'
     end
   end
   

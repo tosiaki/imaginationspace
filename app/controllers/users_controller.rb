@@ -3,8 +3,8 @@ class UsersController < ApplicationController
   before_action :is_current_user, only: [:edit, :update, :change_icon, :update_icon, :change_password, :update_password]
 
   def show
-    @user_comics = @user.comics
-    @user_drawings = @user.drawings
+    @user_comics = @user.comics.paginate(page: 1, per_page: 20)
+    @user_drawings = @user.drawings.paginate(page: 1, per_page: 20)
     if @user_comics.any?
       @comic_fandoms = @user_comics.tag_counts_on(:fandoms, limit: 15, order: "count desc")
     end
@@ -90,7 +90,7 @@ class UsersController < ApplicationController
   end
 
   def subscriptions
-    @subscriptions = @user.subscriptions
+    @subscriptions = @user.subscriptions.paginate(page: params[:page], per_page: 100)
   end
 
   private
@@ -115,7 +115,8 @@ class UsersController < ApplicationController
 
     def list_works(work, bookmarks: false)
       get_works work, bookmarks: bookmarks
-      instance_variable_set "@#{work}", @works
+      instance_variable_set "@#{work}", @works.paginate(page: params[:page], per_page: 100)
+      @bookmarks = true if bookmarks
       render work
     end
 

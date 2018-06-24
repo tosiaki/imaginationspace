@@ -4,7 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
-  mount_uploader :icon, DrawingUploader
+  mount_uploader :icon, IconUploader
 
   has_many :drawings
   has_many :comics

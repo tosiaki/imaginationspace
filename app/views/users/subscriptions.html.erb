@@ -1,7 +1,9 @@
+<% provide(:title, "Subscriptions") %>
 <% content_for :user_page_content do %>
 	<%= render 'shared/error_messages', object: @user %>
 	<h2 class="heading">My subscriptions</h2>
 	<% if @user.subscriptions.any? %>
+		<%= will_paginate comics, class: "pagination actions", param_name: :page %>
 		<ul class="subscription-index">
 			<% @user.subscriptions.each do |subscribed_user| %>
 				<li>
@@ -10,6 +12,7 @@
 				</li>
 			<% end %>
 		</ul>
+		<%= will_paginate comics, class: "pagination actions", param_name: :page %>
 	<% end %>
 <% end %>
 <%= render 'display' %>
