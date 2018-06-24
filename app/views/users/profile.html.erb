@@ -1,0 +1,31 @@
+<% content_for :user_page_content do %>
+	<%= render 'shared/error_messages', object: @user %>
+	<%= render 'user_header' %>
+	<% if @user.title %>
+		<h3 class="heading"><%= @user.title %></h3>
+	<% end %>
+	<div class="wrapper">
+		<ul class="meta-info">
+			<li>
+				<div class="info-label">I joined on:</div>
+				<div class="info-entry"><%= @user.created_at %></div>
+			</li>
+		</ul>
+	</div>
+	<% if @user.bio %>
+		<div class="bio-module">
+			<h3 class="heading">Bio</h3>
+			<blockquote class="user-bio">
+				<p><%= @user.bio %></p>
+			</blockquote>
+		</div>
+	<% end %>
+	<% if @user == current_user %>
+		<ul class="actions">
+			<li>
+				<%= link_to "Edit my profile", edit_user_path(@user) %>
+			</li>
+		</ul>
+	<% end %>
+<% end %>
+<%= render 'display' %>

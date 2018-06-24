@@ -1,17 +1,22 @@
-<header class="navbar navbar-light top-header">
-  <div class="clear">
-    <div class="clear">
+<header class="fancomics-header">
+  <div class="header-container">
+    <div class="upper-header">
       <h1 class="heading">
         <%= link_to "Fancomics", root_path, id: "logo" %>
       </h1>
       <%= render 'layouts/greeting' %>
     </div>
-    <nav>
-      <ul class="nav navbar-nav navbar-left primary-navigation">
+    <nav class="lower-header">
+      <ul class="primary-navigation">
         <li><%= link_to "Home",   root_path %></li>
-        <li><%= link_to "Browse",   '#' %></li>
+        <li><%= link_to "Browse",   works_path %></li>
         <li><%= link_to "About", '#' %></li>
       </ul>
+      <%= form_tag works_search_path, method: :get, id: 'search-works-form' do %>
+        <label class="landmark" for="site_search">Work Search:</label>
+        <%= text_field_tag "tags", "", id: "site-search" %>
+        <span class="search-button actions"><%= submit_tag "Search", id: 'search' %></span>
+      <% end %>
     </nav>
     <div class="clear"></div>
     <div></div>

@@ -1,0 +1,23 @@
+<div class="action-menu">
+	<ul class="actions">
+		<% if controller_name == 'comics' %>
+			<li>
+				<%= link_to "Add page", new_comic_page_path(@work.id) if @work.user == current_user %>
+			</li>
+		<% end %>
+		<li>
+			<%= link_to "Edit details", send("edit_#{controller_name.singularize}_path", @work) if @work.user == current_user %>
+		</li>
+		<% if user_signed_in? %>
+			<% if current_user.send("bookmarked_#{controller_name}").include? @work %>
+				<li>
+					<%= link_to "Remove bookmark", unbookmark_path(controller_name, @work), method: :delete %>
+				</li>
+			<% else %>
+				<li>
+					<%= link_to "Bookmark", bookmark_path(controller_name, @work), method: :post %>
+				</li>
+			<% end %>
+		<% end %>
+	</ul>
+</div>

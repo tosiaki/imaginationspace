@@ -1,0 +1,59 @@
+<div class="post-comment-form">
+	<%= form_for(@comment, url: send("#{commentable.class.to_s.downcase}_comments_path", commentable, html: { id: "comment-form-#{commentable.id}" })) do |f| %>
+	    <fieldset>
+			<% if user_signed_in? %>
+				<h4 class="heading">Comment as <%= content_tag 'span', current_user.name, class: 'byline' %></h4>
+			<% else %>
+	    		<ul class="form-inputs">
+
+	        		<li class="form-element">
+						<div class="field">
+	            			<div class="form-label landmark">
+								Note:
+							</div>
+	            			<div class="form-input instructions">
+								All fields are required. Your email address will not be published.
+							</div>
+						</div>
+					</li>
+
+	        		<li class="form-element">
+						<div class="field">
+	            			<div class="form-label">
+								<%= f.label :name %>
+							</div>
+	            			<div class="form-input">
+								<%= f.text_field :name %>
+							</div>
+						</div>
+					</li>
+
+	        		<li class="form-element">
+						<div class="field">
+	            			<div class="form-label">
+								<%= f.label :email %>
+							</div>
+	            			<div class="form-input">
+								<%= f.email_field :email %>
+							</div>
+						</div>
+					</li>
+				</ul>
+			<% end %>
+
+			<p>
+				<%= f.label :comment, 'Comment', class: 'landmark' %>
+				<%= f.text_area :content, id: "comment-#{commentable.class.to_s}#{commentable.id}" %>
+			</p>
+
+			<%= render 'shared/character_counter', max_length: Comment.validators_on(:content)[1].options[:maximum], counter_id: "comment-counter-#{commentable.class.to_s}#{commentable.id}", input_field: "textarea#comment-#{commentable.class.to_s}#{commentable.id}" %>
+
+			<p class="actions">
+		    	<%= f.submit "Comment" %>
+		    	<% if local_assigns[:cancelable] %>
+		    		<%= link_to 'Cancel', 'javascript:;', id: "cancel-#{commentable.id}" %>
+		    	<% end %>
+		    </p>
+		</fieldset>
+	<% end %>
+</div>

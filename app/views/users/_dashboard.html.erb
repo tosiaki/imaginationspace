@@ -1,0 +1,39 @@
+<div class="column">
+  <div id="dashboard" class="region" role="navigation region">
+    <ul class="navigation-actions">
+      <li>
+        <%= link_to 'Dashboard', @user %>
+      </li>
+      <li>
+        <%= link_to 'Profile', profile_user_path(@user) %>
+      </li>
+    </ul>
+    <ul class="navigation-actions">
+      <% if @user.comics.any? %>
+        <li>
+          <%= link_to render('navigation_item', navigation_label: 'Comics', navigation_item_count: @user.comics.count), user_comics_path(@user) %>
+        </li>
+      <% end %>
+      <% if @user.drawings.any? %>
+        <li>
+          <%= link_to render('navigation_item', navigation_label: 'Drawings', navigation_item_count: @user.drawings.count), user_drawings_path(@user) %>
+        </li>
+      <% end %>
+      <% if @user.bookmarked_comics.any? %>
+        <li>
+          <%= link_to render('navigation_item', navigation_label: 'Bookmarked comics', navigation_item_count: @user.bookmarked_comics.count), user_bookmarked_comics_path(@user) %>
+        </li>
+      <% end %>
+      <% if @user.bookmarked_drawings.any? %>
+        <li>
+          <%= link_to render('navigation_item', navigation_label: 'Bookmarked drawings', navigation_item_count: @user.bookmarked_drawings.count), user_bookmarked_drawings_path(@user) %>
+        </li>
+      <% end %>
+    </ul>
+    <ul class="navigation-actions">
+      <li>
+        <%= link_to "Subscriptions", subscriptions_user_path(@user) %>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div class="user-header">
+	<%= render 'shared/user_icon', user: @user %>
+	<div class="user-info-header">
+		<div class="display-user-name">
+			<h2 class="show-user"><%= @user.name %></h2>
+		</div>
+		<% if user_signed_in? %>
+			<% if current_user.is_subscribed_to? @user %>
+				<ul class="actions" role="navigation">
+					<li><%= link_to "Unubscribe", unsubscribe_from_user_path(@user), method: :delete %></li>
+				</ul>
+			<% else %>
+				<ul class="actions" role="navigation">
+					<li><%= link_to "Subscribe", subscribe_to_user_path(@user), method: :post %></li>
+				</ul>
+			<% end %>
+		<% end %>
+	</div>
+</div>

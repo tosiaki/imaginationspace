@@ -1,0 +1,12 @@
+<script type='text/javascript'>
+	$(document).ready(function() {
+		$("#reply-<%= comment.id %>").click(function() {
+			$("#comment-<%= comment.id %>").append('<%= escape_javascript render 'shared/comment_form', commentable: comment, cancelable: true %>');
+			$("#comment-<%= comment.id %> ul.actions").hide();
+		});
+		$("#comment-<%= comment.id %>").on( "click", '#cancel-<%= comment.id %>', function() {
+			$("#comment-<%= comment.id %> .post-comment-form").remove();
+			$("#comment-<%= comment.id %> ul.actions").show();
+		});
+	})
+</script>

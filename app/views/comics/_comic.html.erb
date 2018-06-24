@@ -1,13 +1,1 @@
-<li>
-	<figure>
-		<p><%= link_to (image_tag comic.comic_pages.first.drawing.url, class: "summary-display"), comic %></p>
-		<figcaption>
-			<ul>
-				<li><%= link_to comic.title, comic %></li>
-				<% unless user_page %>
-					<li><%= link_to comic.user.name, comic.user %></li>
-				<% end %>
-			</ul>
-		</figcaption>
-	</figure>
-</li>
+<%= render 'shared/thumbnail', work: comic %>

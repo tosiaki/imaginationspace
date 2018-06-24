@@ -1,0 +1,2 @@
+<% provide(:title, "Works matching #{params[:tags]}") %>
+<%= render 'show_works', comics: @comics, drawings: @drawings, fancomics_heading: "#{@comics.count} Fancomics#{params[:tags] ? " in " + params[:tags] : "" }", fanart_heading: "#{@drawings.count} Fanart#{params[:tags] ? " in " + params[:tags] : "" }" %>

@@ -1,6 +1,10 @@
 class ComicsController < ApplicationController
+  include Concerns::WorksFunctionality
+
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update,:destroy]
+
+  impressionist actions: [:show]
 
   def new
     @comic = Comic.new
@@ -20,17 +24,11 @@ class ComicsController < ApplicationController
   end
 
   def show
-    @comic = Comic.find(params[:id])
-    redirect_to comic_url unless @comic
+    show_work(Comic)
   end
 
   def index
-    if params[:tags]
-      tag_list = params[:tags].split(",").map(&:strip)
-      @comics = Comic.tagged_with(tag_list)
-    else
-      @comics = Comic.all
-    end
+    index_works(Comic)
   end
 
   def edit
@@ -39,6 +37,7 @@ class ComicsController < ApplicationController
   def update
     @comic.assign_attributes(comic_params)
     @comic.pages = @comic.pages.abs.round
+    @comic.pages = 0 if @comic.pages < @comic.comic_pages.count
     update_tags
     if @comic.save
       flash[:success] = "Details updated!"

@@ -1,0 +1,5 @@
+<div class="icon-container">
+	<% if user && user.icon && user.icon.url %>
+		<%= image_tag user.icon.url, class: "user-icon" %>
+	<% end %>
+</div>

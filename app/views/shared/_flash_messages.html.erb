@@ -1,0 +1,13 @@
+<% flash.each do |message_type, message| %>
+	<% if message.is_a?(String) %>
+		<%= content_tag(:div, message.html_safe, class: "alert alert-#{message_type}") %>
+	<% elsif message.is_a?(Array) %>
+		<div class="alert alert-<%= message_type %>">
+			<ul>
+				<% message.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>
+			</ul>
+		</div>
+	<% end %>
+<% end %>

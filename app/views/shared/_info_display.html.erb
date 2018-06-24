@@ -4,43 +4,14 @@
 			<li>
 				<div class="info-label">Rating:</div>
 				<div class="info">
-					<%= rating_display(object) %>
+					<%= rating_display %>
 				</div>
 			</li>
-			<li>
-				<div class="info-label"><%= "Fandom".pluralize(object.fandom_list.count) %>:</div>
-				<div class="info">
-					<%= fandom_links(object) %>
-				</div>
-			</li>
-			<% unless object.relationship_list.empty? %>
-				<li>
-					<div class="info-label"><%= "Relationship".pluralize(object.relationship_list.count) %>:</div>
-					<div class="info">
-						<%= relationship_links(object) %>
-					</div>
-				</li>
-			<% end %>
-			<% unless object.character_list.empty? %>
-				<li>
-					<div class="info-label"><%= "Character".pluralize(object.character_list.count) %>:</div>
-					<div class="info">
-						<%= character_links(object) %>
-					</div>
-				</li>
-			<% end %>
-			<% unless object.tag_list.empty? %>
-				<li>
-					<div class="info-label">Additional <%= "tag".pluralize(object.tag_list.count) %>:</div>
-					<div class="info">
-						<%= tag_links(object) %>
-					</div>
-				</li>
-			<% end %>
+			<%= render 'shared/tag_list' %>
 			<li>
 				<div class="info-label">Stats:</div>
 				<div class="info">
-					<%= render 'shared/stats_display', object: object %>
+					<%= render 'shared/stats_display' %>
 				</div>
 			</li>
 		</ul>

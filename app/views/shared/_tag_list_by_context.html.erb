@@ -1,0 +1,8 @@
+<% unless @work.send("#{context}_list").empty? %>
+	<li>
+		<div class="info-label"><%= context.pluralize(@work.relationship_list.count).humanize %>:</div>
+		<div class="info">
+			<%= tag_links(context) %>
+		</div>
+	</li>
+<% end %>

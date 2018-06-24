@@ -11,13 +11,25 @@
 <!-- <div class="module">
 	<h3 class="heading">Top tags</h3>
 </div> -->
+<% if @feed_comics && @feed_comics.any? %>
+	<div class="module">
+		<h3 class="heading">Latest fancomics from your subscriptions feed</h3>
+		<%= render 'shared/comics_list', comics: @feed_comics %>
+	</div>
+<% end %>
+<% if @feed_drawings && @feed_drawings.any? %>
+	<div class="module">
+		<h3 class="heading">Latest fanart from your subscriptions feed</h3>
+		<%= render 'shared/drawings_list', drawings: @feed_drawings %>
+	</div>
+<% end %>
 <div class="module">
 	<h3 class="heading">Latest fancomics</h3>
-	<%= render 'shared/comics' %>
+	<%= render 'shared/comics_list', comics: @comics %>
 </div>
 <div class="module">
 	<h3 class="heading">Latest fanart</h3>
-	<%= render 'shared/drawings' %>
+	<%= render 'shared/drawings_list', drawings: @drawings %>
 </div>
 <!--  <div class="module">
 	<h3 class="heading">Rankings</h3>

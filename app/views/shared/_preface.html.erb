@@ -1,0 +1,14 @@
+<div class="preface">
+	<% if @work.title %>
+		<h2 class="heading"><%= @work.title %></h2>
+	<% end %>
+	<h3 class="byline"><%= link_to @work.user.name, @work.user %></h3>
+	<div class="complentary">
+	<% unless @work.send(preface_name).empty? %>
+		<h3 class="heading"><%= preface_name.humanize %>:</h3>
+		<blockquote class="user-summary">
+			<p><%= @work.send(preface_name) %></p>
+		</blockquote>
+	<% end %>
+	</div>
+</div>

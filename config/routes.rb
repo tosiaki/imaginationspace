@@ -21,13 +21,39 @@ Rails.application.routes.draw do
     confirmations: "users/confirmations",
     passwords: "users/passwords"
   }
-  resources :users, only: :show
+  resources :users, only: [:show, :edit, :update] do
+    member do
+      get :change_icon, as: :change_icon
+      patch :change_icon, to: 'users#update_icon'
+      get :change_password, as: :change_password
+      patch :change_password, to: 'users#update_password'
+      get :profile
+      post :subscribe, as: :subscribe_to
+      delete :unsubscribe, as: :unsubscribe_from
+      get :subscriptions
+    end
+  end
 
-  resources :drawings, only: [:new, :create, :show, :index, :edit, :update, :destroy]
+  resources :drawings, only: [:new, :create, :show, :index, :edit, :update, :destroy], parent: "Drawing" do
+    resources :comments, only: :create
+    resources :kudos, only: :create
+  end
   get 'drawings/tags/:tags', to: 'drawings#index', as: :drawings_by_tags
 
-  resources :comics, only: [:new, :create, :show, :index, :edit, :update, :destroy]
+  resources :comics, only: [:new, :create, :show, :index, :edit, :update, :destroy], parent: "Comic" do
+    resources :comments, only: :create
+    resources :kudos, only: :create
+  end
+
   get 'comics/tags/:tags', to: 'comics#index', as: :comics_by_tags
+
+  resources :comments, only: [:create, :show, :edit, :update, :destroy], parent: "Comment" do
+    resources :comments, only: :create
+  end
+
+  resources :works, only: :index
+  get 'works/search', to: 'works#search', as: :works_search
+  get 'works/new_search', to: 'works#parse_search', as: :parse_search
 
   get 'comics/:id/new_page', to: 'comic_pages#new', as: :new_comic_page
   get 'comics/:id/new_page/:page', to: 'comic_pages#new', as: :new_comic_page_at
@@ -37,5 +63,11 @@ Rails.application.routes.draw do
   get 'users/:id/drawings', to: 'users#drawings', as: :user_drawings
   get 'users/:id/drawings/tags/:tags', to: 'users#drawings', as: :user_drawings_by_tags
   get 'users/:id/comics', to: 'users#comics', as: :user_comics
-  get 'users/:id/comic/tags/:tags', to: 'users#comics', as: :user_comics_by_tags
+  get 'users/:id/comics/tags/:tags', to: 'users#comics', as: :user_comics_by_tags
+
+  post ':work/:id/bookmark', to: 'bookmarks#create', as: :bookmark
+  delete ':work/:id/unbookmark', to: 'bookmarks#destroy', as: :unbookmark
+
+  get 'users/:id/bookmarked_drawings', to: 'users#bookmarked_drawings', as: :user_bookmarked_drawings
+  get 'users/:id/bookmarked_comics', to: 'users#bookmarked_comics', as: :user_bookmarked_comics
 end

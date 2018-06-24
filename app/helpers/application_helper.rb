@@ -1,30 +1,52 @@
 module ApplicationHelper
-  def rating_display(object)
-    object.rating.humanize
+  def tag_contexts 
+    ["fandom", "relationship", "character", "tag"]
   end
 
-  def fandom_links(object)
-    object.fandom_list.collect { |fandom| link_to fandom, drawings_by_tags_path(fandom) }.join(", ").html_safe
+  def rating_display
+    @work.rating.humanize
   end
 
-  def relationship_links(object)
-    object.relationship_list.collect { |relationship| link_to relationship, drawings_by_tags_path(relationship) }.join(", ").html_safe
+  def tag_links(context)
+    @work.send("#{context}_list").collect { |tag| link_to tag, send("#{controller_name}_by_tags_path", tag) }.join(", ").html_safe
   end
 
-  def character_links(object)
-    object.character_list.collect { |character| link_to character, drawings_by_tags_path(character) }.join(", ").html_safe
+  def display_time_string
+    @time_string ||= "%Y-%m-%d"
   end
 
-  def tag_links(object)
-    object.tag_list.collect { |tag| link_to tag, drawings_by_tags_path(tag) }.join(", ").html_safe
+  def published_display
+    @work.created_at.strftime(display_time_string)
   end
 
-  def published_display(object)
-    object.created_at.strftime("%Y-%m-%d")
+  def updated_display
+    @work.updated_at.strftime(display_time_string)
   end
 
-  def pages_display(object)
+  def updated_or_completed
+    if @work.pages == @work.comic_pages.count
+      "Completed"
+    else
+      "Updated"
+    end
+  end
+
+  def pages_display
     "#{@comic.comic_pages.count}/#{@comic.pages > 0 ? @comic.pages : '?'}"
+  end
+
+  def kudos_display(work)
+    sentence = ""
+    if work.kudos_giver_users.any?
+      sentence += work.kudos_giver_users.map{|user| link_to user.name, user }  .to_sentence
+    end
+    if work.guest_kudos > 0
+      unless sentence.blank?
+        sentence += " and "
+      end
+      sentence += pluralize(work.guest_kudos, "guest")
+    end
+    sentence += " left kudos on this work!"
   end
 
   def form_title
@@ -41,10 +63,54 @@ module ApplicationHelper
   end
 
   def submit_button
-    if params[:action] == 'new'
+    if action_name == 'new'
       'Post'
     else
       'Update'
     end
+  end
+
+  def preface_name
+    if controller_name == 'drawings'
+      "caption"
+    else
+      "description"
+    end
+  end
+
+  def thumbnail_image(work)
+    if work.class.name == 'Drawing'
+      work.drawing.url
+    else
+      work.comic_pages.first.drawing.url
+    end
+  end
+
+  def evaluate_adult(work)
+    if work.class == Drawing
+      modifier = ""
+    else
+      modifier = "front_"
+    end
+
+    if (work.send("#{modifier}explicit?") || work.send("#{modifier}not_rated?")) && !session[:view_adult]
+      "summary-display gray"
+    else
+      "summary-display"
+    end
+  end
+
+  def nav_item(text, path)
+    link_to_unless_current(text, path) do
+      content_tag 'span', text, class: 'current'
+    end
+  end
+
+  def get_rating_counts(works,rating)
+    works.send(rating).count
+  end
+
+  def get_top_tags(works, context, number)
+    works.tag_counts_on context, limit: number, order: "count desc"
   end
 end

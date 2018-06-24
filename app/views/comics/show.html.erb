@@ -1,29 +1,7 @@
-<div class="action-menu">
-	<ul class="actions">
-		<li>
-			<%= link_to "Add page", new_comic_page_path(@comic.id) if @comic.user == current_user %>
-		</li>
-		<li>
-			<%= link_to "Edit details", edit_comic_path(@comic) if @comic.user == current_user %>
-		</li>
-	</ul>
-</div>
-<%= render 'shared/info_display', object: @comic %>
-<div class="preface">
-	<% if @comic.title %>
-		<h2 class="heading"><%= @comic.title %></h2>
-	<% end %>
-	<h3 class="byline"><%= link_to @comic.user.name, @comic.user %></h3>
-	<div class="complentary">
-		<h3 class="heading">Description</h3>
-		<blockquote class="user-summary">
-			<p><%= @comic.description %></p>
-		</blockquote>
-	</div>
-</div>
+<%= render 'shared/flash_messages' %>
+<%= render 'shared/work_headings' %>
 <div class="comic-display">
 	<% @comic.comic_pages.each do |page| %>
-		<%= content_tag :a, "", name: "page-#{page.page}" %>
 		<h3 class="landmark">Page Management</h3>
 		<% if @comic.user == current_user %>
 			<ul class="actions page-actions">
@@ -33,26 +11,30 @@
 				 <% end %>
 			</ul>
 		<% end %>
-		<div class="preface page-preface">
+		<div class="preface page-preface" id="page-<%= page.page %>">
 			<h3 class="page-indicator" %>Page <%= page.page %>/<%= @comic.pages > 0 ? @comic.pages : '?' %></h3>
 		</div>
 		<div class="page-display">
 			<% if page.page == 1 %>
 				<a class="arrow non-arrow-left"></a>
 			<% else %>
-				<%= link_to "", comic_path(@comic.id, anchor: "page-#{page.page-1}"), class: "arrow arrow-left" %>
+				<%= link_to "", comic_path(@comic, anchor: "page-#{page.page-1}"), class: "arrow arrow-left" %>
 			<% end %>
 			<%= image_tag page.drawing.url, class: "normal-display" %>
 			<% if page.page == @comic.comic_pages.count %>
 				<a class="arrow non-arrow-right"></a>
 			<% else %>
-				<%= link_to "", comic_path(@comic.id, anchor: "page-#{page.page+1}"), class: "arrow arrow-right" %>
+				<%= link_to "", comic_path(@comic, anchor: "page-#{page.page+1}"), class: "arrow arrow-right" %>
 			<% end %>
 		</div>
 	<% end %>
 	<% if @comic.user == current_user %>
 		<ul class="actions page-actions">
-			<li><%= link_to "Add page here", new_comic_page_path(@comic.id) %></li>
+			<li><%= link_to "Add page here", new_comic_page_path(@comic) %></li>
 		</ul>
 	<% end %>
 </div>
+<%= render 'shared/action_menu_bottom' %>
+<%= render 'shared/kudos_display', work: @comic %>
+<%= render 'shared/comment_form', commentable: @comic %>
+<%= render 'shared/comments', comments: @comments %>

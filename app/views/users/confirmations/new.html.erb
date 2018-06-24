@@ -1,7 +1,7 @@
 <div class="submission-form" id="resend-confirmation-form">
 
 	<%= form_for(resource, as: resource_name, url: resend_confirmation_path, html: { method: :post }) do |f| %>
-		<legend><h3 class="heading">Resend confirmation instructions</h3></legend>
+		<h2 class="heading">Resend confirmation instructions</h2>
 
 	    <div class="form-input-box">
 	    	<ul class="form-inputs">
@@ -12,7 +12,7 @@
 							<%= f.label :email %>
 						</div>
             			<div class="form-input">
-						<%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
+							<%= f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
 						</div>
 					</div>
 				</li>

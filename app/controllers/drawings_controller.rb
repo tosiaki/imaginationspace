@@ -1,6 +1,9 @@
 class DrawingsController < ApplicationController
+  include Concerns::WorksFunctionality
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update, :destroy]
+
+  impressionist actions: [:show]
 
   def new
     @drawing = Drawing.new
@@ -21,16 +24,11 @@ class DrawingsController < ApplicationController
   end
   
   def show
-    @drawing = Drawing.find(params[:id])
+    show_work(Drawing)
   end
 
   def index
-    if params[:tags]
-      tag_list = params[:tags].split(",").map(&:strip)
-      @drawings = Drawing.tagged_with(tag_list)
-    else
-      @drawings = Drawing.all
-    end
+    index_works(Drawing)
   end
 
   def edit

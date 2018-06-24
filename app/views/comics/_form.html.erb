@@ -2,52 +2,60 @@
   <%= form_for(@comic, html: { multipart: true }) do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
-    <legend><h3 class="heading"><%= form_title %></h3></legend>
+    <h2 class="heading"><%= form_title %></h2>
+
+    <p class="required form-notice">*Required information</p>
 
     <div class="form-input-box">
       <ul class="form-inputs clear">
         <li class="form-element">
           <div class="field">
-            <div class="form-label">
-              <%= f.label :rating %>
+            <div class="form-label required">
+              <%= f.label :rating, "Rating*" %>
             </div>
             <div class="form-input">
               <%= f.select :rating, Comic.ratings.keys.map{ |r| [r.humanize, r] } %>
             </div>
-            <div class="form-label">
-              <%= f.label :front_page_rating, "Cover page rating" %>
+            <div class="form-label required">
+              <%= f.label :front_page_rating, "Cover page rating*" %>
             </div>
             <div class="form-input">
               <%= f.select :front_page_rating, Comic.front_page_ratings.keys.map{ |r| [r.sub('front','').humanize, r] } %>
             </div>
-            <div class="form-label">
-              <%= f.label :title %>
+            <div class="form-label required">
+              <%= f.label :title, "Title*" %>
             </div>
             <div class="form-input">
               <%= f.text_field :title %>
+              <%= render 'shared/character_counter', max_length: Comic.validators_on(:title)[1].options[:maximum], counter_id: "title_counter", input_field: "input#comic_title" %>
             </div>
             <% if action_name == 'new' %>
-              <div class="form-label">
-                <%= f.label :first_page %>
+              <div class="form-label required">
+                <%= f.label :first_page, "First page*" %>
               </div>
               <div class="form-input">
                 <%= f.file_field :first_page, accept: 'image/jpeg,image/gif,image/png' %>
               </div>
             <% end %>
             <div class="form-label">
-              <%= f.label :pages, "Page 1 of" %>
+              <% if action_name == 'new' %>
+                <%= f.label :pages, "Page 1 of" %>
+              <% else %>
+                <%= f.label :pages, "Number of pages" %>
+              <% end %>
             </div>
             <div class="form-input">
-              <%= f.text_field :pages, class: "pages", value: "?" %>
+              <%= f.text_field :pages, class: "pages", value: page_value %>
             </div>
             <div class="form-label">
               <%= f.label :description %>
             </div>
             <div class="form-input">
               <%= f.text_area :description %>
+              <%= render 'shared/character_counter', max_length: Comic.validators_on(:description)[0].options[:maximum], counter_id: "description_counter", input_field: "textarea#comic_description" %>
             </div>
-            <div class="form-label">
-              <%= f.label :fandoms %>
+            <div class="form-label required">
+              <%= f.label :fandoms, "Fandoms*" %>
             </div>
             <div class="form-input">
               <%= f.text_field :fandom_list, value: f.object.fandom_list.to_s %>

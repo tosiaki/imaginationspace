@@ -1,5 +1,5 @@
 <nav id="greeting">
-	<ul class="user-navigation-actions nav navbar-nav">
+	<ul class="user-navigation-actions">
 		<% if user_signed_in? %>
 			<li><%= link_to "Hi, #{current_user.name}!", current_user %></li>
 			<li><%= link_to "Post fancomic", new_comic_path %></li>

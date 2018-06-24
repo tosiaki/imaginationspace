@@ -1,0 +1,19 @@
+<div class="action-menu">
+	<ul class="actions">
+		<li><%= link_to "↑ Top", @work, anchor: "main" %></li>
+		<% unless current_user == @work.user %>
+			<li><%= link_to "Kudos ♥", send("#{@work.class.to_s.downcase}_kudos_path", @work), method: :post %></li>
+		<% end %>
+		<% if user_signed_in? %>
+			<% if current_user.send("bookmarked_#{controller_name}").include? @work %>
+				<li>
+					<%= link_to "Remove bookmark", unbookmark_path(controller_name, @work), method: :delete %>
+				</li>
+			<% else %>
+				<li>
+					<%= link_to "Bookmark", bookmark_path(controller_name, @work), method: :post %>
+				</li>
+			<% end %>
+		<% end %>
+	</ul>
+</div>

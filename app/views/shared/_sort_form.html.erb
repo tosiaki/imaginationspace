@@ -1,0 +1,19 @@
+<%= form_tag parse_search_path, method: :get, id: 'work-filters' do %>
+	<fieldset>
+		<legend>Sort results:</legend>
+		<div class="filter-list" role="menu">
+			<div class="submit-filters"><%= submit_tag "Sort" %></div>
+			<div class="filter-label">Sort by</div>
+			<div class="filter-area">
+				<select name="sort">
+					<option value="publish">Date published</option>
+					<option value="update">Date updated</option>
+					<option value="hits">Hits</option>
+					<option value="kudos">Kudos</option>
+					<option value="comments">Comments</option>
+					<option value="bookmarks">Bookmarks</option>
+				</select>
+			</div>
+		</div>
+	</fieldset>
+<% end %>

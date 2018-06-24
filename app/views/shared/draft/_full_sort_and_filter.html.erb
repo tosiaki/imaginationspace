@@ -1,0 +1,54 @@
+<fieldset>
+	<legend>Filter results:</legend>
+	<div class="filter-list" role="menu">
+		<div class="submit-filters"><%= submit_tag "Sort and Filter" %></div>
+		<div class="filter-label">Sort by</div>
+		<div class="filter-area"></div>
+		<div class="filter-label">Top ten tags</div>
+		<div class="filter-area">
+			<ul class="filter-list-tags">
+				<div class="filter-label">Ratings</div>
+					<% comics.first.class.ratings.each do |rating, value| %>
+						<%= radio_button_tag "rating-"
+				<div class="filter-area"></div>
+				<div class="filter-label">Fandoms</div>
+				<div class="filter-area">
+					<ul class="filter-list-tag-candidates">
+						<% get_top_tags(comics, :fandoms, 10).each do |fandom| %>
+							<li><%= check_box_tag fandom.name %> <%= label_tag "fandom-tag", "#{fandom.name} (#{fandom.taggings_count})" %></li>
+						<% end %>
+					</ul>
+				</div>
+				<div class="filter-label">Characters</div>
+				<div class="filter-area">
+					<ul class="filter-list-tag-candidates">
+						<% get_top_tags(comics, :characters, 10).each do |character| %>
+							<li><%= check_box_tag character.name %> <%= label_tag "character-tag", "#{character.name} (#{character.taggings_count})" %></li>
+						<% end %>
+					</ul>
+				</div>
+				<div class="filter-label">Relationships</div>
+				<div class="filter-area">
+					<ul class="filter-list-tag-candidates">
+						<% get_top_tags(comics, :relationship, 10).each do |relationship| %>
+							<li><%= check_box_tag relationship.name %> <%= label_tag "relationship-tag", "#{relationship.name} (#{relationship.taggings_count})" %></li>
+						<% end %>
+					</ul>
+				</div>
+				<div class="filter-label">Additional tags</div>
+				<div class="filter-area">
+					<ul class="filter-list-tag-candidates">
+						<% get_top_tags(comics, :tags, 10).each do |tag| %>
+							<li><%= check_box_tag tag.name %> <%= label_tag "other-tag", "#{tag.name} (#{tag.taggings_count})" %></li>
+						<% end %>
+					</ul>
+				</div>
+			</ul>
+		</div>
+		<div class="filter-label">Other tags</div>
+		<div class="filter-area"></div>
+		<div class="filter-label">Status</div>
+		<div class="filter-area"></div>
+		<div class="submit-filters"><%= submit_tag "Sort and Filter" %></div>
+	</div>
+</fieldset>

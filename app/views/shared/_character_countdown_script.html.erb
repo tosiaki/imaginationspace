@@ -1,0 +1,11 @@
+<script>
+	jQuery(document).ready(function($) {
+		function updateCountdown() {
+		    var remaining = <%= max_length %> - jQuery('<%= field %>').val().length;
+		    jQuery('<%= selector %>').text(remaining);
+		}
+	    $('<%= field %>').change(updateCountdown);
+	    $('<%= field %>').keyup(updateCountdown);
+	    $('<%= field %>').ready(updateCountdown);
+	})
+</script>

@@ -36,7 +36,7 @@ class ComicPagesController < ApplicationController
     @comic.comic_pages.each do |page|
       page.decrement!(:page) if page.page > params[:page].to_i
     end
-    # redirect_to @comic
+    redirect_to @comic
   end
 
   private

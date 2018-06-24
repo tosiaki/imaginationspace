@@ -1,6 +1,21 @@
 <ul class="stats">
-	<li>Published: <%= published_display(object) %></li>
-	<% if object.has_pages? %>
-		<li>Pages: <%= pages_display(object) %></li>
+	<li>Published: <%= published_display %></li>
+	<% if @work.class::HAS_PAGES && @work.updated_at > @work.created_at + 1.day %>
+		<li><%= updated_or_completed %>: <%= updated_display %></li>
+	<% end %>
+	<% if @work.class::HAS_PAGES %>
+		<li>Pages: <%= pages_display %></li>
+	<% end %>
+	<% if @work.comments.count > 0 %>
+		<li>Comments: <%= @work.total_comments.count %></li>
+	<% end %>
+	<% if @work.kudos.any? %>
+		<li>Kudos: <%= @work.kudos.count %></li>
+	<% end %>
+	<% if @work.bookmarks.any? %>
+		<li>Bookmarks: <%= @work.bookmarks.count %></li>
+	<% end %>
+	<% if @work.impressionist_count > 0 %>
+		<li>Hits: <%= @work.impressionist_count filter: :session_hash %></li>
 	<% end %>
 </ul>

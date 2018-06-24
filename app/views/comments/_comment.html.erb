@@ -1,0 +1,30 @@
+<% if !comment.new_record? %>
+	<li class="comment-group<%= @even ? " even" : "" %>" role="article" id="comment-<%= comment.id %>">
+		<% @even ^= true %>
+		<%= link_to render('shared/user_icon', user: comment.user) %>
+		<h4 class="heading byline">
+			<% if comment.user %>
+				<%= link_to comment.user.name, comment.user %>
+			<% else %>
+				<%= comment.name %>
+			<% end %>
+			<span class="posted-datetime"><%= comment.created_at.strftime("%a %d %b %Y %I:%M%p %Z") %></span>
+		</h4>
+		<blockquote class="user-comment">
+			<%= comment.content %>
+		</blockquote>
+		<h5 class="landmark heading">Comment actions</h5>
+		<ul class="actions" role="menu">
+			<li><%= link_to "Reply", "javascript:;", id: "reply-#{comment.id}", class: "reply-button" %></li>
+			<% if comment.user == current_user %>
+				<li><%= link_to "Delete", comment, method: :delete %></li>
+			<% end %>
+		</ul>
+		<%= render 'shared/reply_button_script', comment: comment %>
+	</li>
+	<% if comment.comments.any? %>
+		<li>
+			<%= render 'shared/comments', comments: comment.comments %>
+		</li>
+	<% end %>
+<% end %>

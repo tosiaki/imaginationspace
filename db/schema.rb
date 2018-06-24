@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_06_18_145646) do
+ActiveRecord::Schema.define(version: 2018_06_23_002701) do
+
+  create_table "bookmarks", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "bookmarkable_type"
+    t.integer "bookmarkable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable_type_and_bookmarkable_id"
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
 
   create_table "comic_pages", force: :cascade do |t|
     t.integer "comic_id"
@@ -33,6 +43,22 @@ ActiveRecord::Schema.define(version: 2018_06_18_145646) do
     t.index ["user_id"], name: "index_comics_on_user_id"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "commentable_type"
+    t.integer "commentable_id"
+    t.string "work_type"
+    t.integer "work_id"
+    t.string "name"
+    t.string "email"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+    t.index ["work_type", "work_id"], name: "index_comments_on_work_type_and_work_id"
+  end
+
   create_table "drawings", force: :cascade do |t|
     t.string "title"
     t.text "caption"
@@ -42,6 +68,43 @@ ActiveRecord::Schema.define(version: 2018_06_18_145646) do
     t.datetime "updated_at", null: false
     t.integer "rating", default: 0
     t.index ["user_id"], name: "index_drawings_on_user_id"
+  end
+
+  create_table "impressions", force: :cascade do |t|
+    t.string "impressionable_type"
+    t.integer "impressionable_id"
+    t.integer "user_id"
+    t.string "controller_name"
+    t.string "action_name"
+    t.string "view_name"
+    t.string "request_hash"
+    t.string "ip_address"
+    t.string "session_hash"
+    t.text "message"
+    t.text "referrer"
+    t.text "params"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["controller_name", "action_name", "ip_address"], name: "controlleraction_ip_index"
+    t.index ["controller_name", "action_name", "request_hash"], name: "controlleraction_request_index"
+    t.index ["controller_name", "action_name", "session_hash"], name: "controlleraction_session_index"
+    t.index ["impressionable_type", "impressionable_id", "ip_address"], name: "poly_ip_index"
+    t.index ["impressionable_type", "impressionable_id", "params"], name: "poly_params_request_index"
+    t.index ["impressionable_type", "impressionable_id", "request_hash"], name: "poly_request_index"
+    t.index ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index"
+    t.index ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index"
+    t.index ["user_id"], name: "index_impressions_on_user_id"
+  end
+
+  create_table "kudos", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "work_type"
+    t.integer "work_id"
+    t.string "ip_address"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_kudos_on_user_id"
+    t.index ["work_type", "work_id"], name: "index_kudos_on_work_type_and_work_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -87,6 +150,11 @@ ActiveRecord::Schema.define(version: 2018_06_18_145646) do
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
     t.string "name"
+    t.string "title"
+    t.text "bio"
+    t.string "icon"
+    t.string "icon_alt"
+    t.string "icon_comment"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

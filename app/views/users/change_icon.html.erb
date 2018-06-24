@@ -1,0 +1,74 @@
+<% content_for :title, "Change icon" %>
+<% content_for :user_page_content do %>
+	<div class="edit-user-form-header">
+		<h3 class="heading">Change my icon</h3>
+		<%= render 'user_setting_navigation' %>
+	</div>
+
+	<div class="submission-form" id="user-profile-form">
+
+	<%= form_for(@user, url: change_icon_user_path) do |f| %>
+	    <div class="form-input-box">
+	    	<ul class="form-inputs">
+        		<li class="form-element">
+					<div class="field">
+            			<div class="form-label">
+							<%= f.label :icon, "Icon" %>
+						</div>
+            			<div class="form-input">
+            				<ul class="notes">
+            					<li>
+            						<%= render 'shared/user_icon', user: @user %>
+            						 This is your icon.
+            					</li>
+            					<li>Icons can be in png, jpg, or gif form</li>
+            					<li>Icons should be sized 100x100 pixels for best results</li>
+            				</ul>
+						</div>
+					</div>
+				</li>
+
+        		<li class="form-element">
+					<div class="field">
+            			<div class="form-label">
+							<%= f.label :icon, "Upload a new icon" %>
+						</div>
+            			<div class="form-input">
+							<%= f.file_field :icon %>
+						</div>
+					</div>
+				</li>
+
+        		<li class="form-element">
+					<div class="field">
+            			<div class="form-label">
+							<%= f.label :icon_alt, "Icon alt text" %>
+						</div>
+            			<div class="form-input">
+							<%= f.text_field :icon_alt %>
+						</div>
+					</div>
+				</li>
+
+        		<li class="form-element">
+					<div class="field">
+            			<div class="form-label">
+							<%= f.label :icon_comment, "Icon comment text" %>
+						</div>
+            			<div class="form-input">
+							<%= f.text_field :icon_comment %>
+						</div>
+					</div>
+				</li>
+
+        		<li class="form-element">
+					<div class="actions">
+			    		<%= f.submit "Change icon" %>
+			    	</div>
+			    </li>
+			</ul>
+		</div>
+	<% end %>
+</div>
+<% end %>
+<%= render 'display' %>

@@ -1,1 +1,4 @@
-<%= render 'shared/drawings', user_page: true %>
+<% content_for :user_page_content do %>
+	<%= render 'shared/drawings_list', drawings: @drawings %>
+<% end %>
+<%= render 'display' %>

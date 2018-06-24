@@ -1,0 +1,4 @@
+<p class="character_counter">
+	<span id="<%= counter_id %>"></span> characters left
+</p>
+<%= render 'shared/character_countdown_script', max_length: max_length, field: input_field, selector: "##{counter_id}" %>

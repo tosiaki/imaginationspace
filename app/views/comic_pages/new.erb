@@ -2,7 +2,7 @@
   <%= form_for(@comic_page, html: { multipart: true }, url: new_comic_page_path(@comic.id)) do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
-    <legend><h3 class="heading">Add page</h3></legend>
+    <h2 class="heading">Add page</h2>
 
     <div class="form-input-box">
       <ul class="form-inputs clear">

@@ -1,0 +1,10 @@
+<div class="user_page">
+  <%= render 'dashboard' %>
+  <div class="main user_page_column">
+    <div class="dashboard-region" role="main">
+      <%= render 'shared/flash_messages' %>
+      <%= render 'shared/error_messages', object: @user %>
+      <%= yield :user_page_content %>
+    </div>
+  </div>
+</div>
