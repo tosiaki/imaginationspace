@@ -8,11 +8,22 @@
 <div class="module">
 	<h3 class="heading">Find your favorites</h3>
 	<p class="note">Browse fandoms!</p>
+	<% if @fandoms_comics.any? %>
+		<p class="note">Fancomics:</p>
 		<ul class="front-fandom-list">
-			<% @fandoms.each do |fandom| %>
+			<% @fandoms_comics.each do |fandom| %>
 				<li><%= link_to "#{fandom.name}", drawings_by_tags_path(fandom.name) %> (<%= fandom.taggings_count %>)</li>
 			<% end %>
 		</ul>
+	<% end %>
+	<% if @fandoms_drawings.any? %>
+		<p class="note">Fanart:</p>
+		<ul class="front-fandom-list">
+			<% @fandoms_drawings.each do |fandom| %>
+				<li><%= link_to "#{fandom.name}", drawings_by_tags_path(fandom.name) %> (<%= fandom.taggings_count %>)</li>
+			<% end %>
+		</ul>
+	<% end %>
 </div>
 <!-- <div class="module">
 	<h3 class="heading">Top tags</h3>
