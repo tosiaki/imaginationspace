@@ -54,7 +54,7 @@ class DrawingsController < ApplicationController
   private
 
     def drawing_params
-      params.require(:drawing).permit(:rating, :title, :drawing, :caption)
+      params.require(:drawing).permit(:rating, :title, :drawing, :caption, :orientation)
     end
 
     def tagging_params

@@ -1,6 +1,6 @@
 class ComicPagesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :destroy]
-  before_action :check_user, only: [:new, :create, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :change_orientation, :destroy]
+  before_action :check_user, only: [:new, :create, :change_orientation, :destroy]
   before_action :check_pages, only: :destroy
 
   def new
@@ -13,7 +13,7 @@ class ComicPagesController < ApplicationController
   end
 
   def create
-    @comic_page = @comic.comic_pages.build(page: params[:comic_page][:page_number], drawing: params[:comic_page][:new_page])
+    @comic_page = @comic.comic_pages.build(page: params[:comic_page][:page_number], drawing: params[:comic_page][:new_page], orientation: params[:comic_page][:orientation])
     @comic_page.page = [ @comic_page.page.abs.round, @comic.comic_pages.count+1 ].min
     if @comic_page.valid?
       @comic_page.save
@@ -29,6 +29,14 @@ class ComicPagesController < ApplicationController
     else
       render 'comics/new_page'
     end
+  end
+
+  def change_orientation
+    @comic_page = @comic.comic_pages.find_by( page: params[:page].to_i )
+    if @comic_page.update_attribute(:orientation, params[:orientation])
+      flash[:success] = "Changed page orientation"
+    end
+    redirect_to @comic
   end
 
   def destroy

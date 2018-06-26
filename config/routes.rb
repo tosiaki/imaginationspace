@@ -44,6 +44,9 @@ Rails.application.routes.draw do
   resources :comics, only: [:new, :create, :show, :index, :edit, :update, :destroy], parent: "Comic" do
     resources :comments, only: :create
     resources :kudos, only: :create
+    member do
+      patch 'change_orientation/:page/:orientation', to: 'comic_pages#change_orientation', as: :change_page_orientation
+    end
   end
 
   get 'comics/tags/:tags', to: 'comics#index', as: :comics_by_tags

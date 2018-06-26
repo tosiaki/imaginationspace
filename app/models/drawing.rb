@@ -3,6 +3,7 @@ class Drawing < ApplicationRecord
   include Concerns::Work
 
   enum rating: { not_rated: 0, general_audiences: 1, teen_and_up_audiences: 2, mature: 3, explicit: 4 }
+  enum orientation: { screen: 0, column: 1 }
 
   mount_uploader :drawing, DrawingUploader
   default_scope -> { order(created_at: :desc) }

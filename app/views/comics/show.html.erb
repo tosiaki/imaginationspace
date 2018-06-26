@@ -7,9 +7,14 @@
 		<% if @comic.user == current_user %>
 			<ul class="actions page-actions">
 				<li><%= link_to "Add page here", new_comic_page_at_path(@comic.id,page.page) %></li>
-				 <% if @comic.comic_pages.count > 1 %>
-				 	<li><%= link_to "Delete page below", delete_comic_page_path(@comic.id,page.page), method: :delete %></li>
-				 <% end %>
+				<% if page.orientation == 'column' %>
+					<li><%= link_to "Fit to screen", change_page_orientation_comic_path(page: page.page, orientation: 'screen'), method: :patch %></li>
+				<% else %>
+					<li><%= link_to "Fit to column", change_page_orientation_comic_path(page: page.page, orientation: 'column'), method: :patch %></li>
+				<% end %>
+				<% if @comic.comic_pages.count > 1 %>
+					<li><%= link_to "Delete page below", delete_comic_page_path(@comic.id,page.page), method: :delete %></li>
+				<% end %>
 			</ul>
 		<% end %>
 		<div class="preface page-preface" id="page-<%= page.page %>">
@@ -21,7 +26,7 @@
 			<% else %>
 				<%= link_to "", comic_path(@comic, anchor: "page-#{page.page-1}"), class: "arrow arrow-left" %>
 			<% end %>
-			<%= link_to image_tag(page.drawing.url(:show_page), class: "normal-display"), page.drawing.url %>
+			<%= link_to image_tag(page.drawing.url(:show_page), class: image_class(page.orientation)), page.drawing.url %>
 			<% if page.page == @comic.comic_pages.count %>
 				<a class="arrow non-arrow-right"></a>
 			<% else %>

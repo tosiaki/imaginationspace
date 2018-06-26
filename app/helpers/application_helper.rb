@@ -78,6 +78,14 @@ module ApplicationHelper
     end
   end
 
+  def image_class(orientation)
+    if orientation == 'screen'
+      'normal-display fit-to-screen'
+    else
+      'normal-display'
+    end
+  end
+
   def thumbnail_image(work)
     if work.class.name == 'Drawing'
       work.drawing.url(:thumb)
