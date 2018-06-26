@@ -4,6 +4,12 @@ class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  def default_url_options
+    if Rails.env.production?
+      {host: "www.fancomics.org"}
+    end
+  end
+
   protected
 
     def configure_permitted_parameters
