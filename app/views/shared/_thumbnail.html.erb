@@ -5,7 +5,7 @@
 			<ul>
 				<li class="title"><%= link_to work.title, work %></li>
 				<% unless controller_name == 'users' %>
-					<li class="author"><%= link_to work.user.name, work.user %></li>
+					<li class="author"><%= author_link work %></li>
 				<% end %>
 			</ul>
 		</figcaption>

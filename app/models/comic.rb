@@ -28,6 +28,7 @@ class Comic < ApplicationRecord
 
   validate :has_fandoms
   validate :check_pages
+  validate :has_authors, if: :scanlation?
 
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, length: { maximum: 1250 }
@@ -39,4 +40,10 @@ class Comic < ApplicationRecord
   def check_pages
     errors.add :base, "A comic needs to have at least one page." if self.comic_pages.blank?
   end
+
+  def has_authors
+    number_of_tags = tag_list_cache_on("authors").uniq.length
+    errors.add(:base, "Please add an author") if number_of_tags < 1
+  end
+
 end
