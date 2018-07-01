@@ -10,5 +10,10 @@
 			<p><%= @work.send(preface_name) %></p>
 		</blockquote>
 	<% end %>
+	<% if @work.class == Comic && @work.authorship == "scanlation" %>
+		<h3 class="heading">Note:</h3>
+		<blockquote class="user-summary">
+			<p>This is a scanlation and therefore was not submitted by the author of this work.</p>
+		</blockquote>
 	</div>
 </div>

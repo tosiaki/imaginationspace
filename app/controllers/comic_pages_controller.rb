@@ -52,6 +52,7 @@ class ComicPagesController < ApplicationController
 
     def check_user
       @comic = current_user.comics.find(params[:id])
+      @comic = current_user.scanlations.find(params[:id]) unless @comic
       redirect_to Comic.find(params[:id]) unless @comic
     end
 
