@@ -46,4 +46,12 @@ class Comic < ApplicationRecord
     errors.add(:base, "Please add an author") if number_of_tags < 1
   end
 
+  def author
+    if authorship == 'scanlation'
+      author_list
+    else
+      user.name
+    end
+  end
+
 end
