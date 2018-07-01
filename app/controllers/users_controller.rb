@@ -5,11 +5,15 @@ class UsersController < ApplicationController
   def show
     @user_comics = @user.comics.paginate(page: 1, per_page: 20)
     @user_drawings = @user.drawings.paginate(page: 1, per_page: 20)
+    @user_scanlations = @user.scanlations.paginate(page: 1, per_page: 20)
     if @user_comics.any?
       @comic_fandoms = @user_comics.tag_counts_on(:fandoms, limit: 15, order: "count desc")
     end
     if @user_drawings.any?
       @drawing_fandoms = @user_drawings.tag_counts_on(:fandoms, limit: 15, order: "count desc")
+    end
+    if @user_scanlations.any?
+      @scanlation_fandoms = @user_scanlations.tag_counts_on(:fandoms, limit: 15, order: "count desc")
     end
   end
 
@@ -59,6 +63,10 @@ class UsersController < ApplicationController
 
   def comics
     list_works 'comics'
+  end
+
+  def scanlations
+    list_works 'scanlations'
   end
 
   def bookmarked_drawings

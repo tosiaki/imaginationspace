@@ -7,7 +7,8 @@ class User < ApplicationRecord
   mount_uploader :icon, IconUploader
 
   has_many :drawings
-  has_many :comics
+  has_many :comics, -> { where authorship: :own }
+  has_many :scanlations, -> { where authorship: :scanlation }, class_name: "Comic"
 
   has_many :bookmarks, inverse_of: :user
   has_many :bookmarked_drawings, through: :bookmarks, source: :bookmarkable, source_type: 'Drawing'

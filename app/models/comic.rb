@@ -4,13 +4,14 @@ class Comic < ApplicationRecord
 
   enum rating: { not_rated: 0, general_audiences: 1, teen_and_up_audiences: 2, mature: 3, explicit: 4 }
   enum front_page_rating: { front_not_rated: 0, front_general_audiences: 1, front_teen_and_up_audiences: 2, front_mature: 3, front_explicit: 4 }
+  enum authorship: { own: 0, scanlation: 1 }
 
   belongs_to :user
   validates :user_id, presence: true
   has_many :comic_pages, inverse_of: :comic, dependent: :destroy
 
   acts_as_taggable
-  acts_as_taggable_on :fandoms, :characters, :relationships
+  acts_as_taggable_on :fandoms, :characters, :relationships, :authors
 
   has_many :bookmarks, as: :bookmarkable
   has_many :bookmarked_users, through: :bookmarks, source: :user

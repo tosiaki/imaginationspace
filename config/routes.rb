@@ -68,6 +68,8 @@ Rails.application.routes.draw do
   get 'users/:id/drawings/tags/:tags', to: 'users#drawings', as: :user_drawings_by_tags
   get 'users/:id/comics', to: 'users#comics', as: :user_comics
   get 'users/:id/comics/tags/:tags', to: 'users#comics', as: :user_comics_by_tags
+  get 'users/:id/scanlations', to: 'users#scanlations', as: :user_scanlations
+  get 'users/:id/scanlations/tags/:tags', to: 'users#scanlations', as: :user_scanlations_by_tags
 
   post ':work/:id/bookmark', to: 'bookmarks#create', as: :bookmark
   delete ':work/:id/unbookmark', to: 'bookmarks#destroy', as: :unbookmark

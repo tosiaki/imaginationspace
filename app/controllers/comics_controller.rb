@@ -56,7 +56,7 @@ class ComicsController < ApplicationController
   private
 
     def comic_params
-      params.require(:comic).permit(:rating, :title, :description, :pages)
+      params.require(:comic).permit(:rating, :title, :description, :pages, :authorship)
     end
 
     def add_tags(object, key)
@@ -64,10 +64,11 @@ class ComicsController < ApplicationController
       object.character_list.add(params[key][:character_list], parse: true ) unless params[key][:character_list].empty?
       object.relationship_list.add(params[key][:relationship_list], parse: true ) unless params[key][:relationship_list].empty?
       object.tag_list.add(params[key][:tag_list], parse: true ) unless params[key][:tag_list].empty?
+      object.author_list.add(params[key][:author_list], parse: true ) unless params[key][:author_list].empty?
     end
 
     def update_tags
-      contexts = ['fandom', 'relationship', 'character', 'tag']
+      contexts = ['fandom', 'relationship', 'character', 'tag', 'author']
       contexts.each do |context|
         set_tags(context)
       end
@@ -84,7 +85,8 @@ class ComicsController < ApplicationController
     end
 
     def check_user
-      @comic = current_user.comics.find(params[:id])
+      @comic = current_user.comics.find_by(id: params[:id])
+      @comic = current_user.scanlations.find(params[:id]) unless @comic
       redirect_to Comic.find(params[:id]) unless @comic
     end
 end

@@ -121,4 +121,12 @@ module ApplicationHelper
   def get_top_tags(works, context, number)
     works.tag_counts_on context, limit: number, order: "count desc"
   end
+
+  def author_link
+    if @work.class == Comic && @work.authorship == 'scanlation'
+      @work.author_list.collect { |author| link_to author, comics_by_tags_path(author)}.join(", ").html_safe
+    else
+      link_to @work.user.name, @work.user
+    end
+  end
 end
