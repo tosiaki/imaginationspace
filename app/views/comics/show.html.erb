@@ -7,7 +7,7 @@
 		<meta name="twitter:description" content="<%= @comic.description %>">
 	<% end %>
 	<meta property="og:type" content="article">
-	<meta itemprop="og:title" content="<%= @comic.title %>">
+	<meta property="og:title" content="<%= @comic.title %>">
 	<meta property="og:image" content="<%= @comic.comic_pages.first.drawing.url %>">
 <% end %>
 <%= render 'shared/flash_messages' %>
