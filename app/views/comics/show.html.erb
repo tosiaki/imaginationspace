@@ -1,4 +1,7 @@
 <% provide(:title, "#{@comic.title} - #{@comic.author}") %>
+<% content_for :itemprop do %>
+	<meta itemprop="image" content="<%= @comic.comic_pages.first.drawing.url %>">
+<% end %>
 <%= render 'shared/flash_messages' %>
 <%= render 'shared/work_headings' %>
 <div class="comic-display">
