@@ -67,6 +67,35 @@
             <div class="form-input">
               <%= f.text_field :tag_list, value: f.object.tag_list.to_s %>
             </div>
+            <div class="form-label">
+              <%= f.label :authorship %>
+            </div>
+            <div class="form-input">
+                <%= f.radio_button :authorship, "own" %><%= label_tag :authorship_own, "This is my own work" %>
+                <%= f.radio_button :authorship, "scanlation" %><%= label_tag :authorship_scanlation, "This is a translation or a repost of another's work" %>
+            </div>
+            <div id="authorship-inputs">
+              <div class="form-label">
+                <%= f.label :'Original authors' %>
+              </div>
+              <div class="form-input">
+                <%= f.text_field :author_list, value: f.object.author_list.to_s %>
+              </div>
+              <script>
+                $(document).ready(function() {
+                  var changeAuthorshipInputDisplay = function() {
+                    if ( $("#drawing_authorship_scanlation").is(":checked") ) {
+                      $("#authorship-inputs").show();
+                    }
+                    else {
+                      $("#authorship-inputs").hide();
+                    }
+                  }
+                  $("input[name$='drawing[authorship]']").on( "change", changeAuthorshipInputDisplay);
+                  changeAuthorshipInputDisplay();
+                });
+              </script>
+            </div>
           </div>
         </li>
         <li class="form-element">

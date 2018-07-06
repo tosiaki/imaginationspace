@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_01_010301) do
+ActiveRecord::Schema.define(version: 2018_07_06_232230) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
@@ -71,6 +71,7 @@ ActiveRecord::Schema.define(version: 2018_07_01_010301) do
     t.datetime "updated_at", null: false
     t.integer "rating", default: 0
     t.integer "orientation", default: 0
+    t.integer "authorship", default: 0
     t.index ["user_id"], name: "index_drawings_on_user_id"
   end
 

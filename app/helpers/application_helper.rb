@@ -123,8 +123,8 @@ module ApplicationHelper
   end
 
   def author_link(work)
-    if work.class == Comic && work.authorship == 'scanlation'
-      work.author_list.collect { |author| link_to author, comics_by_tags_path(author)}.join(", ").html_safe
+    if work.authorship == 'scanlation'
+      work.author_list.collect { |author| link_to author, works_search_path(tags: author)}.join(", ").html_safe
     else
       link_to work.user.name, work.user
     end

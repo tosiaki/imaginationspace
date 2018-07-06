@@ -1,4 +1,4 @@
-<% provide(:title, "#{@drawing.title} - #{@drawing.user.name}") %>
+<% provide(:title, "#{@drawing.title} - #{@drawing.author}") %>
 <% content_for :itemprop do %>
 	<meta itemprop="image" content="<%= @drawing.drawing.url %>">
 	<meta itemprop="name" content="<%= @drawing.title %>">

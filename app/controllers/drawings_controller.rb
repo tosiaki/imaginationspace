@@ -15,6 +15,7 @@ class DrawingsController < ApplicationController
     @drawing.character_list.add(tagging_params[:character_list], parse: true ) unless tagging_params[:character_list].empty?
     @drawing.relationship_list.add(tagging_params[:relationship_list], parse: true ) unless tagging_params[:relationship_list].empty?
     @drawing.tag_list.add(tagging_params[:tag_list], parse: true ) unless tagging_params[:tag_list].empty?
+    @drawing.author_list.add(tagging_params[:author_list], parse: true ) unless tagging_params[:author_list].empty?
     if @drawing.save
       flash[:success] = "Drawing posted!"
       redirect_to @drawing
@@ -54,15 +55,15 @@ class DrawingsController < ApplicationController
   private
 
     def drawing_params
-      params.require(:drawing).permit(:rating, :title, :drawing, :caption, :orientation)
+      params.require(:drawing).permit(:rating, :title, :drawing, :caption, :orientation, :authorship)
     end
 
     def tagging_params
-      params.require(:drawing).permit(:fandom_list, :character_list, :relationship_list, :tag_list)
+      params.require(:drawing).permit(:fandom_list, :character_list, :relationship_list, :tag_list, :author_list)
     end
 
     def update_tags
-      contexts = ['fandom', 'relationship', 'character', 'tag']
+      contexts = ['fandom', 'relationship', 'character', 'tag', 'author']
       contexts.each do |context|
         set_tags(context)
       end
