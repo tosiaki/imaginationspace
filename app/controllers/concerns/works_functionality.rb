@@ -15,7 +15,7 @@ module Concerns::WorksFunctionality
 
     if params[:tags]
       tag_list = params[:tags].split(",").map(&:strip)
-      instance_variable_set instance_var_name, class_var.tagged_with(tag_list).paginate(page: params[:page], per_page: 100)
+      instance_variable_set instance_var_name, class_var.tagged_with(tag_list).paginate(page: params[:page], per_page: 100).group('id')
     else
       instance_variable_set instance_var_name, class_var.all.paginate(page: params[:page], per_page: 100)
     end

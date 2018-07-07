@@ -12,7 +12,7 @@
 		<p class="note">Fancomics:</p>
 		<ul class="front-fandom-list">
 			<% @fandoms_comics.each do |fandom| %>
-				<li><%= link_to "#{fandom.name}", drawings_by_tags_path(fandom.name) %> (<%= fandom.count %>)</li>
+				<li><%= link_to "#{fandom.name}", comics_by_tags_path(fandom.name) %> (<%= fandom.count %>)</li>
 			<% end %>
 		</ul>
 	<% end %>
