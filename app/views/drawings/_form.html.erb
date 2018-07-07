@@ -23,8 +23,8 @@
               <%= f.text_field :title %>
               <%= render 'shared/character_counter', max_length: Drawing.validators_on(:title)[1].options[:maximum], counter_id: "title_counter", input_field: "input#drawing_title" %>
             </div>
-            <div class="form-label required">
-              <%= f.label :drawing, "Drawing*" %>
+            <div class="form-label<%= " required" if action_name=='new' %>">
+              <%= f.label :drawing, "Drawing#{ action_name=='new' ? "*" : "" }" %>
             </div>
             <div class="form-input">
               <%= f.file_field :drawing, accept: 'image/jpeg,image/gif,image/png' %>
