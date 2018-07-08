@@ -1,14 +1,17 @@
 <% provide(:title, "#{@drawing.title} - #{@drawing.author}") %>
 <% content_for :itemprop do %>
+	<link rel="icon" href="<%= @drawing.drawing.url %>">
 	<meta itemprop="image" content="<%= @drawing.drawing.url %>">
 	<meta itemprop="name" content="<%= @drawing.title %>">
 	<meta name="twitter:title" content="<%= @drawing.title %>">
+	<meta name="twitter:image" content="<%= @drawing.drawing.url %>">
 	<% unless @drawing.caption.empty? %>
 		<meta name="twitter:description" content="<%= @drawing.caption %>">
 	<% end %>
 	<meta property="og:type" content="article">
 	<meta property="og:title" content="<%= @drawing.title %>">
 	<meta property="og:image" content="<%= @drawing.drawing.url %>">
+	<link rel="image_src" href="<%= @drawing.drawing.url %>">
 <% end %>
 <%= render 'shared/flash_messages' %>
 <%= render 'shared/work_headings' %>
