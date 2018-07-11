@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_06_232230) do
+ActiveRecord::Schema.define(version: 2018_07_11_211100) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 2018_07_06_232230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "authorship", default: 0
+    t.integer "max_pages", default: 1
+    t.datetime "page_addition"
     t.index ["user_id"], name: "index_comics_on_user_id"
   end
 

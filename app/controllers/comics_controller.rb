@@ -13,6 +13,7 @@ class ComicsController < ApplicationController
   def create
     @comic = current_user.comics.build(comic_params);
     add_tags(@comic, :comic)
+    @comic.page_addition = Time.now
     @comic.comic_pages.build(page: 1, drawing: params[:comic][:first_page], orientation: params[:orientation])
     @comic.pages = @comic.pages.abs.round
     if @comic.save

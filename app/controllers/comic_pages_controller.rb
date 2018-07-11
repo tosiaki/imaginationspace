@@ -24,6 +24,10 @@ class ComicPagesController < ApplicationController
       if @comic.pages != 0 && @comic.pages < new_max_page
         @comic.update_attribute(:pages, new_max_page)
       end
+      if @comic.max_pages < new_max_page
+        @comic.update_attribute(:max_pages, new_max_page)
+        @comic.update_attribute(:page_addition, Time.now)
+      end
       @comic.touch
       redirect_to @comic
     else
