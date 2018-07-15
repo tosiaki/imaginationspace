@@ -101,10 +101,6 @@ module ApplicationHelper
       modifier = "front_"
     end
 
-    if work.id == 2
-      debugger
-    end
-
     if (work.send("#{modifier}explicit?") || work.send("#{modifier}not_rated?")) && !session[:view_adult]
       "summary-display gray"
     else
