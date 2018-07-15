@@ -1,6 +1,6 @@
 <ul class="stats">
 	<li>Published: <%= published_display %></li>
-	<% if @work.class::HAS_PAGES && @work.updated_at > @work.created_at + 1.day %>
+	<% if @work.class::HAS_PAGES && @work.page_addition > @work.created_at + 1.day %>
 		<li><%= updated_or_completed %>: <%= updated_display %></li>
 	<% end %>
 	<% if @work.class::HAS_PAGES %>

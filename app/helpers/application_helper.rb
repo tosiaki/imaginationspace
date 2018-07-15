@@ -20,7 +20,7 @@ module ApplicationHelper
   end
 
   def updated_display
-    @work.updated_at.strftime(display_time_string)
+    @work.page_addition.strftime(display_time_string)
   end
 
   def updated_or_completed
@@ -99,6 +99,10 @@ module ApplicationHelper
       modifier = ""
     else
       modifier = "front_"
+    end
+
+    if work.id == 2
+      debugger
     end
 
     if (work.send("#{modifier}explicit?") || work.send("#{modifier}not_rated?")) && !session[:view_adult]

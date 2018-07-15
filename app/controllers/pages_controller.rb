@@ -1,5 +1,6 @@
 class PagesController < ApplicationController
   def home
+    session[:view_adult] = false
     @comics = Comic.all.paginate(page: 1, per_page: 100)
     @drawings = Drawing.all.paginate(page: 1, per_page: 100)
     @fandoms_drawings = specific_count('Drawing')

@@ -57,7 +57,7 @@ class ComicsController < ApplicationController
   private
 
     def comic_params
-      params.require(:comic).permit(:rating, :title, :description, :pages, :authorship)
+      params.require(:comic).permit(:rating, :front_page_rating, :title, :description, :pages, :authorship)
     end
 
     def add_tags(object, key)

@@ -33,6 +33,8 @@ class Comic < ApplicationRecord
   validates :title, presence: true, length: { maximum: 255 }
   validates :description, length: { maximum: 1250 }
   validates :pages, presence: true
+  validates :rating, presence: true
+  validates :front_page_rating, presence: true
   validates_numericality_of :pages, only_integer: true, greater_than_or_equal_to: 0, message: "Pages must be an a positive integer"
 
   HAS_PAGES = true

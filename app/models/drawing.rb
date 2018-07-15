@@ -32,6 +32,7 @@ class Drawing < ApplicationRecord
   validate :has_authors, if: :scanlation?
 
   validates :drawing, presence: true
+  validates :rating, presence: true
   validates :title, presence: true, length: { maximum: 255 }
   validates :caption, length: { maximum: 1250 }
 

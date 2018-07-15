@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   mount_uploader :icon, IconUploader
 
-  has_many :drawings
+  has_many :drawings, -> { where authorship: :own }
   has_many :comics, -> { where authorship: :own }
   has_many :scanlations, -> { where authorship: :scanlation }, class_name: "Comic"
 
