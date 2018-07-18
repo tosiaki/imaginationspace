@@ -2,6 +2,7 @@
 <% content_for :itemprop do %>
 	<meta itemprop="image" content="<%= @comic.comic_pages.first.drawing.url %>">
 	<meta itemprop="name" content="<%= @comic.title %>">
+	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="<%= @comic.title %>">
 	<meta name="twitter:image" content="<%= @comic.comic_pages.first.drawing.url %>">
 	<% unless @comic.description.empty? %>
