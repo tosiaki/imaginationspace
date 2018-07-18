@@ -10,6 +10,8 @@
 	<meta property="og:type" content="article">
 	<meta property="og:title" content="<%= @comic.title %>">
 	<meta property="og:image" content="<%= @comic.comic_pages.first.drawing.url %>">
+	<meta property="og:image:width" content="600">
+	<meta property="og:image:height" content="315">
 	<link rel="image_src" href="<%= @comic.comic_pages.first.drawing.url %>">
 <% end %>
 <%= render 'shared/flash_messages' %>
