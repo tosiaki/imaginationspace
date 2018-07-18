@@ -80,7 +80,8 @@ class DrawingsController < ApplicationController
     end
 
     def check_user
-      @drawing = current_user.drawings.find(params[:id])
+      @drawing = current_user.drawings.find_by(id: params[:id])
+      @drawing = current_user.drawing_translations.find(params[:id]) unless @drawing
       redirect_to Drawing.find(params[:id]) unless @drawing
     end
 end
