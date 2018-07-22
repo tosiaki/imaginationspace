@@ -1,6 +1,6 @@
 <% provide(:title, "Add page") %>
 <div class="submission-form" id="post-drawing-form">
-  <%= form_for(@comic_page, html: { multipart: true }, url: new_comic_page_path(@comic.id)) do |f| %>
+  <%= form_for(@comic_page, html: { multipart: true }, url: new_comic_page_path(@comic)) do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
     <h2 class="heading">Add page</h2>

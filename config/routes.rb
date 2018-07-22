@@ -46,6 +46,8 @@ Rails.application.routes.draw do
     resources :kudos, only: :create
     member do
       patch 'change_orientation/:page/:orientation', to: 'comic_pages#change_orientation', as: :change_page_orientation
+      get 'edit/:page', to: 'comic_pages#edit', as: :edit_page
+      patch 'edit/:page', to: 'comic_pages#update'
     end
   end
 
