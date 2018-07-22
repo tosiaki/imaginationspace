@@ -24,14 +24,6 @@ class ComicPagesController < ApplicationController
         @comic.comic_pages.each do |existing_page|
           existing_page.increment!(:page) if existing_page.page >= @comic_page.page && existing_page != @comic_page
         end
-        new_max_page = @comic.comic_pages.map(&:page).max
-        if @comic.max_pages < new_max_page
-          @comic.update_attribute(:max_pages, new_max_page)
-          @comic.update_attribute(:page_addition, Time.now)
-        end
-        if @comic.pages != 0 && @comic.pages < new_max_page
-          @comic.update_attribute(:pages, new_max_page)
-        end
         @current_page += 1
         page_added = true
       else
@@ -39,6 +31,14 @@ class ComicPagesController < ApplicationController
       end
     end
     if page_added
+      new_max_page = @comic.comic_pages.map(&:page).max
+      if @comic.max_pages < new_max_page
+        @comic.update_attribute(:max_pages, new_max_page)
+        @comic.update_attribute(:page_addition, Time.now)
+      end
+      if @comic.pages != 0 && @comic.pages < new_max_page
+        @comic.update_attribute(:pages, new_max_page)
+      end
       redirect_to comic_path(@comic, anchor: "page-#{@current_page-1}")
     else
       @current_page = params[:comic_page][:page_number]

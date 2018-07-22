@@ -13,9 +13,21 @@ class ComicsController < ApplicationController
   def create
     @comic = current_user.comics.build(comic_params);
     add_tags(@comic, :comic)
-    @comic.page_addition = Time.now
-    @comic.comic_pages.build(page: 1, drawing: params[:comic][:first_page], orientation: params[:orientation])
+    current_page = 1
+    params[:comic][:first_page].each do |page|
+      comic_page = @comic.comic_pages.build(page: current_page, drawing: page, orientation: params[:orientation])
+      if comic_page.valid?
+        current_page += 1
+      else
+        flash[:warning] = "Not all pages were successfully added"
+      end
+    end
     @comic.pages = @comic.pages.abs.round
+    @comic.max_pages = @comic.comic_pages.map(&:page).max
+    if @comic.pages != 0 && @comic.pages < @comic.max_pages
+      @comic.pages = @comic.max_pages
+    end
+    @comic.page_addition = Time.now
     if @comic.save
       flash[:success] = "Comic posted!"
       redirect_to @comic

@@ -34,7 +34,7 @@
                 <%= f.label :first_page, "First page(s)*" %>
               </div>
               <div class="form-input">
-                <%= f.file_field :first_page, accept: 'image/jpeg,image/gif,image/png' %>
+                <%= f.file_field :first_page, accept: 'image/jpeg,image/gif,image/png', multiple: true %>
               </div>
               <div class="form-label">
                 <%= f.label :orientation, "First page orientation" %>
