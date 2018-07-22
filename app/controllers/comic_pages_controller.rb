@@ -13,24 +13,33 @@ class ComicPagesController < ApplicationController
   end
 
   def create
-    @comic_page = @comic.comic_pages.build(page: params[:comic_page][:page_number], drawing: params[:comic_page][:new_page], orientation: params[:comic_page][:orientation])
-    @comic_page.page ||= @comic.comic_pages.count+1
-    @comic_page.page = [ @comic_page.page.abs.round, @comic.comic_pages.count+1 ].min
-    if @comic_page.valid?
-      @comic_page.save
-      @comic.comic_pages.each do |page|
-        page.increment!(:page) if page.page >= @comic_page.page && page != @comic_page
+    @current_page = params[:comic_page][:page_number].to_i
+    @current_page ||= @comic.comic_pages.count+1
+    @current_page = [[ @current_page.abs.round, @comic.comic_pages.count+1 ].min, 1].max
+    page_added = false
+    params[:comic_page][:new_page].each do |new_page|
+      @comic_page = @comic.comic_pages.build(page: @current_page, drawing: new_page, orientation: params[:comic_page][:orientation])
+      if @comic_page.valid?
+        @comic_page.save
+        @comic.comic_pages.each do |existing_page|
+          existing_page.increment!(:page) if existing_page.page >= @comic_page.page && existing_page != @comic_page
+        end
+        new_max_page = @comic.comic_pages.map(&:page).max
+        if @comic.max_pages < new_max_page
+          @comic.update_attribute(:max_pages, new_max_page)
+          @comic.update_attribute(:page_addition, Time.now)
+        end
+        if @comic.pages != 0 && @comic.pages < new_max_page
+          @comic.update_attribute(:pages, new_max_page)
+        end
+        @current_page += 1
+        page_added = true
+      else
+        flash[:warning] = "Not all pages were successfully added"
       end
-      new_max_page = @comic.comic_pages.map(&:page).max
-      if @comic.pages != 0 && @comic.pages < new_max_page
-        @comic.update_attribute(:pages, new_max_page)
-      end
-      if @comic.max_pages < new_max_page
-        @comic.update_attribute(:max_pages, new_max_page)
-        @comic.update_attribute(:page_addition, Time.now)
-      end
-      @comic.touch
-      redirect_to comic_path(@comic, anchor: "page-#{@comic_page.page}")
+    end
+    if page_added
+      redirect_to comic_path(@comic, anchor: "page-#{@current_page-1}")
     else
       @current_page = params[:comic_page][:page_number]
       render 'comic_pages/new'
