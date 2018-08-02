@@ -23,7 +23,7 @@
 		<% if @comic.user == current_user %>
 			<ul class="actions page-actions">
 				<li><%= link_to "Add page(s) here", new_comic_page_at_path(@comic,page.page) %></li>
-				<li><%= link_to "Replace page below", edit_page_comic_path(@comic,page.page) %></li>
+				<li><%= link_to "Replace page(s) below", edit_page_comic_path(@comic,page.page) %></li>
 				<% if @comic.comic_pages.count > 1 %>
 					<li><%= link_to "Delete page below", delete_comic_page_path(@comic.id,page.page), method: :delete %></li>
 				<% end %>

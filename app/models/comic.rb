@@ -39,6 +39,10 @@ class Comic < ApplicationRecord
 
   HAS_PAGES = true
 
+  def current_max_page
+    maximum ||= comic_pages.map(&:page).max
+  end
+
   def check_pages
     errors.add :base, "A comic needs to have at least one page." if self.comic_pages.blank?
   end

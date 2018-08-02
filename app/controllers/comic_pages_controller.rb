@@ -31,14 +31,7 @@ class ComicPagesController < ApplicationController
       end
     end
     if page_added
-      new_max_page = @comic.comic_pages.map(&:page).max
-      if @comic.max_pages < new_max_page
-        @comic.update_attribute(:max_pages, new_max_page)
-        @comic.update_attribute(:page_addition, Time.now)
-      end
-      if @comic.pages != 0 && @comic.pages < new_max_page
-        @comic.update_attribute(:pages, new_max_page)
-      end
+      change_update_time(@comic, @comic.current_max_page)
       redirect_to comic_path(@comic, anchor: "page-#{@current_page-1}")
     else
       @current_page = params[:comic_page][:page_number]
@@ -51,11 +44,27 @@ class ComicPagesController < ApplicationController
   end
 
   def update
-    @comic_page = @comic.comic_pages.find_by( page: params[:page].to_i )
-    if @comic_page.update_attribute(:drawing, params[:comic_page][:new_page] )
-      flash[:success] = "Updated page"
+    page_number = params[:page].to_i
+    params[:comic_page][:new_page].each do |new_page|
+      if page_number <= @comic.current_max_page
+        current_page = @comic.comic_pages.find_by( page: page_number )
+        if current_page.update_attributes( drawing: new_page, orientation: params[:comic_page][:orientation] )
+          flash[:success] = "Page has been updated"
+        else
+          flash[:warning] = "Not all pages were successfully updated"
+        end
+      else
+        current_page = @comic.comic_pages.build(page: page_number, drawing: new_page, orientation: params[:comic_page][:orientation])
+        if current_page.save
+          flash[:success] = "Page has been updated"
+          change_update_time(@comic, page_number)
+        else
+          flash[:warning] = "Not all pages were successfully updated"
+        end
+      end
+      page_number += 1
     end
-    redirect_to comic_path(@comic, anchor: "page-#{@comic_page.page}")
+    redirect_to comic_path(@comic, anchor: "page-#{page_number-1}")
   end
 
   def change_orientation
@@ -85,5 +94,15 @@ class ComicPagesController < ApplicationController
 
     def check_pages
       redirect_to @comic unless @comic.comic_pages.count > 1
+    end
+
+    def change_update_time(comic, page_number)
+      if comic.max_pages < page_number
+        comic.update_attribute(:max_pages, page_number)
+        comic.update_attribute(:page_addition, Time.now)
+      end
+      if comic.pages != 0 && comic.pages < page_number
+        comic.update_attribute(:pages, page_number)
+      end
     end
 end
