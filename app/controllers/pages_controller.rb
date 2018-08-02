@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
   def home
-    @comics = Comic.all.paginate(page: 1, per_page: 100)
+    @comics = Comic.where.not(id: 26).paginate(page: 1, per_page: 100)
     @drawings = Drawing.all.paginate(page: 1, per_page: 100)
     @fandoms_drawings = specific_count('Drawing')
     @fandoms_comics = specific_count('Comic')
