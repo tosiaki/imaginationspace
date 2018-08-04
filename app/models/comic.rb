@@ -39,8 +39,48 @@ class Comic < ApplicationRecord
 
   HAS_PAGES = true
 
+  def replace_page(drawing:, orientation: :screen, page_number: next_page)
+    page = comic_pages.find_by( page: page_number )
+    if page
+      page.update_attributes(drawing: drawing, orientation: orientation)
+    else
+      add_page(drawing: drawing, orientation: orientation, page_number: page_number)
+    end
+  end
+
+  def add_page(drawing:, orientation: :screen, page_number: next_page)
+    new_page = comic_pages.build(page: page_number, drawing: drawing, orientation: orientation)
+    if(result = new_page.save)
+      change_update_time
+    end
+    return result
+  end
+
+  def make_room_at_page(page_number)
+    comic_pages.reload
+    pages = comic_pages.where( page: page_number )
+    pages.each do |page|
+      page.move_up
+    end
+  end
+
   def current_max_page
     maximum ||= comic_pages.map(&:page).max
+  end
+
+  def next_page
+    current_max_page + 1
+  end
+
+  def change_update_time
+    comic_pages.reload
+    if max_pages < current_max_page
+      update_attribute(:max_pages, current_max_page)
+      update_attribute(:page_addition, Time.now)
+    end
+    if pages != 0 && pages < current_max_page
+      update_attribute(:pages, current_max_page)
+    end
   end
 
   def check_pages
