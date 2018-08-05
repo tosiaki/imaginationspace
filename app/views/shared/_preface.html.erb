@@ -7,7 +7,7 @@
 		<% unless @work.send(preface_name).empty? %>
 			<h3 class="heading"><%= preface_name.humanize %>:</h3>
 			<blockquote class="user-summary">
-				<p><%= @work.send(preface_name) %></p>
+				<%= simple_format sanitize @work.send(preface_name), tags: %w(strong em a), attributes: %w(href) %>
 			</blockquote>
 		<% end %>
 		<% if @work.authorship == "scanlation" %>
