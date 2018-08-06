@@ -7,6 +7,7 @@ class Drawing < ApplicationRecord
   enum authorship: { own: 0, scanlation: 1 }
 
   mount_uploader :drawing, DrawingUploader
+  skip_callback :commit, :after, :remove_drawing!
   default_scope -> { order(created_at: :desc) }
 
   belongs_to :user

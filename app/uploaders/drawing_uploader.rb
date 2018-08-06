@@ -15,6 +15,9 @@ class DrawingUploader < CarrierWave::Uploader::Base
 
   if Rails.env.production?
     storage :fog
+    configure do |config|
+      config.remove_previously_stored_files_after_update = false
+    end
   else
     storage :file
   end
