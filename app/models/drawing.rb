@@ -50,4 +50,12 @@ class Drawing < ApplicationRecord
       user.name
     end
   end
+
+  def image
+    drawing
+  end
+
+  def note
+    caption
+  end
 end

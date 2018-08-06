@@ -100,4 +100,12 @@ class Comic < ApplicationRecord
     end
   end
 
+  def image
+    comic_pages.first.drawing
+  end
+
+  def note
+    description
+  end
+
 end
