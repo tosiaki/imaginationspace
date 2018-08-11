@@ -4,9 +4,11 @@
 <%= form_tag @work, method: :get do |f| %>
 	<%= hidden_field_tag :view_adult, "true" %>
 	<ul class="actions" role="navigation">
-		<li>
-			<%= check_box_tag :remember_preference %><%= label_tag :remember_preference, "Don't ask again" %>
-		</li>
+		<% if user_signed_in? %>
+			<li>
+				<%= check_box_tag :remember_preference %><%= label_tag :remember_preference, "Don't ask again" %>
+			</li>
+		<% end %>
 		<li>
 			<%= submit_tag "Proceed" %>
 		</li>
