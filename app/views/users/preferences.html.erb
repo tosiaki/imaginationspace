@@ -1,0 +1,30 @@
+<% provide(:title, "Preferences") %>
+<% content_for :user_page_content do %>
+	<%= render 'shared/error_messages', object: @user %>
+	<div class="edit-user-form-header">
+		<h3 class="heading">Set my preferences</h3>
+		<ul class="actions" role="navigation">
+			<li><%= nav_item 'Edit my profile', edit_user_path(@user) %></li>
+		</ul>
+	</div>
+	<div class="submission-form" id="user-profile-form">
+
+		<%= form_for(@user, url: preferences_user_path(@user)) do |f| %>
+		    <div class="form-input-box">
+		    	<ul class="form-inputs">
+	        		<li class="form-element">
+						<div class="field">
+	            			<%= f.check_box :show_adult %><%= f.label :show_adult, "Show me adult content without checking." %>
+						</div>
+					</li>
+	        		<li class="form-element">
+						<div class="actions">
+				    		<%= f.submit "Update" %>
+				    	</div>
+				    </li>
+				</ul>
+			</div>
+		<% end %>
+	</div>
+<% end %>
+<%= render 'display' %>

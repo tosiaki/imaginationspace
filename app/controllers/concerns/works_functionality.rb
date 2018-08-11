@@ -23,8 +23,11 @@ module Concerns::WorksFunctionality
 
   def check_adult(work)
     if work.explicit? || work.not_rated?
-      if params[:view_adult] == 'true' || session[:view_adult]
+      if params[:view_adult] == 'true' || session[:view_adult] || (user_signed_in? && current_user.show_adult)
         session[:view_adult] = true
+        if user_signed_in? && params[:remember_preference] == '1'
+          current_user.update_attribute(:show_adult, true)
+        end
       else
         @work = work
         render 'shared/_adult_notice'

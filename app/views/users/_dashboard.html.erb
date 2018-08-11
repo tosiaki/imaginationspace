@@ -7,6 +7,11 @@
       <li>
         <%= link_to 'Profile', profile_user_path(@user) %>
       </li>
+      <% if @user == current_user %>
+        <li>
+          <%= link_to 'Preferences', preferences_user_path(@user) %>
+        </li>
+      <% end %>
     </ul>
     <ul class="navigation-actions">
       <% if @user.comics.any? %>

@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :get_user, only: [:show, :profile, :edit, :update, :change_icon, :update_icon, :change_password, :update_password, :drawings, :comics, :bookmarked_drawings, :bookmarked_comics, :subscribe, :unsubscribe, :subscriptions]
-  before_action :is_current_user, only: [:edit, :update, :change_icon, :update_icon, :change_password, :update_password]
+  before_action :get_user, only: [:show, :profile, :edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password, :drawings, :comics, :bookmarked_drawings, :bookmarked_comics, :subscribe, :unsubscribe, :subscriptions]
+  before_action :is_current_user, only: [:edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password]
 
   def show
     @user_comics = @user.comics.paginate(page: 1, per_page: 20)
@@ -29,6 +29,18 @@ class UsersController < ApplicationController
       redirect_to profile_user_path(@user)
     else
       render 'edit'
+    end
+  end
+
+  def preferences
+  end
+
+  def update_preferences
+    if @user.update_attributes(preferences_params)
+      flash[:success] = "Preferences updated!"
+      redirect_to preferences_user_path(@user)
+    else
+      render 'preferences'
     end
   end
 
@@ -130,6 +142,10 @@ class UsersController < ApplicationController
 
     def edit_user_params
       params.require(:user).permit(:name, :title, :bio)
+    end
+
+    def preferences_params
+      params.require(:user).permit(:show_adult)
     end
 
     def change_icon_params

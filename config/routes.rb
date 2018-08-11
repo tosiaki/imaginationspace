@@ -32,6 +32,8 @@ Rails.application.routes.draw do
       post :subscribe, as: :subscribe_to
       delete :unsubscribe, as: :unsubscribe_from
       get :subscriptions
+      get :preferences
+      patch :preferences, to: 'users#update_preferences'
     end
   end
 

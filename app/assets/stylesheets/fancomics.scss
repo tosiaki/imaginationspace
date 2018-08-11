@@ -1103,6 +1103,11 @@ p.caution {
 .gray::after {
 	content: "Click to display";
 }
+p.footnote {
+	float: right;
+	font-size: 0.75em;
+	clear: both;
+}
 
 /* Other pages */
 .explanation {

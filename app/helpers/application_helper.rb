@@ -101,7 +101,7 @@ module ApplicationHelper
       modifier = "front_"
     end
 
-    if (work.send("#{modifier}explicit?") || work.send("#{modifier}not_rated?")) && !session[:view_adult]
+    if (work.send("#{modifier}explicit?") || work.send("#{modifier}not_rated?")) && !session[:view_adult] && !(user_signed_in? && current_user.show_adult)
       "summary-display gray"
     else
       "summary-display"

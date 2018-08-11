@@ -1,11 +1,20 @@
 <% content_for :title, "Adult content" %>
 <%= render 'shared/itemprop' %>
 <p class="caution">This work could have adult content. If you proceed you have agreed that you are willing to see such content.</p>
-<ul class="actions" role="navigation">
-	<li>
-		<%= link_to "Proceed", view_adult: true %>
-	</li>
-	<li>
-		<%= link_to "Go Back", "javascript:history.back()" %>
-	</li>
-</ul>
+<%= form_tag @work, method: :get do |f| %>
+	<%= hidden_field_tag :view_adult, "true" %>
+	<ul class="actions" role="navigation">
+		<li>
+			<%= check_box_tag :remember_preference %><%= label_tag :remember_preference, "Don't ask again" %>
+		</li>
+		<li>
+			<%= submit_tag "Proceed" %>
+		</li>
+		<li>
+			<%= link_to "Go Back", "javascript:history.back()" %>
+		</li>
+	</ul>
+<% end %>
+<% unless user_signed_in? %>
+	<p class="footnote">If you log in, you can store your preference and never be asked again.</p>
+<% end %>
