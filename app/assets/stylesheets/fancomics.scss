@@ -621,6 +621,9 @@ div.preface {
 	}
 }
 
+.page-landmark ~ .page-landmark {
+	margin-top: 5%;
+}
 .comic-display {
 	overflow-x: auto;
 	overflow-y: hidden;
@@ -639,7 +642,6 @@ div.preface {
 	align-items: center;
 	justify-content: center;
 	display: flex;
-	margin-bottom: 5%;
 }
 .normal-display {
 	max-width: 95%;
@@ -670,6 +672,10 @@ div.preface {
 .non-arrow-left {
 	border-right: 15px solid transparent; 
 }
+.note {
+	text-align: center;
+}
+
 
 /* Summary displays */
 .drawing-list {

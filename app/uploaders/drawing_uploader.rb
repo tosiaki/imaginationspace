@@ -6,8 +6,9 @@ class DrawingUploader < CarrierWave::Uploader::Base
     process resize_to_limit: [200, 200]
   end
   version :show_page do
-    process resize_to_limit: [2000, 2000]
+    process resize_to_limit: [1200, 2000]
   end
+  process :store_dimensions
 
   # Choose what kind of storage to use for this uploader:
   # storage :file
@@ -64,4 +65,11 @@ class DrawingUploader < CarrierWave::Uploader::Base
   def extension_white_list
     %w(jpg jpeg gif png)
   end
+
+  private
+    def store_dimensions
+      if file && model
+        model.width, model.height = ::MiniMagick::Image.open(file.file)[:dimensions]
+      end
+    end
 end

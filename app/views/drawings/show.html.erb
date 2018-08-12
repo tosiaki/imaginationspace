@@ -5,6 +5,9 @@
 <div class="page-display">
 	<%= link_to image_tag(@drawing.drawing.url(:show_page), class: image_class(@drawing.orientation)), @drawing.drawing.url %>
 </div>
+<% if @drawing.width > 1200 || @drawing.height > 2000 %>
+	<div class="note">This image has been resized from the original size of <%= @drawing.width %> by <%= @drawing.height %>. To see the full image, click <%= link_to "here", @drawing.drawing.url %> or on the image itself.</div>
+<% end %>
 <%= render 'shared/action_menu_bottom' %>
 <%= render 'shared/kudos_display', work: @drawing %>
 <%= render 'shared/comment_form', commentable: @drawing %>

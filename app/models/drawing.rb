@@ -1,13 +1,11 @@
 class Drawing < ApplicationRecord
   include Concerns::Validatable
   include Concerns::Work
+  include Concerns::DrawingImage
 
   enum rating: { not_rated: 0, general_audiences: 1, teen_and_up_audiences: 2, mature: 3, explicit: 4 }
-  enum orientation: { screen: 0, column: 1 }
   enum authorship: { own: 0, scanlation: 1 }
 
-  mount_uploader :drawing, DrawingUploader
-  skip_callback :commit, :after, :remove_drawing!
   default_scope -> { order(created_at: :desc) }
 
   belongs_to :user
@@ -32,7 +30,6 @@ class Drawing < ApplicationRecord
   validate :has_fandoms
   validate :has_authors, if: :scanlation?
 
-  validates :drawing, presence: true
   validates :rating, presence: true
   validates :title, presence: true, length: { maximum: 255 }
   validates :caption, length: { maximum: 1250 }
