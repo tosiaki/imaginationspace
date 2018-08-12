@@ -36,7 +36,7 @@
 			<% end %>
 		</div>
 		<% if page.width > 1200 || page.height > 2000 %>
-			<div class="note">This page has been resized from the original size of <%= page.width %> by <%= page.height %>. To see the full page, click <%= link_to "here", page.drawing.url %>.</div>
+			<div class="note page-note">This page has been resized from the original size of <%= page.width %> by <%= page.height %>. To see the full page, click <%= link_to "here", page.drawing.url %>.</div>
 		<% end %>
 	<% end %>
 	<% if @comic.user == current_user %>
