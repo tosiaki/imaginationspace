@@ -9,8 +9,15 @@ RSpec.feature "Guest queries a tag", :type => :feature do
         visit works_search_path(tags: 'Tutorial')
       end
 
-      it 'displays the comic title' do
+      it 'displays the title' do
         expect(page.body).to include(comic.title)
+      end
+
+      it 'displays the tags' do
+        expect(page.body).to include(comic.fandom_list.first)
+        expect(page.body).to include(comic.character_list.first)
+        expect(page.body).to include(comic.relationship_list.first)
+        expect(page.body).to include(comic.tag_list.first)
       end
 
       it 'displays the summary information' do

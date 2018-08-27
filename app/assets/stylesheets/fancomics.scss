@@ -706,9 +706,6 @@ div.preface {
 					text-overflow: ellipsis;
 					white-space: nowarp;
 				}
-				li.title {
-					font-weight: 700;
-				}
 				li.author {
 					a:link {
 						color: inherit;
@@ -721,10 +718,22 @@ div.preface {
 		}
 	}
 }
-.summary-display {
+img.summary-display {
 	max-width: 200px;
 	max-height: 200px;
 	display: inline-block;
+}
+li.work-summary {
+	display: flex;
+	border: 1px solid #ddd;
+	padding: .429em .75em;
+	img {
+		margin-right: 1em;
+	}
+}
+
+a.title-link {
+	font-weight: 700;
 }
 
 /* Kudos */

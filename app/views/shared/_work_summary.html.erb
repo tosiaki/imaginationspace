@@ -1,0 +1,35 @@
+<li class="work-summary">
+	<%= link_to (image_tag thumbnail_image(work), class: evaluate_adult(work)), work %>
+	<ul class="summary-info">
+		<li><%= link_to work.title, work, class: "title-link" %> by <%= author_link work %></li>
+		<li>
+			<ul class="outer-tag-list">
+				<% work.fandom_list.each do |fandom| %>
+					<%= link_to fandom, works_search_path(tags: fandom) %>
+				<% end %>
+			</ul>
+		</li>
+		<% if work.character_list.any? || work.relationship_list.any? || work.fandom_list.any? %>
+			<li>
+				<ul class="outer-tag-list">
+					<% if work.relationship_list.any? %>
+						<% work.relationship_list.each do |relationship| %>
+							<%= link_to relationship, works_search_path(tags: relationship) %>
+						<% end %>
+					<% end %>
+					<% if work.character_list.any? %>
+						<% work.relationship_list.each do |character| %>
+							<%= link_to character, works_search_path(tags: character) %>
+						<% end %>
+					<% end %>
+					<% if work.tag_list.any? %>
+						<% work.tag_list.each do |tag| %>
+							<%= link_to tag, works_search_path(tags: tag) %>
+						<% end %>
+					<% end %>
+				</ul>
+			</li>
+		<% end %>
+		<li><%= work.description %></li>
+	</ul>
+</li>

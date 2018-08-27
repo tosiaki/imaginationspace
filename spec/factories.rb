@@ -39,8 +39,10 @@ FactoryBot.define do
     pages { 1 }
     before(:create) do |comic|
       comic.comic_pages << FactoryBot.build(:comic_page)
-      # comic_pages << FactoryBot.build(:page)
       comic.fandom_list.add('Tutorial')
+      comic.character_list.add('Nishikino Maki', 'Yazawa Nico')
+      comic.relationship_list.add('Nishikino Maki/Yazawa Nico')
+      comic.tag_list.add('Rough sketch')
     end
   end
 end
