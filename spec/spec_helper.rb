@@ -17,6 +17,7 @@
 # Load RSpec and Capybara
 require 'capybara/rspec'
 require 'capybara/dsl'
+require 'factory_bot'
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
@@ -52,6 +53,13 @@ RSpec.configure do |config|
   # Mixin the Capybara functionality into Rspec
   config.include Capybara::DSL
   config.order = 'default'
+
+  # Factorybot
+  config.include FactoryBot::Syntax::Methods
+
+  config.after :each do
+    Warden.test_reset!
+  end
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
