@@ -11,6 +11,16 @@ FactoryBot.define do
     show_adult { false }
   end
 
+  factory :second_user, class: User do
+  	name { 'SecondUser' }
+  	email { 'second@example.com' }
+  	password { 's3c0ndary' }
+  	confirmed_at { Time.now }
+  	title { 'SecondTitle' }
+  	bio { 'SecondBio' }
+  	show_adult { true }
+  end
+
   factory :comic_page do
     orientation { 'column' }
     width { 1100 }
