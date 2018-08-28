@@ -40,11 +40,17 @@ RSpec.feature "Guest queries a tag", :type => :feature do
           kudo = comic.kudos.build(attributes_for(:kudo))
           kudo.user_id = user_id
           kudo.save
+          comment = comic.comments.build(attributes_for(:comment))
+          comment.user_id = user_id
+          comment.work = comic
+          comment.save
           visit works_search_path(tags: 'Tutorial')
         end
 
-        it 'does display kudos' do
+        it 'does display stats' do
           expect(page.body).to include('Kudos')
+          expect(page.body).to include('Comments')
+          expect(page.body).to have_link(1, href: comic_path(comic, anchor: 'new_comment'))
         end
       end
     end

@@ -2,7 +2,7 @@
 	<li>Pages: <%= pages_display(work) %></li>
 <% end %>
 <% if work.comments.count > 0 %>
-	<li>Comments: <%= work.total_comments.count %></li>
+	<li>Comments: <%= link_to_unless action_name=='show', work.total_comments.count, polymorphic_path(work, anchor: 'new_comment') %></li>
 <% end %>
 <% if work.kudos.any? %>
 	<li>Kudos: <%= work.kudos.count %></li>

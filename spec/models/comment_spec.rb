@@ -1,5 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Comment, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  context 'when the comic exists' do
+    let!(:comic) { create(:comic) }
+
+    it 'can be created with content' do
+      pending 'This model redesign TBD'
+      comic.add_comment(content)
+    end
+  end
 end
