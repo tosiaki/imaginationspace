@@ -2,6 +2,7 @@ include ActionDispatch::TestProcess
 
 FactoryBot.define do
   factory :user do
+    id { 1 }
     name { 'TestUser' }
     email { 'test@example.com' }
     password { 'f4k3p455w0rd' }
@@ -12,6 +13,7 @@ FactoryBot.define do
   end
 
   factory :second_user, class: User do
+    id { 2 }
   	name { 'SecondUser' }
   	email { 'second@example.com' }
   	password { 's3c0ndary' }

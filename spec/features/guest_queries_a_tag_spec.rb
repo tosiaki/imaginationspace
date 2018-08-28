@@ -34,12 +34,11 @@ RSpec.feature "Guest queries a tag", :type => :feature do
       end
 
       context "with nonzero stats" do
+        given!(:second_user) { build(:second_user) }
         given(:user_id) { comic.user_id }
 
         background do
-          kudo = comic.kudos.build(attributes_for(:kudo))
-          kudo.user_id = user_id
-          kudo.save
+          comic.add_kudos(user: second_user)
           comment = comic.comments.build(attributes_for(:comment))
           comment.user_id = user_id
           comment.work = comic

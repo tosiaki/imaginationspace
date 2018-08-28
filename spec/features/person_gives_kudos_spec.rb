@@ -13,8 +13,10 @@ RSpec.feature "Person gives kudos", :type => :feature do
       click_on("Kudos")
       expect(page).to have_current_path(comic_path(comic))
       expect(page.body).to include("Kudos: 1")
+      expect(page.body).to include("Gave kudos")
       click_on("Kudos")
       expect(page.body).to include("Kudos: 1")
+      expect(page.body).to include("already left kudos")
     end
   end
 
@@ -30,8 +32,10 @@ RSpec.feature "Person gives kudos", :type => :feature do
       click_on("Kudos")
       expect(page).to have_current_path(comic_path(comic))
       expect(page.body).to include("Kudos: 1")
+      expect(page.body).to include("Gave kudos")
       click_on("Kudos")
       expect(page.body).to include("Kudos: 1")
+      expect(page.body).to include("already left kudos")
     end
   end
 
