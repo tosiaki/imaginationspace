@@ -1,5 +1,5 @@
 <li class="work-summary">
-	<%= link_to (image_tag thumbnail_image(work), class: evaluate_adult(work)), work %>
+	<%= link_to (image_tag thumbnail_image(work), class: evaluate_adult(work)), work, class: "image-link" %>
 	<p class="datetime"><%= outer_date_display(work) %></p>
 	<ul class="summary-info">
 		<li><%= link_to work.title, work, class: "title-link" %>

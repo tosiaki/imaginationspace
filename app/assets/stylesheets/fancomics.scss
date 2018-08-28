@@ -79,6 +79,7 @@ label {
 a, a:link, {
 	text-decoration: none;
 	color: #900;
+	border-bottom: 1px solid;
 }
 a, a:link, a:visited:hover {
 	text-decoration: none;
@@ -91,6 +92,9 @@ a:visited {
 	color: #666;
 	text-decoration: none;
 	border-bottom: 1px dashed;
+}
+a.image-link {
+	border: none;
 }
 .landmark {
 	font-size: 0;
@@ -184,6 +188,9 @@ div.alert-success {
 	overflow: hidden;
 	border-width: 0 0 1px;
 	font-size: .875em;
+	a {
+		border: none;
+	}
 }
 .header-container {
 	display: flex;
@@ -593,6 +600,9 @@ div.preface {
 	}
 	h3.byline {
 		text-align: center;
+		a {
+			border: none;
+		}
 	}
 	h3.heading {
 		border-bottom: 1px solid;

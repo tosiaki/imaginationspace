@@ -28,7 +28,7 @@
 			<% else %>
 				<%= link_to "", comic_path(@comic, anchor: "page-#{page.page-1}"), class: "arrow arrow-left" %>
 			<% end %>
-			<%= link_to image_tag(page.drawing.url(:show_page), class: image_class(page.orientation)), (page.page == @comic.comic_pages.count ? "#new_comment" : comic_path(@comic, anchor: "page-#{page.page+1}")) %>
+			<%= link_to image_tag(page.drawing.url(:show_page), class: image_class(page.orientation)), (page.page == @comic.comic_pages.count ? "#new_comment" : comic_path(@comic, anchor: "page-#{page.page+1}")), class: "image-link" %>
 			<% if page.page == @comic.comic_pages.count %>
 				<a class="arrow non-arrow-right"></a>
 			<% else %>

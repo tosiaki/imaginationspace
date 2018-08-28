@@ -1,6 +1,6 @@
 <li>
 	<figure class="work_thumbnail">
-		<p><%= link_to (image_tag thumbnail_image(work), class: evaluate_adult(work)), work %></p>
+		<p><%= link_to (image_tag thumbnail_image(work), class: evaluate_adult(work)), work, class: "image-link" %></p>
 		<figcaption>
 			<ul>
 				<li class="title"><%= link_to work.title, work, class: "title-link" %></li>
