@@ -3,7 +3,7 @@
 		<li><%= link_to "Post or view comments", "#new_comment" %></li>
 		<% if controller_name == 'comics' %>
 			<li>
-				<%= link_to "Add page(s)", new_comic_page_path(@work.id) if @work.user == current_user %>
+				<%= link_to "Add page(s)", new_comic_page_path(@work) if @work.user == current_user %>
 			</li>
 		<% end %>
 		<li>
