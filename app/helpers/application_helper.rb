@@ -11,6 +11,19 @@ module ApplicationHelper
     @work.send("#{context}_list").collect { |tag| link_to tag, send("#{controller_name}_by_tags_path", tag), class: "tag" }.join(", ").html_safe
   end
 
+  def summary_display_links(work)
+    all_tags = work.relationship_list.collect do |relationship|
+      link_to relationship, works_search_path(tags: relationship), class: "summary-relationship tag"
+    end
+    all_tags += work.character_list.collect do |character|
+      link_to character, works_search_path(tags: character), class: "tag"
+    end
+    all_tags += work.tag_list.collect do |tag|
+      link_to tag, works_search_path(tags: tag), class: "tag"
+    end
+    all_tags.join(", ").html_safe
+  end
+
   def display_time_string
     @time_string ||= "%Y-%m-%d"
   end

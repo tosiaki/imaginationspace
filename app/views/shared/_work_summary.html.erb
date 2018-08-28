@@ -11,26 +11,10 @@
 			by <%= author_link work %></li>
 		<% if work.character_list.any? || work.relationship_list.any? || work.fandom_list.any? %>
 			<li>
-				<ul class="outer-tag-list">
-					<% if work.relationship_list.any? %>
-						<% work.relationship_list.each do |relationship| %>
-							<%= link_to relationship, works_search_path(tags: relationship), class: "summary-relationship tag" %>
-						<% end %>
-					<% end %>
-					<% if work.character_list.any? %>
-						<% work.character_list.each do |character| %>
-							<%= link_to character, works_search_path(tags: character), class: "tag" %>
-						<% end %>
-					<% end %>
-					<% if work.tag_list.any? %>
-						<% work.tag_list.each do |tag| %>
-							<%= link_to tag, works_search_path(tags: tag), class: "tag" %>
-						<% end %>
-					<% end %>
-				</ul>
+				<%= summary_display_links(work) %>
 			</li>
 		<% end %>
-		<li><%= work.description %></li>
+		<li><%= simple_format sanitize work.description, tags: %w(strong em a), attributes: %w(href) %></li>
 	</ul>
 	<div class="landmark"></div>
 	<div class="stats-container">
