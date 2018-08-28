@@ -1,15 +1,6 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
-  factory :kudo do
-    
-  end
-  factory :comment do
-    
-  end
-  factory :bookmark do
-    
-  end
   factory :user do
     name { 'TestUser' }
     email { 'test@example.com' }
@@ -40,9 +31,19 @@ FactoryBot.define do
     before(:create) do |comic|
       comic.comic_pages << FactoryBot.build(:comic_page)
       comic.fandom_list.add('Tutorial')
-      comic.character_list.add('Nishikino Maki', 'Yazawa Nico')
+      comic.character_list.add('A Different Character')
       comic.relationship_list.add('Nishikino Maki/Yazawa Nico')
       comic.tag_list.add('Rough sketch')
     end
+  end
+
+  factory :kudo do
+  end
+
+  factory :comment do
+  	content { "This is a comment" }
+  end
+
+  factory :bookmark do
   end
 end

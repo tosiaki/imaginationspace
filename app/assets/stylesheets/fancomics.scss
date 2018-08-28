@@ -575,24 +575,6 @@ div.info-wrapper {
 			width: 72.5%;
 			float: left;
 			margin: 0 0 .643em;
-			a {
-				color: #111;
-				line-height: 1.5;
-				text-decoration: none;
-				padding: 0;
-				border-bottom: 1px dotted;
-			}
-			a:visited {
-				color: #666;
-				text-decoration: none;
-				border-bottom: 1px dashed;
-			}
-			ul li {
-				float: left;
-				margin: 0 .375em auto 0;
-				white-space: nowrap;
-				padding-right: .5em;
-			}
 		}
 	}
 }
@@ -718,22 +700,55 @@ div.preface {
 		}
 	}
 }
+li.work-summary {
+	border: 1px solid #ddd;
+	padding: .429em .75em;
+	overflow: auto;
+	img {
+		margin-right: 1em;
+		float: left;
+	}
+}
 img.summary-display {
 	max-width: 200px;
 	max-height: 200px;
-	display: inline-block;
 }
-li.work-summary {
-	display: flex;
-	border: 1px solid #ddd;
-	padding: .429em .75em;
-	img {
-		margin-right: 1em;
-	}
+p.datetime {
+	float: right;
+	font-family: monospace;
 }
-
+ul.outer-fandom-list {
+	display: inline;
+}
+a.summary-relationship {
+	background: #eee;
+}
 a.title-link {
 	font-weight: 700;
+}
+a.tag {
+	color: #111;
+	line-height: 1.5;
+	text-decoration: none;
+	padding: 0;
+	border-bottom: 1px dotted;
+}
+a.tag:hover {
+	background: #900;
+	color: #fff;
+}
+ul.stats li {
+	float: left;
+	margin: 0 .375em auto 0;
+	white-space: nowrap;
+	padding-right: .5em;
+}
+.stats-container {
+	float: right;
+	margin-top: auto;
+	ul.stats {
+		vertical-align: bottom;
+	}
 }
 
 /* Kudos */

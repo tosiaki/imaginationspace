@@ -1,0 +1,15 @@
+<% if work.class::HAS_PAGES %>
+	<li>Pages: <%= pages_display(work) %></li>
+<% end %>
+<% if work.comments.count > 0 %>
+	<li>Comments: <%= work.total_comments.count %></li>
+<% end %>
+<% if work.kudos.any? %>
+	<li>Kudos: <%= work.kudos.count %></li>
+<% end %>
+<% if work.bookmarks.any? %>
+	<li>Bookmarks: <%= work.bookmarks.count %></li>
+<% end %>
+<% if work.impressionist_count > 0 %>
+	<li>Hits: <%= work.impressionist_count filter: :session_hash %></li>
+<% end %>

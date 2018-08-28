@@ -8,19 +8,23 @@ module ApplicationHelper
   end
 
   def tag_links(context)
-    @work.send("#{context}_list").collect { |tag| link_to tag, send("#{controller_name}_by_tags_path", tag) }.join(", ").html_safe
+    @work.send("#{context}_list").collect { |tag| link_to tag, send("#{controller_name}_by_tags_path", tag), class: "tag" }.join(", ").html_safe
   end
 
   def display_time_string
     @time_string ||= "%Y-%m-%d"
   end
 
-  def published_display
-    @work.created_at.strftime(display_time_string)
+  def published_display(work)
+    work.created_at.strftime(display_time_string)
   end
 
-  def updated_display
-    @work.page_addition.strftime(display_time_string)
+  def updated_display(work)
+    work.page_addition.strftime(display_time_string)
+  end
+
+  def outer_date_display(work)
+    work.page_addition.strftime("%d %b %Y")
   end
 
   def updated_or_completed
@@ -31,8 +35,8 @@ module ApplicationHelper
     end
   end
 
-  def pages_display
-    "#{@comic.comic_pages.count}/#{@comic.pages > 0 ? @comic.pages : '?'}"
+  def pages_display(comic)
+    "#{comic.comic_pages.count}/#{comic.pages > 0 ? comic.pages : '?'}"
   end
 
   def kudos_display(work)
