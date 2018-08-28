@@ -3,9 +3,17 @@ module Concerns::Work
 
   def add_kudos(user: nil, ip_address: nil)
     if user
-      kudos.create(user: user) unless kudos_giver_users.include?(user)
+      if kudos_giver_users.include?(user)
+        :already_gave_kudos
+      else
+        kudos.build(user: user).save
+      end
     elsif ip_address
-      kudos.create(ip_address: ip_address) unless guest_gave_kudos?(ip_address)
+      if guest_gave_kudos?(ip_address)
+        :already_gave_kudos
+      else
+        kudos.build(ip_address: ip_address).save
+      end
     end
   end
 

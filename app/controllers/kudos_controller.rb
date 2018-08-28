@@ -4,27 +4,20 @@ class KudosController < ApplicationController
   def create
     @kudo = @work.kudos.build
 
-    if user_signed_in?
-      if @work.kudos_giver_users.include?(current_user)
-        already_gave_kudos
-      else
-        @kudo.user_id = current_user.id
-      end
+    result = if user_signed_in?
+      @work.add_kudos(user: current_user) unless @work.user==current_user
     else
-      if @work.guest_gave_kudos?(request.remote_ip)
-        already_gave_kudos
-      else
-        @kudo.ip_address = request.remote_ip
-      end
+      @work.add_kudos(ip_address: request.remote_ip)
     end
 
-    unless @already_gave_kudos
-      if @kudo.save
-        flash[:success] = "Gave kudos!"
-      else
-        flash[:errors] = @kudo.errors.full_messages
-      end
+    if result == :already_gave_kudos
+      flash[:errors] = "You have already left kudos here. :)"
+    elsif result
+      flash[:success] = "Gave kudos!"
+    else
+      flash[:errors] = @kudo.errors.full_messages
     end
+
     redirect_back fallback_location: @work
   end
 
