@@ -1,5 +1,5 @@
-$(document).ready(function(){
-	$(".arrow, .image-next").click(function(e){
+$(document).on('ready turbolinks:load', function(){
+	$(".page-navigator").click(function(e){
 		if($(this).attr('href') != "#new_comment") {
 			page_url = $(this).attr('href');
 			e.preventDefault();

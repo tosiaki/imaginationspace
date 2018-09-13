@@ -650,14 +650,10 @@ div.preface {
 .image-next {
 	cursor: url(asset-path('cursors/if_forward_126569.svg')), default;
 }
-.arrow {
+a.arrow {
 	flex-grow: 1;
-	border-top: 15px solid transparent;
-	border-bottom: 15px solid transparent;
 	display: block;
-	a, a:link, a:visited {
-		border-bottom: none;
-	}
+	border: none;
 }
 .arrow-right {;
 	cursor: url(asset-path('cursors/if_forward_126569.svg')), default;

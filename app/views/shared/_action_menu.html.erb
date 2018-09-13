@@ -3,9 +3,9 @@
 		<li><%= link_to "Post or view comments", "#new_comment" %></li>
 		<% if controller_name == "comics" %>
 			<% if action_name == "all" %>
-				<li><%= link_to "Show all pages", show_all_comic_path(@work) %></li>
-			<% else %>
 				<li><%= link_to "Show only one page", @work %></li>
+			<% else %>
+				<li><%= link_to "Show all pages", show_all_comic_path(@work) %></li>
 			<% end %>
 		<% end %>
 		<% if controller_name == 'comics' %>
