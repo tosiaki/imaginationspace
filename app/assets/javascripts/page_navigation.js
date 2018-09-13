@@ -48,4 +48,13 @@ $(document).on('ready turbolinks:load', function(){
 			});
 		}
 	});
+
+	$("body").keydown(function(e) {
+		if(e.keyCode == 37) {
+			$('#previous-page-link').click();
+		}
+		else if(e.keyCode == 39) {
+			$('#next-page-link').click();
+		}
+	})
 });
