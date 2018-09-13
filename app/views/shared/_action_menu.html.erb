@@ -1,6 +1,13 @@
 <div class="action-menu">
 	<ul class="actions">
 		<li><%= link_to "Post or view comments", "#new_comment" %></li>
+		<% if controller_name == "comics" %>
+			<% if action_name == "all" %>
+				<li><%= link_to "Show all pages", show_all_comic_path(@work) %></li>
+			<% else %>
+				<li><%= link_to "Show only one page", @work %></li>
+			<% end %>
+		<% end %>
 		<% if controller_name == 'comics' %>
 			<li>
 				<%= link_to "Add page(s)", new_comic_page_path(@work) if @work.user == current_user %>

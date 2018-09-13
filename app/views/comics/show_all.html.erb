@@ -5,8 +5,9 @@
 <div class="comic-display">
 	<% @comic.comic_pages.each do |page| %>
 		<h3 class="landmark page-landmark">Page Management</h3>
-		<% if @comic.user == current_user %>
-			<ul class="actions page-actions">
+		<ul class="actions page-actions">
+			<% if @comic.user == current_user %>
+				<li><%= link_to "Show only this page", show_page_comic_path(@comic, page: page.page) %></li>
 				<li><%= link_to "Add page(s) here", new_comic_page_at_path(@comic,page.page) %></li>
 				<li><%= link_to "Replace page(s) below", edit_page_comic_path(@comic,page.page) %></li>
 				<% if @comic.comic_pages.count > 1 %>
@@ -17,8 +18,8 @@
 				<% else %>
 					<li><%= link_to "Fit to column", change_page_orientation_comic_path(page: page.page, orientation: 'column'), method: :patch %></li>
 				<% end %>
-			</ul>
-		<% end %>
+			<% end %>
+		</ul>
 		<div class="preface page-preface" id="page-<%= page.page %>">
 			<h3 class="page-indicator" %>Page <%= page.page %>/<%= @comic.pages > 0 ? @comic.pages : '?' %></h3>
 		</div>
