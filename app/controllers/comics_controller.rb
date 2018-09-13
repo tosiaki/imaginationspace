@@ -38,6 +38,35 @@ class ComicsController < ApplicationController
 
   def show
     show_work(Comic)
+    page_number = params[:page] || 1
+    @page = @comic.comic_pages.find_by(page: page_number)
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: {
+          page_number: @page.page,
+          drawing_url: @page.drawing.show_page.url,
+          full_url: @page.drawing.url,
+          orientation: @page.orientation,
+          big_page: @page.big_page?,
+          dimensions: {
+            width: @page.width,
+            height: @page.height
+          },
+          previous_url: (show_page_comic_path(@comic, page: @page.page-1) if @page.page > 1 ),
+          next_url: (show_page_comic_path(@comic, page: @page.page+1) if @page.page < @comic.comic_pages.count),
+          comic_pages: @comic.comic_pages.count,
+          add_page_url: new_comic_page_at_path(@comic,@page.page),
+          replace_page_url: edit_page_comic_path(@comic,@page.page),
+          delete_page_url: delete_comic_page_path(@comic,@page.page)
+        }.reject{|key, value| value.nil?}.to_json
+      end
+    end
+  end
+
+  def show_all
+    show_work(Comic)
   end
 
   def index

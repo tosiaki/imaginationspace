@@ -6,7 +6,7 @@ RSpec.describe Comment, type: :model do
 
     it 'can be created with content' do
       pending 'This model redesign TBD'
-      comic.add_comment(content)
+      comic.add_comment(attributes_for(:comment))
     end
   end
 end

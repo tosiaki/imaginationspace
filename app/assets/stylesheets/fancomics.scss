@@ -631,41 +631,51 @@ div.preface {
 	text-align: center;
 }
 .page-display {
-	align-items: center;
 	justify-content: center;
 	display: flex;
 }
-.normal-display {
+.image-link {
 	max-width: 95%;
+	img {
+		max-width: 100%;
+	}
+}
+.normal-display {
 	display: block;
 	margin: 0 5px;
 }
 .fit-to-screen {
 	max-height: 95vh;
 }
+.image-next {
+	cursor: url(asset-path('cursors/if_forward_126569.svg')), default;
+}
 .arrow {
-	width: 0; 
-	height: 0; 
+	flex-grow: 1;
 	border-top: 15px solid transparent;
 	border-bottom: 15px solid transparent;
 	display: block;
+	a, a:link, a:visited {
+		border-bottom: none;
+	}
 }
-.arrow-right {
-	border-left: 15px solid #000;
+.arrow-right {;
+	cursor: url(asset-path('cursors/if_forward_126569.svg')), default;
 }
 .non-arrow-right {
-	border-left: 15px solid transparent;
 }
 
 
 .arrow-left {
-	border-right: 15px solid #000; 
+	cursor: url(asset-path('cursors/if_back_126585.svg')), default;
 }
 .non-arrow-left {
-	border-right: 15px solid transparent; 
 }
 .page-note {
 	text-align: center;
+}
+.inapplicable {
+	display: none;
 }
 
 

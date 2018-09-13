@@ -10,4 +10,8 @@ module Concerns::DrawingImage
     validates :width, presence: true, numericality: { only_integer: true }
     validates :height, presence: true, numericality: { only_integer: true }
   end
+
+  def big_page?
+    width > 1200 || height > 2000
+  end
 end

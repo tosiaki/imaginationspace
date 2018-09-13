@@ -31,6 +31,14 @@ FactoryBot.define do
     drawing { fixture_file_upload("spec/files/samplefile.jpg", "image/jpeg") }
   end
 
+  factory :comic_page2, class: ComicPage do
+    orientation { 'column' }
+    width { 1100 }
+    height { 1100 }
+    page { 2 }
+    drawing { fixture_file_upload("spec/files/samplefile2.jpg", "image/jpeg") }
+  end
+
   factory :comic do
     user
     title { 'ComicTitle' }
@@ -42,6 +50,7 @@ FactoryBot.define do
     pages { 1 }
     before(:create) do |comic|
       comic.comic_pages << FactoryBot.build(:comic_page)
+      comic.comic_pages << FactoryBot.build(:comic_page2)
       comic.fandom_list.add('Tutorial')
       comic.character_list.add('A Different Character')
       comic.relationship_list.add('Nishikino Maki/Yazawa Nico')

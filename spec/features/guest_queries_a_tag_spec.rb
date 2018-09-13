@@ -44,12 +44,15 @@ RSpec.feature "Guest queries a tag", :type => :feature do
           comment.work = comic
           comment.save
           visit works_search_path(tags: 'Tutorial')
+          click_link "ComicTitle"
+          visit works_search_path(tags: 'Tutorial')
         end
 
         it 'does display stats' do
           expect(page.body).to include('Kudos')
           expect(page.body).to include('Comments')
           expect(page.body).to have_link(1, href: comic_path(comic, anchor: 'new_comment'))
+          expect(page.body).to include('Hits')
         end
       end
     end
