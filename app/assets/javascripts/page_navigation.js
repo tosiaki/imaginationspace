@@ -40,7 +40,7 @@ function load_comic_page_from_url(page_url) {
 	$.ajax({
 		type: "GET",
 		dataType: "json",
-		url: page_url,
+		url: page_url+".json",
 		success: function(data, status){
 			load_comic_page(data);
 		}
