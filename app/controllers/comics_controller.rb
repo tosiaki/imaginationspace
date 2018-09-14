@@ -45,6 +45,7 @@ class ComicsController < ApplicationController
       format.html
       format.json do
         render json: {
+          comic: @comic.id,
           page_number: @page.page,
           drawing_url: @page.drawing.show_page.url,
           full_url: @page.drawing.url,

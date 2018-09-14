@@ -2,6 +2,7 @@
 <%= render 'shared/itemprop' %>
 <%= render 'shared/flash_messages' %>
 <%= render 'shared/work_headings' %>
+<div class="landmark" id="comic-identifier"><%= @comic.id %></div>
 <div class="comic-display">
 	<h3 class="landmark page-landmark">Page Management</h3>
 	<% if @comic.user == current_user %>

@@ -47,16 +47,33 @@ function load_comic_page_from_url(page_url) {
 	});
 }
 
-$(document).on('ready turbolinks:load', function(){
+function load_next_page(page_url) {
+	current_comic = history.state.comic;
+	history.pushState({ url: page_url, comic: current_comic }, null, page_url);
+	load_comic_page_from_url(page_url);
+}
+
+$(document).on('turbolinks:load', function(){
 	$(".page-navigator").click(function(e){
+		page_url = $(this).attr('href');
+
 		if($(this).attr('href') != "#new_comment") {
 			e.preventDefault();
 			if(typeof history.state.url === 'undefined') {
-				history.replaceState({ url: window.location.pathname }, null, window.location.pathname);
+				current_path = window.location.pathname;
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: current_path,
+					success: function(data, status){
+						history.replaceState({ url: current_path, comic: data.comic }, null, current_path);
+						load_next_page(page_url);
+					}
+				});
 			}
-			page_url = $(this).attr('href');
-			history.pushState({ url: page_url }, null, page_url);
-			load_comic_page_from_url(page_url);
+			else {
+				load_next_page(page_url);
+			}
 		}
 	});
 
@@ -68,10 +85,15 @@ $(document).on('ready turbolinks:load', function(){
 			$('#next-page-link').click();
 		}
 	});
+});
 
-	$(window).on("popstate", function(e) {
-		if(typeof e.originalEvent.state.url !== 'undefined') {
-			load_comic_page_from_url(e.originalEvent.state.url);
-		}
-	})
+
+$(window).on("popstate", function(e) {
+	comic_identifier = Number($('#comic-identifier').text());
+	if(typeof e.originalEvent.state.url !== 'undefined' && e.originalEvent.state.comic == comic_identifier ) {
+		load_comic_page_from_url(e.originalEvent.state.url);
+	}
+	else {
+		location.reload();
+	}
 });
