@@ -1,17 +1,20 @@
 <% content_for :itemprop do %>
 	<link rel="icon" href="<%= @work.image %>">
-	<meta itemprop="image" content="<%= @work.image.url(:thumb) %>">
+	<meta itemprop="image" content="<%= @work.image.url(:show_page) %>">
 	<meta itemprop="name" content="<%= @work.title %>">
 	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@fancomics5"
 	<meta name="twitter:title" content="<%= @work.title %>">
-	<meta name="twitter:image" content="<%= @work.image.url(:thumb) %>">
-	<% unless @work.note.empty? %>
+	<% if @work.note.empty? %>
+		<meta name="twitter:description" content="<%= @work.title %> by <%= @work.author %>">
+	<% else %>
 		<meta name="twitter:description" content="<%= @work.note %>">
 	<% end %>
+	<meta name="twitter:image" content="<%= @work.image.url(:show_page) %>">
 	<meta property="og:type" content="article">
 	<meta property="og:title" content="<%= @work.title %>">
-	<meta property="og:image" content="<%= @work.image.url(:thumb) %>">
+	<meta property="og:image" content="<%= @work.image.url(:show_page) %>">
 	<meta property="og:image:width" content="600">
 	<meta property="og:image:height" content="315">
-	<link rel="image_src" href="<%= @work.image.url(:thumb) %>">
+	<link rel="image_src" href="<%= @work.image.url(:show_page) %>">
 <% end %>
