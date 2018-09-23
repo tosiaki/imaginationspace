@@ -1,6 +1,10 @@
 module Concerns::Work
   extend ActiveSupport::Concern
 
+  included do
+    after_save :announce_to_users
+  end
+
   def add_kudos(user: nil, ip_address: nil)
     if user
       if kudos_giver_users.include?(user)
@@ -23,6 +27,12 @@ module Concerns::Work
 
   def guest_kudos
     kudos.where(user: nil).count
+  end
+
+  def announce_to_users
+    User.where(site_updates: true).each do |user|
+      SubscriptionMailer.notification(work: self, user: user).deliver_now
+    end
   end
 
 end

@@ -49,6 +49,13 @@
             <div class="form-input">
               <%= f.password_field :password_confirmation, autocomplete: "off" %>
             </div>
+
+            <div class="form-label">
+              <%= f.label :site_updates, "Send email notifications on new submissions" %>
+            </div>
+            <div class="form-input">
+              <%= f.check_box :site_updates %>
+            </div>
           </div>
         </li>
 

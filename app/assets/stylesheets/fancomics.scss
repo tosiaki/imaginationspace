@@ -330,6 +330,11 @@ div.module h3.heading {
 	font-weight: 400;
 	margin-top: 0.5375em;
 }
+.front-fandom-list li {
+	display: inline-block;
+	margin: 0;
+	margin-right: 2em;
+}
 .front-fandom-list a {
 	color: #111;
 	line-height: 1.5;
@@ -339,7 +344,7 @@ div.module h3.heading {
 }
 .front-fandom-list a:visited {
 	color: #666;
-	text-deoration: none;
+	text-decoration: none;
 	border-bottom: dashed;
 }
 .front-fandom-list a:hover {

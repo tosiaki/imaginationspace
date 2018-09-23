@@ -24,7 +24,7 @@ class ComicPagesController < ApplicationController
       end
     end
     if page_added
-      redirect_to comic_path(@comic, page: page_number-1)
+      redirect_to show_page_comic_path(@comic, page: page_number-1)
     else
       @comic_page = @comic.comic_pages.build
       @current_page = params[:comic_page][:page_number]
@@ -46,7 +46,7 @@ class ComicPagesController < ApplicationController
       end
       page_number += 1
     end
-    redirect_to comic_path(@comic, page: page_number-1)
+    redirect_to show_page_comic_path(@comic, page: page_number-1)
   end
 
   def change_orientation
@@ -54,7 +54,7 @@ class ComicPagesController < ApplicationController
     if @comic_page.update_attribute(:orientation, params[:orientation])
       flash[:success] = "Changed page orientation"
     end
-    redirect_to comic_path(@comic, page: @comic_page.page)
+    redirect_to show_page_comic_path(@comic, page: @comic_page.page)
   end
 
   def destroy
@@ -63,7 +63,7 @@ class ComicPagesController < ApplicationController
     @comic.comic_pages.each do |page|
       page.decrement!(:page) if page.page > params[:page].to_i
     end
-    redirect_to comic_path(@comic, page: [params[:page].to_i, @comic.comic_pages.map(&:page).max].min)
+    redirect_to show_page_comic_path(@comic, page: [params[:page].to_i, @comic.comic_pages.map(&:page).max].min)
   end
 
   private

@@ -145,7 +145,7 @@ class UsersController < ApplicationController
     end
 
     def preferences_params
-      params.require(:user).permit(:show_adult)
+      params.require(:user).permit(:show_adult,:site_updates)
     end
 
     def change_icon_params

@@ -17,6 +17,8 @@ gem 'bootstrap-sass',          '~> 3.3.7'
 gem 'devise'
 gem 'acts-as-taggable-on', '~> 5.0'
 gem 'impressionist'
+gem 'webpush'
+gem 'serviceworker-rails'
 
 group :development, :test do
   gem 'sqlite3', '~> 1.3.13'

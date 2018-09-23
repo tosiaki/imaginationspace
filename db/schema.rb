@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_12_145436) do
+ActiveRecord::Schema.define(version: 2018_09_23_142533) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
@@ -168,6 +168,7 @@ ActiveRecord::Schema.define(version: 2018_08_12_145436) do
     t.string "icon_alt"
     t.string "icon_comment"
     t.boolean "show_adult", default: false
+    t.boolean "site_updates", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

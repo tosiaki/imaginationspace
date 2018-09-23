@@ -18,6 +18,11 @@
 						</div>
 					</li>
 	        		<li class="form-element">
+						<div class="field">
+	            			<%= f.check_box :site_updates %><%= f.label :site_updates, "Send email notifications when something new is posted on this website." %>
+						</div>
+					</li>
+	        		<li class="form-element">
 						<div class="actions">
 				    		<%= f.submit "Update" %>
 				    	</div>
