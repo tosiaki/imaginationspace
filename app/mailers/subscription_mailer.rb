@@ -16,7 +16,7 @@ class SubscriptionMailer < ApplicationMailer
   #
   #   en.subscription_mailer.notification.subject
   #
-  def notification(work: work, user: user)
+  def notification(work:, user:)
     @work = work
     @user = user
     mail to: user.email, subject: "New work posted on fancomics.org: #{work.title} by #{work.author}"
