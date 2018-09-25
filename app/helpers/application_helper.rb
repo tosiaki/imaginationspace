@@ -146,4 +146,12 @@ module ApplicationHelper
       link_to work.user.name, work.user
     end
   end
+
+  def work_description(work)
+    if work.note.empty?
+      "#{@work.title} by #{@work.author}"
+    else
+      @work.note
+    end
+  end
 end
