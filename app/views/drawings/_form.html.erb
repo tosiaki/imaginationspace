@@ -36,13 +36,6 @@
               <%= f.text_area :caption %>
               <%= render 'shared/character_counter', max_length: Drawing.validators_on(:caption)[0].options[:maximum], counter_id: "caption_counter", input_field: "textarea#drawing_caption" %>
             </div>
-            <div class="form-label">
-              <%= f.label :orientation %>
-            </div>
-            <div class="form-input">
-              <%= f.radio_button :orientation, "screen" %><%= f.label :orientation_screen, "Fit to screen" %>
-              <%= f.radio_button :orientation, "column" %><%= f.label :orientation_column, "Fit to column" %>
-            </div>
             <div class="form-label required">
               <%= f.label :fandoms, "Fandoms*" %>
             </div>

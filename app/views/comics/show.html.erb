@@ -12,20 +12,15 @@
 			<% if @comic.comic_pages.count > 1 %>
 				<li><%= link_to "Delete this page", delete_comic_page_path(@comic,@page.page), method: :delete, id: "delete-page-link" %></li>
 			<% end %>
-			<% if @page.orientation == 'column' %>
-				<li><%= link_to "Fit to screen", change_page_orientation_comic_path(page: @page.page, orientation: 'screen'), method: :patch %></li>
-			<% else %>
-				<li><%= link_to "Fit to column", change_page_orientation_comic_path(page: @page.page, orientation: 'column'), method: :patch %></li>
-			<% end %>
 		</ul>
 	<% end %>
 	<div class="preface page-preface" id="page-<%= @page.page %>">
 		<h3 class="page-indicator" %>Page <span id="current-page-display"><%= @page.page %></span>/<%= @comic.pages > 0 ? @comic.pages : '?' %></h3>
 	</div>
 	<div class="page-display">
-		<%= link_to "", (@page.page > 1 ? show_page_comic_path(@comic, page: @page.page-1) : ""), class: "arrow " + (@page.page == 1 ? "non-" : "") + "arrow-left page-navigator", id: "previous-page-link" %>
-		<%= link_to image_tag(@page.drawing.url(:show_page), class: image_class(@page.orientation), id: "image-view"), (@page.page == @comic.comic_pages.count ? "#new_comment" : show_page_comic_path(@comic, page: @page.page+1)), class: (@page.page == @comic.comic_pages.count ? "non-" : "") + "image-next image-link page-navigator", id: "image-link" %>
-		<%= link_to "", (@page.page < @comic.comic_pages.count ? show_page_comic_path(@comic, page: @page.page+1) : ""), class: "arrow " + (@page.page == @comic.comic_pages.count ? "non-" : "") + "arrow-right page-navigator", id: "next-page-link" %>
+		<%= link_to "", (@page.page > 1 ? show_page_comic_path(@comic, page: @page.page-1, size: params[:size]) : ""), class: "arrow " + (@page.page == 1 ? "non-" : "") + "arrow-left page-navigator", id: "previous-page-link" %>
+		<%= link_to image_tag(@page.drawing.url(:show_page), class: display_size_class, id: "image-view"), (@page.page == @comic.comic_pages.count ? "#new_comment" : show_page_comic_path(@comic, page: @page.page+1, size: params[:size])), class: (@page.page == @comic.comic_pages.count ? "non-" : "") + "image-next image-link page-navigator", id: "image-link" %>
+		<%= link_to "", (@page.page < @comic.comic_pages.count ? show_page_comic_path(@comic, page: @page.page+1, size: params[:size]) : ""), class: "arrow " + (@page.page == @comic.comic_pages.count ? "non-" : "") + "arrow-right page-navigator", id: "next-page-link" %>
 	</div>
 	<div class="note page-note <%= "inapplicable" unless @page.big_page? %>" id="big-page-note">This page has been resized from the original size of <span id="width-indicator"><%= @page.width %></span> by <span id="height-indicator"><%= @page.height %></span>. To see the full page, click <%= link_to "here", @page.drawing.url, id: "full-picture-link" %>.</div>
 	<% if @comic.user == current_user %>

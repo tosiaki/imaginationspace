@@ -9,6 +9,7 @@ class Comic < ApplicationRecord
   belongs_to :user
   validates :user_id, presence: true
   has_many :comic_pages, inverse_of: :comic, dependent: :destroy
+  accepts_nested_attributes_for :comic_pages
 
   acts_as_taggable
   acts_as_taggable_on :fandoms, :characters, :relationships, :authors
@@ -39,21 +40,25 @@ class Comic < ApplicationRecord
 
   HAS_PAGES = true
 
-  def replace_page(drawing:, orientation: :screen, page_number: next_page)
+  def replace_page(drawing:, page_number: next_page)
     page = comic_pages.find_by( page: page_number )
     if page
-      page.update_attributes(drawing: drawing, orientation: orientation)
+      page.update_attributes(drawing: drawing)
     else
-      add_page(drawing: drawing, orientation: orientation, page_number: page_number)
+      add_page(drawing: drawing, page_number: page_number)
     end
   end
 
-  def add_page(drawing:, orientation: :screen, page_number: next_page)
-    new_page = comic_pages.build(page: page_number, drawing: drawing, orientation: orientation)
-    if(result = new_page.save)
-      change_update_time
+  def add_page(drawing:, page_number: next_page, save: true)
+    new_page = comic_pages.build(page: page_number, drawing: drawing)
+    if save
+      if (result = new_page.save)
+        change_update_time
+      end
+      return result
+    else
+      return new_page.valid?
     end
-    return result
   end
 
   def make_room_at_page(page_number)
@@ -78,9 +83,13 @@ class Comic < ApplicationRecord
       update_attribute(:max_pages, current_max_page)
       update_attribute(:page_addition, Time.now)
     end
-    if pages != 0 && pages < current_max_page
+    if pages_exceeded
       update_attribute(:pages, current_max_page)
     end
+  end
+
+  def pages_exceeded
+    pages != 0 && pages < current_max_page
   end
 
   def check_pages

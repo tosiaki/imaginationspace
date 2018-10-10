@@ -29,6 +29,8 @@ group :development, :test do
   gem 'database_cleaner', '~> 1.7.0'
   gem 'cucumber-rails', '~> 1.6.0', require: false
   gem 'factory_bot_rails', "~> 4.0"
+  gem 'selenium-webdriver'
+  gem 'geckodriver-helper'
 end
 
 group :development do

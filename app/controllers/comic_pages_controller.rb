@@ -1,6 +1,6 @@
 class ComicPagesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :change_orientation, :destroy]
-  before_action :check_user, only: [:new, :create, :edit, :update, :change_orientation, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  before_action :check_user, only: [:new, :create, :edit, :update, :destroy]
   before_action :check_pages, only: :destroy
 
   def new
@@ -16,7 +16,7 @@ class ComicPagesController < ApplicationController
     page_number = sanitize_page_number(params[:comic_page][:page_number].to_i)
     page_added = false
     params[:comic_page][:new_page].each do |new_page|
-      if @comic.add_page(drawing: new_page, orientation: params[:comic_page][:orientation], page_number: page_number)
+      if @comic.add_page(drawing: new_page, page_number: page_number)
         page_number += 1
         page_added = true
       else
@@ -39,7 +39,7 @@ class ComicPagesController < ApplicationController
   def update
     page_number = sanitize_page_number(params[:page].to_i)
     params[:comic_page][:new_page].each do |new_page|
-      if @comic.replace_page(drawing: new_page, orientation: params[:comic_page][:orientation], page_number: page_number)
+      if @comic.replace_page(drawing: new_page, page_number: page_number)
         flash[:success] = "Page has been updated"
       else
         flash[:warning] = "Not all pages were successfully updated"
@@ -47,14 +47,6 @@ class ComicPagesController < ApplicationController
       page_number += 1
     end
     redirect_to show_page_comic_path(@comic, page: page_number-1)
-  end
-
-  def change_orientation
-    @comic_page = @comic.comic_pages.find_by( page: params[:page].to_i )
-    if @comic_page.update_attribute(:orientation, params[:orientation])
-      flash[:success] = "Changed page orientation"
-    end
-    redirect_to show_page_comic_path(@comic, page: @comic_page.page)
   end
 
   def destroy

@@ -95,11 +95,11 @@ module ApplicationHelper
     end
   end
 
-  def image_class(orientation)
-    if orientation == 'screen'
-      'normal-display fit-to-screen'
+  def display_size_class
+    if params[:size]=='small'
+      "fit-to-screen"
     else
-      'normal-display'
+      "normal-display"
     end
   end
 

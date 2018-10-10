@@ -14,20 +14,17 @@ class ComicsController < ApplicationController
     @comic = current_user.comics.build(comic_params);
     add_tags(@comic, :comic)
     current_page = 1
-    params[:comic][:first_page].each do |page|
-      comic_page = @comic.comic_pages.build(page: current_page, drawing: page, orientation: params[:orientation])
-      if comic_page.valid?
+    params[:comic][:comic_page][:drawing].each do |page|
+      if @comic.add_page(drawing: page, page_number: current_page, save: false)
         current_page += 1
       else
         flash[:warning] = "Not all pages were successfully added"
       end
     end
-    @comic.pages = @comic.pages.abs.round
-    @comic.max_pages = @comic.comic_pages.map(&:page).max
-    if @comic.pages != 0 && @comic.pages < @comic.max_pages
-      @comic.pages = @comic.max_pages
-    end
+    correct_page
+    @comic.max_pages = @comic.current_max_page
     @comic.page_addition = Time.now
+    @comic.pages = @comic.current_max_page if @comic.pages_exceeded
     if @comic.save
       flash[:success] = "Comic posted!"
       redirect_to @comic
@@ -49,18 +46,18 @@ class ComicsController < ApplicationController
           page_number: @page.page,
           drawing_url: @page.drawing.show_page.url,
           full_url: @page.drawing.url,
-          orientation: @page.orientation,
           big_page: @page.big_page?,
           dimensions: {
             width: @page.width,
             height: @page.height
           },
-          previous_url: (show_page_comic_path(@comic, page: @page.page-1) if @page.page > 1 ),
-          next_url: (show_page_comic_path(@comic, page: @page.page+1) if @page.page < @comic.comic_pages.count),
+          previous_url: (show_page_comic_path(@comic, page: @page.page-1, size: params[:size]) if @page.page > 1 ),
+          next_url: (show_page_comic_path(@comic, page: @page.page+1, size: params[:size]) if @page.page < @comic.comic_pages.count),
           comic_pages: @comic.comic_pages.count,
           add_page_url: new_comic_page_at_path(@comic,@page.page),
           replace_page_url: edit_page_comic_path(@comic,@page.page),
-          delete_page_url: delete_comic_page_path(@comic,@page.page)
+          delete_page_url: delete_comic_page_path(@comic,@page.page),
+          resize_url: show_page_comic_path(@comic, page: @page.page, size: switch_size(params[:size]))
         }.reject{|key, value| value.nil?}.to_json
       end
     end
@@ -79,8 +76,8 @@ class ComicsController < ApplicationController
 
   def update
     @comic.assign_attributes(comic_params)
-    @comic.pages = @comic.pages.abs.round
-    @comic.pages = 0 if @comic.pages < @comic.comic_pages.count
+    correct_page
+    @comic.pages = 0 if @comic.pages_exceeded
     update_tags
     if @comic.save
       flash[:success] = "Details updated!"
@@ -99,7 +96,7 @@ class ComicsController < ApplicationController
   private
 
     def comic_params
-      params.require(:comic).permit(:rating, :front_page_rating, :title, :description, :pages, :authorship)
+      params.require(:comic).permit(:rating, :front_page_rating, :title, :comic_page, :description, :pages, :authorship)
     end
 
     def add_tags(object, key)
@@ -131,5 +128,14 @@ class ComicsController < ApplicationController
       @comic = current_user.comics.find_by(id: params[:id])
       @comic = current_user.scanlations.find(params[:id]) unless @comic
       redirect_to Comic.find(params[:id]) unless @comic
+    end
+
+    def correct_page
+      @comic.pages = @comic.pages.abs.round
+    end
+
+    def switch_size(current_size)
+      return nil if current_size == "small"
+      return "small" if current_size == nil
     end
 end

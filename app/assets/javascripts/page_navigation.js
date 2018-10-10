@@ -34,23 +34,74 @@ function load_comic_page(data) {
 	$("#add-page-link").attr("href", data.add_page_url);
 	$("#replace-page-link").attr("href", data.replace_page_url);
 	$("#delete-page-link").attr("href", data.delete_page_url);
+	$("#resize-link").attr("href", data.resize_url);
 }
 
 function load_comic_page_from_url(page_url) {
 	$.ajax({
 		type: "GET",
 		dataType: "json",
-		url: page_url+".json",
+		url: page_url.split("?")[0]+".json"+(page_url.split("?")[1] ? "?" + page_url.split("?")[1]: ""),
 		success: function(data, status){
 			load_comic_page(data);
 		}
 	});
 }
 
+function changeToSmall() {
+	$('#image-view,.image-view').removeClass('normal-display');
+	$('#image-view,.image-view').addClass('fit-to-screen');
+	$('#resize-link').text('Expand to page width');
+	$('#resize-link').attr("href", history.state.url.split("?")[0]);
+}
+
+function changeToNormal() {
+	$('#image-view,.image-view').removeClass('fit-to-screen');
+	$('#image-view,.image-view').addClass('normal-display');
+	$('#resize-link').text('Shrink to page height');
+	$('#resize-link').attr("href", history.state.url+"?size=small");
+}
+
+function setSizeFromUrl(pageSize) {
+	if (pageSize=="normal") {
+		changeToNormal();
+	}
+	else {
+		changeToSmall();
+	}
+}
+
+function currentSize() {
+	if ($('#image-view').hasClass('normal-display')) {
+		return "normal";
+	}
+	else {
+		return "small";
+	}
+}
+
 function load_next_page(page_url) {
 	current_comic = history.state.comic;
-	history.pushState({ url: page_url, comic: current_comic }, null, page_url);
+	history.pushState({ url: page_url, comic: current_comic, pageSize: currentSize() }, null, page_url);
 	load_comic_page_from_url(page_url);
+}
+
+function setCurrentState(callback) {
+	if(typeof history.state.url === 'undefined') {
+		current_path = window.location.pathname;
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url: current_path,
+			success: function(data, status){
+				history.replaceState({ url: current_path, comic: data.comic, pageSize: currentSize() }, null, current_path);
+				callback();
+			}
+		});
+	}
+	else {
+		callback();
+	}
 }
 
 $(document).on('turbolinks:load', function(){
@@ -59,21 +110,10 @@ $(document).on('turbolinks:load', function(){
 
 		if($(this).attr('href') != "#new_comment") {
 			e.preventDefault();
-			if(typeof history.state.url === 'undefined') {
-				current_path = window.location.pathname;
-				$.ajax({
-					type: "GET",
-					dataType: "json",
-					url: current_path,
-					success: function(data, status){
-						history.replaceState({ url: current_path, comic: data.comic }, null, current_path);
-						load_next_page(page_url);
-					}
-				});
-			}
-			else {
+			setCurrentState(function() {
 				load_next_page(page_url);
-			}
+				$('#image-view')[0].scrollIntoView({ behavior: "smooth", block: "start" });
+			});
 		}
 	});
 
@@ -85,15 +125,32 @@ $(document).on('turbolinks:load', function(){
 			$('#next-page-link').click();
 		}
 	});
+
+	$("#resize-link").click(function(e) {
+		e.preventDefault();
+		setCurrentState(function() {
+			if($('#image-view').hasClass('normal-display')) {
+				changeToSmall();
+				history.pushState({ url: history.state.url, comic: history.state.comic, pageSize: currentSize() }, null, history.state.url+"?size=small");
+			}
+			else {
+				changeToNormal();
+				history.pushState({ url: history.state.url, comic: history.state.comic, pageSize: currentSize()}, null, history.state.url.split("?")[0]);
+			}
+		});
+	});
 });
 
 
 $(window).on("popstate", function(e) {
 	comic_identifier = Number($('#comic-identifier').text());
-	if(typeof e.originalEvent.state.url !== 'undefined' && e.originalEvent.state.comic == comic_identifier ) {
-		load_comic_page_from_url(e.originalEvent.state.url);
-	}
-	else {
-		location.reload();
-	}
+	setCurrentState(function() {
+		if(typeof e.originalEvent.state.url !== 'undefined' && e.originalEvent.state.comic == comic_identifier ) {
+			load_comic_page_from_url(e.originalEvent.state.url);
+			setSizeFromUrl(e.originalEvent.state.pageSize);
+		}
+		else {
+			location.reload();
+		}
+	})
 });

@@ -40,6 +40,20 @@ RSpec.feature "User visits a work", :type => :feature do
     end
   end
 
+  describe 'the page navigation' do
+    let!(:comic) { create(:comic) }
+
+    background do
+      user = comic.user
+      sign_in user
+      visit comic_path(comic)
+    end
+
+    scenario 'with two pages', js: true do
+      click_link 'image-link'
+    end
+  end
+
   describe "the show all page" do
     let!(:comic) { create(:comic) }
 

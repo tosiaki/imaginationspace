@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_23_142533) do
+ActiveRecord::Schema.define(version: 2018_10_09_190029) do
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
@@ -29,7 +29,6 @@ ActiveRecord::Schema.define(version: 2018_09_23_142533) do
     t.string "drawing"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "orientation", default: 0
     t.integer "width"
     t.integer "height"
     t.index ["comic_id"], name: "index_comic_pages_on_comic_id"
@@ -74,7 +73,6 @@ ActiveRecord::Schema.define(version: 2018_09_23_142533) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "rating", default: 0
-    t.integer "orientation", default: 0
     t.integer "authorship", default: 0
     t.integer "width"
     t.integer "height"

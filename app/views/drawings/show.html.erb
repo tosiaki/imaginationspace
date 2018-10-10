@@ -3,7 +3,7 @@
 <%= render 'shared/flash_messages' %>
 <%= render 'shared/work_headings' %>
 <div class="page-display">
-	<%= link_to image_tag(@drawing.drawing.url(:show_page), class: image_class(@drawing.orientation)), @drawing.drawing.url, class: "image-link" %>
+	<%= link_to image_tag(@drawing.drawing.url(:show_page), class: display_size_class, id: "image-view"), @drawing.drawing.url, class: "image-link" %>
 </div>
 <% if @drawing.width > 1200 || @drawing.height > 2000 %>
 	<div class="note page-note">This image has been resized from the original size of <%= @drawing.width %> by <%= @drawing.height %>. To see the full image, click <%= link_to "here", @drawing.drawing.url %> or on the image itself.</div>

@@ -49,7 +49,6 @@ Rails.application.routes.draw do
     member do
       get 'page/:page', action: :show, as: :show_page
       get 'all', action: :show_all, as: :show_all
-      patch 'change_orientation/:page/:orientation', to: 'comic_pages#change_orientation', as: :change_page_orientation
       get 'edit/:page', to: 'comic_pages#edit', as: :edit_page
       patch 'edit/:page', to: 'comic_pages#update'
     end

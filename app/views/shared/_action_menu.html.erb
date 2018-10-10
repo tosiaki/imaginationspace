@@ -8,6 +8,17 @@
 				<li><%= link_to "Show all pages", show_all_comic_path(@work) %></li>
 			<% end %>
 		<% end %>
+		<% if controller_name == "comics" && params[:page] %>
+			<% if params['size'] == 'small' %>
+				<li><%= link_to "Expand to page width", show_page_comic_path(@work, page: params[:page]), id: 'resize-link' %></li>
+			<% else %>
+				<li><%= link_to "Shrink to page height", show_page_comic_path(@work, page: params[:page], size: "small"), id: 'resize-link' %></li>
+			<% end %>
+		<% end %>
+		<%# link_to "Expand to page width", show_all_comic_path(@work), id: 'resize-link' %>
+		<%# link_to "Shrink to page height", show_all_comic_path(@work, size: "small"), id: 'resize-link' %>
+		<%# link_to "Expand to page width", @work, id: 'resize-link' %>
+		<%# link_to "Shrink to page height", polymorphic_path(@work, size: "small"), id: 'resize-link' %>
 		<% if controller_name == 'comics' %>
 			<li>
 				<%= link_to "Add page(s)", new_comic_page_path(@work) if @work.user == current_user %>

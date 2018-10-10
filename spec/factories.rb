@@ -24,7 +24,6 @@ FactoryBot.define do
   end
 
   factory :comic_page do
-    orientation { 'column' }
     width { 1100 }
     height { 1100 }
     page { 1 }
@@ -32,7 +31,6 @@ FactoryBot.define do
   end
 
   factory :comic_page2, class: ComicPage do
-    orientation { 'column' }
     width { 1100 }
     height { 1100 }
     page { 2 }
@@ -41,10 +39,10 @@ FactoryBot.define do
 
   factory :comic do
     user
-    title { 'ComicTitle' }
-    description { 'This is a description of a comic' }
     rating { "general_audiences" }
     front_page_rating { "front_general_audiences" }
+    title { 'ComicTitle' }
+    description { 'This is a description of a comic' }
     authorship { "own" }
     page_addition { Time.now }
     pages { 1 }
@@ -56,6 +54,21 @@ FactoryBot.define do
       comic.relationship_list.add('Nishikino Maki/Yazawa Nico')
       comic.tag_list.add('Rough sketch')
     end
+  end
+
+  factory :drawing do
+  	user
+  	rating { "general_audiences" }
+  	title { 'DrawingTitle' }
+  	caption { 'This is a description of a drawing' }
+  	drawing { fixture_file_upload("spec/files/45319054_p0.jpg", "image/jpeg") }
+  	authorship { "own" }
+  	before(:create) do |drawing|
+  	  drawing.fandom_list.add('Drawing')
+  	  drawing.character_list.add('Character1')
+  	  comic.relationship_list.add('Character2/Character5')
+  	  comic.tag_list.add('Another Tag')
+  	end
   end
 
   factory :kudo do

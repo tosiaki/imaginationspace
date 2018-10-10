@@ -15,13 +15,6 @@
             <div class="form-input">
               <%= f.file_field :new_page, accept: 'image/jpeg,image/gif,image/png', multiple: true %>
             </div>
-            <div class="form-label">
-              <%= f.label :orientation %>
-            </div>
-            <div class="form-input">
-              <%= f.radio_button :orientation, "screen" %><%= f.label :orientation_screen, "Fit to screen" %>
-              <%= f.radio_button :orientation, "column" %><%= f.label :orientation_column, "Fit to column" %>
-            </div>
           </div>
         </li>
         <li class="form-element">
