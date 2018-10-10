@@ -118,6 +118,17 @@ $(document).on('turbolinks:load', function(){
 	});
 
 	$("body").keydown(function(e) {
+		function findPos(obj) {
+		    var curtop = 0;
+		    if (obj.offsetParent) {
+		        do {
+		            curtop += obj.offsetTop;
+		        } while (obj = obj.offsetParent);
+		    return [curtop];
+		    }
+		}
+
+		window.scroll(0,findPos(document.getElementById("image-view")));
 		if(e.keyCode == 37) {
 			$('#previous-page-link').click();
 		}
