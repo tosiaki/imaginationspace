@@ -112,7 +112,7 @@ $(document).on('turbolinks:load', function(){
 			e.preventDefault();
 			setCurrentState(function() {
 				load_next_page(page_url);
-				$('#image-view')[0].scrollIntoView({ behavior: "smooth", block: "start" });
+				$('#image-view,#previous-page-link,#next-page-link')[0].scrollIntoView({ behavior: "smooth", block: "start" });
 			});
 		}
 	});
