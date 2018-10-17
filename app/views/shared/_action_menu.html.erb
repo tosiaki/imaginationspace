@@ -10,9 +10,9 @@
 		<% end %>
 		<% if controller_name == "comics" && action_name == 'show' %>
 			<% if params['size'] == 'small' %>
-				<li><%= link_to "Expand to page width", show_page_comic_path(@work, page: params[:page]), id: 'resize-link' %></li>
+				<li><%= link_to "Expand to page width", toggle_size_link(@work, params[:size], params[:page]), id: 'resize-link' %></li>
 			<% else %>
-				<li><%= link_to "Shrink to page height", show_page_comic_path(@work, page: params[:page], size: "small"), id: 'resize-link' %></li>
+				<li><%= link_to "Shrink to page height", toggle_size_link(@work, params[:size], params[:page]), id: 'resize-link' %></li>
 			<% end %>
 		<% end %>
 		<%# link_to "Expand to page width", show_all_comic_path(@work), id: 'resize-link' %>

@@ -154,4 +154,14 @@ module ApplicationHelper
       @work.note
     end
   end
+
+  def toggle_size_link(work, size, page = nil)
+    if size=='small'
+      return show_page_comic_path(@work, page: params[:page]) if page
+      return comic_path(@work)
+    else
+      return show_page_comic_path(@work, page: params[:page], size: 'small') if page
+      return comic_path(@work, size: 'small')
+    end
+  end
 end
