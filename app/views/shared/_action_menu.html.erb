@@ -8,7 +8,7 @@
 				<li><%= link_to "Show all pages", show_all_comic_path(@work) %></li>
 			<% end %>
 		<% end %>
-		<% if controller_name == "comics" && params[:page] %>
+		<% if controller_name == "comics" && action_name == 'show' %>
 			<% if params['size'] == 'small' %>
 				<li><%= link_to "Expand to page width", show_page_comic_path(@work, page: params[:page]), id: 'resize-link' %></li>
 			<% else %>

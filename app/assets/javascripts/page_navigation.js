@@ -163,5 +163,5 @@ $(window).on("popstate", function(e) {
 		else {
 			location.reload();
 		}
-	})
+	});
 });
