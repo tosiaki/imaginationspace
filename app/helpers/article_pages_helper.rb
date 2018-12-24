@@ -1,0 +1,2 @@
+module ArticlePagesHelper
+end

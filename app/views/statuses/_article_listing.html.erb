@@ -1,0 +1,40 @@
+<div class="datetime">
+	<ul class="actions">
+		<% if article.user==current_user %>
+			<% if @show_pin_option %>
+				<li><%= link_to "📌 Pin to top", sticky_user_article_path(article.user,article), method: "post" %></li>
+			<% end %>
+			<li><%= link_to "📝 Edit", edit_user_article_path(article.user,article) %></li>
+			<li><%= link_to "❌ Remove", user_article_path(article.user,article), method: "delete" %></li>
+		<% end %>
+		<li>
+			<% if article.reply_to %>
+				<%= link_to "👉 #{article.status.updated_at.strftime("%d %b %Y")}", user_article_path(article.user,article, anchor: "article-page-display") %>
+			<% else %>
+				<%= link_to "👉 #{article.status.updated_at.strftime("%d %b %Y")}", user_article_path(article.user,article) %>
+			<% end %>
+		</li>
+	</ul>
+</div>
+<%= yield :pinned %>
+<% if article.reply_to %>
+	<div>↩️ Reply to <%= link_to article.reply_to.user.name, article.reply_to.user %></div>
+<% end %>
+<%= render 'statuses/article', article: article %>
+<div class="action-menu">
+	<ul class="actions left-actions">
+		<% count = article.reply_number %>
+		<li><%= link_to "Reply 💬 #{count > 0 ? count : ''}", user_article_path(article.user, article, anchor: "new_article") %></li>
+		<% count = article.signal_boosts.count %>
+		<li><%= link_to "Signal Boost 📣 #{count > 0 ? count : ''}", boost_user_article_path(article.user, article) %></li>
+		<% if article.user==current_user %>
+			<% count = article.kudos.count %>
+			<% if count>0 %>
+				<li>Kudos ❤ <%= count > 0 ? count : '' %></li>
+			<% end %>
+		<% else %>
+			<% count = article.kudos.count %>
+			<li><%= link_to "Kudos ❤️ #{count > 0 ? count : ''}", kudos_user_article_path(article.user, article), method: :post %></li>
+		<% end %>
+	</ul>
+</div>

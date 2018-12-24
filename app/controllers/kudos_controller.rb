@@ -23,7 +23,11 @@ class KudosController < ApplicationController
 
   private
     def find_work
-      @work = params[:parent].constantize.find(params["#{params[:parent].downcase}_id"])
+      if params[:parent]
+        @work = params[:parent].constantize.find(params["#{params[:parent].downcase}_id"])
+      else
+        @work = Article.find(params[:id])
+      end
     end
 
     def already_gave_kudos

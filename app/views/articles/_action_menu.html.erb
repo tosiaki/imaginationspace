@@ -1,0 +1,23 @@
+<div class="action-menu">
+	<ul class="actions">
+		<% if @article.pages.count > 1 %>
+			<li>
+				<%= form_tag request.path, method: :get, class: "page-navigation-select" do %>
+					<%= select_tag 'go_to_page', options_for_select(@page_options, params[:page_number]) %>
+					<%= submit_tag 'Go' %>
+				<% end %>
+			</li>
+		<% end %>
+		<% if @article.user == current_user %>
+			<li>
+				<%= link_to "Edit article", edit_user_article_path(@user,@article, page_number: params[:page_number]) %>
+			</li>
+			<li>
+				<%= link_to "Add page", add_page_at_user_article_path(@user,@article,@article.next_page) %>
+			</li>
+			<li>
+				<%= link_to "Delete article", user_article_path(@user,@article), method: "delete" %>
+			</li>
+		<% end %>
+	</ul>
+</div>

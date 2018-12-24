@@ -5,52 +5,21 @@
 <% if alert %>
   <p class="notice"><%= alert %></p>
 <% end %>
-<div class="module">
-	<h3 class="heading">Note</h3>
-	<p>Although this site still mostly just has translations, it aims to eventually be a place where people post their own work. Therefore, enjoy what's here, but if you have anything of your own to contribute, that would be of great help!</p>
-	<p>If you would like to chat, come join us on the <a href="https://discord.gg/37aztWz">Discord server.</a></p>
-	<h3 class="heading">Find your favorites</h3>
-	<p class="note">Browse fandoms!</p>
-	<% if @fandoms_comics.any? %>
-		<p class="note">Fancomics:</p>
-		<ul class="front-fandom-list">
-			<% @fandoms_comics.each do |fandom| %>
-				<li><%= link_to "#{fandom.name}", comics_by_tags_path(fandom.name) %> (<%= fandom.count %>)</li>
-			<% end %>
-		</ul>
-	<% end %>
-	<% if @fandoms_drawings.any? %>
-		<p class="note">Fanart:</p>
-		<ul class="front-fandom-list">
-			<% @fandoms_drawings.each do |fandom| %>
-				<li><%= link_to "#{fandom.name}", drawings_by_tags_path(fandom.name) %> (<%= fandom.count %>)</li>
-			<% end %>
-		</ul>
-	<% end %>
-</div>
 <!-- <div class="module">
 	<h3 class="heading">Top tags</h3>
 </div> -->
-<% if @feed_comics && @feed_comics.any? %>
+<% if user_signed_in? %>
+	<%= render 'shared/posting_form' %>
+<% end %>
+<% if @feed_statuses.any? %>
 	<div class="module">
-		<h3 class="heading">Latest fancomics from your subscriptions</h3>
-		<%= render 'shared/comics_list', comics: @feed_comics %>
+		<h3 class="heading">Latest from your followed users:</h3>
+		<ol class="status-list">
+			<%= render @feed_statuses %>
+		</ol>
 	</div>
 <% end %>
-<% if @feed_drawings && @feed_drawings.any? %>
-	<div class="module">
-		<h3 class="heading">Latest fanart from your subscriptions</h3>
-		<%= render 'shared/drawings_list', drawings: @feed_drawings %>
-	</div>
-<% end %>
-<div class="module">
-	<h3 class="heading">Latest fanart</h3>
-	<%= render 'shared/drawings_list', drawings: @drawings %>
-</div>
-<div class="module">
-	<h3 class="heading">Latest fancomics</h3>
-	<%= render 'shared/comics_list', comics: @comics %>
-</div>
+
 <!--  <div class="module">
 	<h3 class="heading">Rankings</h3>
 </div> -->

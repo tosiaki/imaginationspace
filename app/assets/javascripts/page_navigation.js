@@ -105,51 +105,53 @@ function setCurrentState(callback) {
 }
 
 $(document).on('turbolinks:load', function(){
-	$(".page-navigator").click(function(e){
-		page_url = $(this).attr('href');
+	if($("#comic-identifier").length) {
+		$(".page-navigator").click(function(e){
+			page_url = $(this).attr('href');
 
-		if($(this).attr('href') != "#new_comment") {
-			e.preventDefault();
-			setCurrentState(function() {
-				load_next_page(page_url);
-				$('#image-view')[0].scrollIntoView({ behavior: "smooth", block: "start" });
-			});
-		}
-	});
-
-	$("body").keydown(function(e) {
-		function findPos(obj) {
-		    var curtop = 0;
-		    if (obj.offsetParent) {
-		        do {
-		            curtop += obj.offsetTop;
-		        } while (obj = obj.offsetParent);
-		    return [curtop];
-		    }
-		}
-
-		window.scroll(0,findPos(document.getElementById("image-view")));
-		if(e.keyCode == 37) {
-			$('#previous-page-link').click();
-		}
-		else if(e.keyCode == 39) {
-			$('#next-page-link').click();
-		}
-	});
-
-	$("#resize-link").click(function(e) {
-		e.preventDefault();
-		setCurrentState(function() {
-			if($('#image-view').hasClass('normal-display')) {
-				changeToSmall();
-				history.pushState({ url: history.state.url, comic: history.state.comic, pageSize: currentSize() }, null, history.state.url+"?size=small");
-			}
-			else {
-				changeToNormal();
-				history.pushState({ url: history.state.url, comic: history.state.comic, pageSize: currentSize()}, null, history.state.url.split("?")[0]);
+			if($(this).attr('href') != "#new_comment") {
+				e.preventDefault();
+				setCurrentState(function() {
+					load_next_page(page_url);
+					$('#image-view')[0].scrollIntoView({ behavior: "smooth", block: "start" });
+				});
 			}
 		});
-	});
+
+		$("body").keydown(function(e) {
+			function findPos(obj) {
+			    var curtop = 0;
+			    if (obj.offsetParent) {
+			        do {
+			            curtop += obj.offsetTop;
+			        } while (obj = obj.offsetParent);
+			    return [curtop];
+			    }
+			}
+
+			window.scroll(0,findPos(document.getElementById("image-view")));
+			if(e.keyCode == 37) {
+				$('#previous-page-link').click();
+			}
+			else if(e.keyCode == 39) {
+				$('#next-page-link').click();
+			}
+		});
+
+		$("#resize-link").click(function(e) {
+			e.preventDefault();
+			setCurrentState(function() {
+				if($('#image-view').hasClass('normal-display')) {
+					changeToSmall();
+					history.pushState({ url: history.state.url, comic: history.state.comic, pageSize: currentSize() }, null, history.state.url+"?size=small");
+				}
+				else {
+					changeToNormal();
+					history.pushState({ url: history.state.url, comic: history.state.comic, pageSize: currentSize()}, null, history.state.url.split("?")[0]);
+				}
+			});
+		});
+	}
 });
 
 

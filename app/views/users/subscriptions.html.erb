@@ -1,18 +1,5 @@
-<% provide(:title, "Subscriptions") %>
-<% content_for :user_page_content do %>
-	<%= render 'shared/error_messages', object: @user %>
-	<h2 class="heading">My subscriptions</h2>
-	<% if @user.subscriptions.any? %>
-		<%= will_paginate comics, class: "pagination actions", param_name: :page %>
-		<ul class="subscription-index">
-			<% @user.subscriptions.each do |subscribed_user| %>
-				<li>
-					<div><%= link_to subscribed_user.name, subscribed_user %></div>
-					<div class="subscription-entry-action"><%= link_to "Unsubscribe from #{subscribed_user.name}", unsubscribe_from_user_path(subscribed_user), method: :delete %></div>
-				</li>
-			<% end %>
-		</ul>
-		<%= will_paginate comics, class: "pagination actions", param_name: :page %>
-	<% end %>
-<% end %>
-<%= render 'display' %>
+<% provide(:title, "Following") %>
+<%= render 'shared/error_messages', object: @user %>
+<%= render 'user_header' %>
+<h2 class="heading">Following</h2>
+<%= render 'listing', users: @subscriptions %>

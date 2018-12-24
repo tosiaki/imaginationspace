@@ -1,0 +1,63 @@
+<% provide(:title, "Add page to article") %>
+<div class="submission-form" id="post-drawing-form">
+  <%= form_for(@page, html: { multipart: true }, url: add_page_user_article_path(@article.user, @article)) do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+    <h2 class="heading">New page</h2>
+
+    <div class="form-input-box">
+      <ul class="form-inputs clear">
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :title %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :title %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :content %>
+            </div>
+            <div class="form-input">
+              <%= f.text_area :content %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :picture, "Picture(s)" %>
+            </div>
+            <div class="form-input">
+              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true %>
+            </div>
+          </div>
+          <div class="field">
+            <%= fields_for(:options) do |o| %>
+              <div class="form-label">
+                <%= o.label :new_pages, "Put additional images in new pages" %>
+              </div>
+              <div class="form-input">
+                <%= o.check_box :new_pages %>
+              </div>
+            <% end %>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :page_number %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :page_number, class: "pages", value: params[:page_number] %>
+            </div>
+          </div>
+        </li>
+        <li class="form-element">
+          <div class="actions">
+            <%= f.submit "Post" %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+</div>

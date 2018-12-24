@@ -1,0 +1,4 @@
+<p><%= link_to image_tag(picture.picture.show_page.url), picture.picture.url %></p>
+<% if picture.width > 1200 || picture.height > 2000 %>
+	<div class="note page-note">This image has been resized from the original size of <%= picture.width %> by <%= picture.height %>. To see the full image, click <%= link_to "here", picture.picture.url %> or on the image itself.</div>
+<% end %>

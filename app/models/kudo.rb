@@ -1,5 +1,5 @@
 class Kudo < ApplicationRecord
-  belongs_to :work, polymorphic: true
+  belongs_to :work, polymorphic: true, counter_cache: true
   belongs_to :user, optional: true
   validates :ip_address, presence: true, unless: :user_id?
   validates_presence_of :user, if: :user_id?

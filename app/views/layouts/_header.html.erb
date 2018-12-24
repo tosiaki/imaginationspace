@@ -2,15 +2,13 @@
   <div class="header-container">
     <div class="upper-header">
       <h1 class="heading">
-        <%= link_to "Fancomics, Fanart, and Translations", root_path, id: "logo" %>
+        <%= link_to "Imagination Space", root_path, id: "logo" %>
       </h1>
       <%= render 'layouts/greeting' %>
     </div>
     <nav class="lower-header">
       <ul class="primary-navigation">
         <li><%= link_to "Home",   root_path %></li>
-        <li><%= link_to "Browse",   works_path %></li>
-        <li><%= link_to "Drawing tutorials", works_search_path(tags: 'Tutorial') %></li>
         <li><%= link_to "About", about_path %></li>
       </ul>
       <%= form_tag works_search_path, method: :get, id: 'search-works-form' do %>

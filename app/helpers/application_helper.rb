@@ -63,7 +63,7 @@ module ApplicationHelper
       end
       sentence += pluralize(work.guest_kudos, "guest")
     end
-    sentence += " left kudos on this work!"
+    sentence += " left kudos on this article!"
   end
 
   def form_title

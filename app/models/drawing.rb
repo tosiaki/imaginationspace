@@ -1,6 +1,6 @@
 class Drawing < ApplicationRecord
   include Concerns::Validatable
-  include Concerns::Work
+  include Concerns::WorkFunctions
   include Concerns::DrawingImage
 
   enum rating: { not_rated: 0, general_audiences: 1, teen_and_up_audiences: 2, mature: 3, explicit: 4 }

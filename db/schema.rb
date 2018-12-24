@@ -10,7 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_09_190029) do
+ActiveRecord::Schema.define(version: 2018_12_24_200146) do
+
+  create_table "article_pictures", force: :cascade do |t|
+    t.string "picture"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "width"
+    t.integer "height"
+  end
+
+  create_table "article_taggings", force: :cascade do |t|
+    t.integer "article_tag_id"
+    t.integer "article_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_article_taggings_on_article_id"
+    t.index ["article_tag_id"], name: "index_article_taggings_on_article_tag_id"
+  end
+
+  create_table "article_tags", force: :cascade do |t|
+    t.text "name"
+    t.text "context"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "articles", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "max_pages"
+    t.integer "reply_to_id"
+    t.integer "reply_number", default: 0
+    t.integer "kudos_count", default: 0
+    t.integer "signal_boosts_count", default: 0
+    t.index ["reply_to_id"], name: "index_articles_on_reply_to_id"
+  end
 
   create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id"
@@ -46,6 +83,8 @@ ActiveRecord::Schema.define(version: 2018_10_09_190029) do
     t.integer "authorship", default: 0
     t.integer "max_pages", default: 1
     t.datetime "page_addition"
+    t.integer "kudos_count", default: 0
+    t.integer "bookmarks_count", default: 0
     t.index ["user_id"], name: "index_comics_on_user_id"
   end
 
@@ -76,6 +115,8 @@ ActiveRecord::Schema.define(version: 2018_10_09_190029) do
     t.integer "authorship", default: 0
     t.integer "width"
     t.integer "height"
+    t.integer "kudos_count", default: 0
+    t.integer "bookmarks_count", default: 0
     t.index ["user_id"], name: "index_drawings_on_user_id"
   end
 
@@ -115,6 +156,37 @@ ActiveRecord::Schema.define(version: 2018_10_09_190029) do
     t.index ["user_id", "work_id", "work_type"], name: "user_kudos_index", unique: true
     t.index ["user_id"], name: "index_kudos_on_user_id"
     t.index ["work_type", "work_id"], name: "index_kudos_on_work_type_and_work_id"
+  end
+
+  create_table "pages", force: :cascade do |t|
+    t.integer "article_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "page_number", default: 1
+    t.text "title"
+    t.index ["article_id"], name: "index_pages_on_article_id"
+  end
+
+  create_table "signal_boosts", force: :cascade do |t|
+    t.integer "post_id"
+    t.integer "origin_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "comment"
+    t.index ["origin_id"], name: "index_signal_boosts_on_origin_id"
+    t.index ["post_id"], name: "index_signal_boosts_on_post_id"
+  end
+
+  create_table "statuses", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "post_type"
+    t.integer "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "timeline_time"
+    t.index ["post_type", "post_id"], name: "index_statuses_on_post_type_and_post_id"
+    t.index ["user_id"], name: "index_statuses_on_user_id"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -167,9 +239,13 @@ ActiveRecord::Schema.define(version: 2018_10_09_190029) do
     t.string "icon_comment"
     t.boolean "show_adult", default: false
     t.boolean "site_updates", default: false
+    t.integer "article_id"
+    t.integer "sticky_id"
+    t.index ["article_id"], name: "index_users_on_article_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["sticky_id"], name: "index_users_on_sticky_id"
   end
 
 end

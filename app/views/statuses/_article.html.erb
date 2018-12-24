@@ -1,0 +1,53 @@
+<% unless @user==article.user %>
+	<h4 class="heading byline status-byline">
+		<%= link_to render('shared/user_icon_status', user: article.user), article.user, class: 'image-link' %>
+		<%= link_to article.user.name, article.user, class: 'user-name-listing' %>
+		<% if user_signed_in? && !current_user.is_subscribed_to?(article.user) %>
+			<span class="actions"><%= link_to "Follow", subscribe_to_user_path(article.user), method: :post %></span>
+		<% end %>
+	</h4>
+<% end %>
+<% if article.title or article.pages.count>1 or article.fandom_tags.any? %>
+	<div class='article-listing-heading'>
+		<% if article.title %>
+			<b><%= link_to article.title, user_article_path(article.user,article, {anchor: (article.reply_to ? 'article-page-display' : nil)}.compact), class: "title-link" %></b>
+		<% end %>
+		<% if article.pages.count>1 %>
+			Page 1/<%= article.pages.count %> <%= link_to "Next page ➡️", show_page_user_article_path(article.user,article,2, {anchor: (article.reply_to ? 'article-page-display' : nil)}.compact) %>
+		<% end %>
+		<% fandoms = article.fandom_tags %>
+		<% if fandoms.any? %>
+			(<ul class="outer-fandom-list">
+				<% fandoms.each do |fandom| %>
+					<%= link_to fandom.name, articles_path(tags: fandom.name), class: "tag" %>
+				<% end %>
+			</ul>)
+		<% end %>
+	</div>
+<% end %>
+<% relationships = article.relationship_tags %>
+<% characters = article.character_tags %>
+<% other_tags = article.other_tags %>
+<% if relationships.any? || characters.any? || other_tags.any? %>
+	<div class="additional-tag-list">
+		<% if relationships.any? %>
+			<% relationships.each do |tag| %>
+				<%= link_to tag.name, articles_path(tags: tag.name), class: "summary-relationship tag" %>
+			<% end %>
+		<% end %>
+		<% if characters.any? %>
+			<% characters.each do |tag| %>
+				<%= link_to tag.name, articles_path(tags: tag.name), class: "tag" %>
+			<% end %>
+		<% end %>
+		<% if other_tags.any? %>
+			<% other_tags.each do |tag| %>
+				<%= link_to tag.name, articles_path(tags: tag.name), class: "tag" %>
+			<% end %>
+		<% end %>
+	</div>
+<% end %>
+<% if article.description.present? %>
+	<div class="article-description"><%= article.description %></div>
+<% end %>
+<%= render "articles/content", content: article.pages.first.content %>

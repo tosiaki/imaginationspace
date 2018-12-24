@@ -1,4 +1,4 @@
-module Concerns::Work
+module Concerns::WorkFunctions
   extend ActiveSupport::Concern
 
   included do

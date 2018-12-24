@@ -1,56 +1,35 @@
 <% provide(:title, @user.name) %>
-<% content_for :user_page_content do %>
+<%# content_for :user_page_content do %>
 	<%= render 'user_header' %>
-	<% if @user_comics.any? %>
-		<div class="listbox">
-			<h3 class="listbox-heading">Fandoms (comics)</h3>
-			<ul class="fandom-list">
-				<% @comic_fandoms.each do |fandom| %>
-					<li><%= link_to "#{fandom.name}", user_comics_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
-				<% end %>
-			</ul>
-		</div>
-
-		<div class="listbox">
-			<h3 class="listbox-heading">Recent comics</h3>
-			<ul class="comic-list">
-				<%= render @user_comics, user_page: true %>
-			</ul>
-		</div>
+	<% if @user == current_user %>
+		<%= render 'shared/posting_form' %>
 	<% end %>
-	<% if @user_drawings.any? %>
-		<div class="listbox">
-			<h3 class="listbox-heading">Fandoms (drawings)</h3>
-			<ul class="fandom-list">
-				<% @drawing_fandoms.each do |fandom| %>
-					<li><%= link_to "#{fandom.name}", user_drawings_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
-				<% end %>
-			</ul>
-		</div>
+	<div class="statuspage-content">
+		<div class="status-area">
+			<% if @tag_list.present? %>
+				<div class="results-count"><h2 class="heading"><%= @statuses.count %> posts in <%= tags_heading(@tag_list) %></h2></div>
+			<% end %>
+			<% if @statuses.any? %>
+				<ol class="status-list">
+					<% if !@tag_list.present? && @user.sticky %>
+						<% content_for :pinned do %>
+							<p>📌 Pinned
+								<% if @user == current_user %>
+									<%= link_to "(Unpin)", sticky_user_article_path(@user,@user.sticky), method: "delete" %>
+								<% end %>
+							</p>
+						<% end %>
+						<%= render @user.sticky.status %>
+						<% content_for :pinned, flush: true do %>
 
-		<div class="listbox">
-			<h3 class="listbox-heading">Recent drawings</h3>
-			<ul class="drawing-list">
-				<%= render @user_drawings, user_page: true %>
-			</ul>
+						<% end %>
+					<% end %>
+					<% @show_pin_option = true if @user == current_user %>
+					<%= render @statuses %>
+				</ol>
+			<% end %>
 		</div>
-	<% end %>
-	<% if @user_scanlations.any? %>
-		<div class="listbox">
-			<h3 class="listbox-heading">Fandoms (scanlations)</h3>
-			<ul class="fandom-list">
-				<% @scanlation_fandoms.each do |fandom| %>
-					<li><%= link_to "#{fandom.name}", user_scanlations_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
-				<% end %>
-			</ul>
-		</div>
-
-		<div class="listbox">
-			<h3 class="listbox-heading">Recent scanlations</h3>
-			<ul class="comic-list">
-				<%= render @user_scanlations, user_page: true %>
-			</ul>
-		</div>
-	<% end %>
-<% end %>
-<%= render 'display' %>
+		<%= render 'layouts/tags_area', path_helper: :user_path %>
+	</div>
+<%# end %>
+<%#= render 'display' %>

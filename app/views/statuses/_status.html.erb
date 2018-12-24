@@ -1,0 +1,19 @@
+<li class="status">
+	<% if status.post_type == "Article" %>
+		<%= render 'statuses/article_listing', article: status.post %>
+	<% else %>
+		<% if status.user==current_user %>
+			<ul class="actions">
+				<li><%= link_to "📝 Edit", edit_user_signal_boost_path(status.user,status.post) %></li>
+				<li><%= link_to "❌ Remove", user_signal_boost_path(status.user,status.post), method: "delete" %></li>
+			</ul>
+		<% end %>
+		<p class="boost-origin">📣 Signal boosted from <%= link_to status.post.origin.user.name,status.post.origin.user %></p>
+		<% if status.post.comment %>
+			<p class="signal-boost-comment"><%= render 'articles/content', content: status.post.comment %></p>
+		<% end %>
+		<div class="status-quotation">
+			<%= render 'statuses/article_listing', article: status.post.origin %>
+		</div>
+	<% end %>
+</li>

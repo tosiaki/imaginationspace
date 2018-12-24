@@ -1,0 +1,7 @@
+<div class="icon-container-status">
+	<% if user && user.icon && user.icon.url %>
+		<%= image_tag user.icon.url, class: "user-icon-status" %>
+	<% else %>
+		<%= image_tag image_url('default_icon.png'), class: "user-icon-status" %>
+	<% end %>
+</div>

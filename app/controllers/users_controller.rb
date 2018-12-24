@@ -1,8 +1,15 @@
 class UsersController < ApplicationController
-  before_action :get_user, only: [:show, :profile, :edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password, :drawings, :comics, :bookmarked_drawings, :bookmarked_comics, :subscribe, :unsubscribe, :subscriptions]
+  before_action :get_user, only: [:show, :old_show, :profile, :edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password, :drawings, :comics, :bookmarked_drawings, :bookmarked_comics, :subscribe, :unsubscribe, :subscriptions, :subscribers]
   before_action :is_current_user, only: [:edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password]
 
+  include Concerns::TagsFunctionality
+
   def show
+    get_associated_tags
+    @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order])
+  end
+
+  def old_show
     @user_comics = @user.comics.paginate(page: 1, per_page: 20)
     @user_drawings = @user.drawings.paginate(page: 1, per_page: 20)
     @user_scanlations = @user.scanlations.paginate(page: 1, per_page: 20)
@@ -100,17 +107,23 @@ class UsersController < ApplicationController
   end
 
   def unsubscribe
-    @subscription = current_user.bookmarks.find_by(bookmarkable: @user)
-    if @subscription.destroy
-      flash[:success] = "Unsubscribed"
-    else
-      flash[:danger] = "Unsubscription unsuccessful"
+    unless @user == current_user
+      @subscription = current_user.bookmarks.find_by(bookmarkable: @user)
+      if @subscription.destroy
+        flash[:success] = "Unsubscribed"
+      else
+        flash[:danger] = "Unsubscription unsuccessful"
+      end
+      redirect_back fallback_location: @user
     end
-    redirect_back fallback_location: @user
   end
 
   def subscriptions
-    @subscriptions = @user.subscriptions.paginate(page: params[:page], per_page: 100)
+    @subscriptions = @user.proper_subscriptions.paginate(page: params[:page], per_page: 100)
+  end
+
+  def subscribers
+    @subscribers = @user.proper_subscribers.paginate(page: params[:page], per_page: 100)
   end
 
   private

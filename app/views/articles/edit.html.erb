@@ -1,0 +1,126 @@
+<% provide(:title, "Edit article") %>
+<div class="submission-form" id="post-drawing-form">
+  <%= form_for(@article, html: { multipart: true }, url: user_article_path(@user,@article)) do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+    <h2 class="heading">Edit article</h2>
+
+    <div class="form-input-box">
+      <h3 class="form-heading">Edit page <%= @page_number %></h3>
+      <%= fields_for :page do |pp| %>
+        <%= pp.hidden_field :page_number %>
+        <ul class="form-inputs clear">
+          <li class="form-element">
+            <div class="field">
+              <div class="form-label">
+                <%= pp.label :page_title %>
+              </div>
+              <div class="form-input">
+                <%= pp.text_field :title %>
+              </div>
+            </div>
+          </li>
+          <li class="form-element">
+            <div class="field">
+              <div class="form-label">
+                <%= pp.label :page_content %>
+              </div>
+              <div class="form-input">
+                <%= pp.text_area :content %>
+              </div>
+            </div>
+          </li>
+          <li class="form-element">
+            <div class="field">
+              <div class="form-label">
+                <%= pp.label :picture, "Add picture(s) to page" %>
+              </div>
+              <div class="form-input">
+                <%= pp.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true %>
+              </div>
+            </div>
+          </li>
+          <li class="form-element">
+            <div class="actions">
+              <%= f.submit "Update" %>
+            </div>
+          </li>
+        </ul>
+      <% end %>
+
+      <h3 class="form-heading">Edit article details</h3>
+      <ul class="form-inputs clear">
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :title %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :title %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :description %>
+            </div>
+            <div class="form-input">
+              <%= f.text_area :description %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :fandoms %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :fandom %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :characters %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :character %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :relationships %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :relationship %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :other_tags %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :other %>
+            </div>
+          </div>
+          <div class="actions">
+            <%= f.submit "Update" %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+</div>
+
+<h2 class="heading">List of pages</h2>
+
+<ul class="edit-page-listing">
+  <% @article.pages.each do |page| %>
+    <li class="page-listing-entry">
+      <span><%= page_title(page) %></span>
+      <ul class="page-management actions">
+        <li><%= link_to "Edit", edit_user_article_path(@user,@article, page_number: page.page_number) %></li>
+        <% if @article.pages.count > 1 %>
+          <li><%= link_to "Delete", remove_page_user_article_path(@user,@article,page.page_number), method: :delete %></li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+</ul>

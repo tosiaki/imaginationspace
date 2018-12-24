@@ -1,0 +1,37 @@
+<% provide(:title, "Edit page") %>
+<div class="submission-form" id="post-drawing-form">
+  <%= form_for(@page, html: { multipart: true }, url: edit_page_user_article_path(@article.user,@article, @page.page_number)) do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+    <h2 class="heading">Edit page</h2>
+
+    <div class="form-input-box">
+      <ul class="form-inputs clear">
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :title %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :title %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :content, "Content" %>
+            </div>
+            <div class="form-input">
+              <%= f.text_area :content %>
+            </div>
+          </div>
+        </li>
+        <li class="form-element">
+          <div class="actions">
+            <%= f.submit "Update" %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+</div>

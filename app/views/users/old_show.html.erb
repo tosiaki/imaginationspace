@@ -1,0 +1,56 @@
+<% provide(:title, @user.name) %>
+<% content_for :user_page_content do %>
+	<%= render 'user_header' %>
+	<% if @user_comics.any? %>
+		<div class="listbox">
+			<h3 class="listbox-heading">Fandoms (comics)</h3>
+			<ul class="fandom-list">
+				<% @comic_fandoms.each do |fandom| %>
+					<li><%= link_to "#{fandom.name}", user_comics_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
+				<% end %>
+			</ul>
+		</div>
+
+		<div class="listbox">
+			<h3 class="listbox-heading">Recent comics</h3>
+			<ul class="comic-list">
+				<%= render @user_comics, user_page: true %>
+			</ul>
+		</div>
+	<% end %>
+	<% if @user_drawings.any? %>
+		<div class="listbox">
+			<h3 class="listbox-heading">Fandoms (drawings)</h3>
+			<ul class="fandom-list">
+				<% @drawing_fandoms.each do |fandom| %>
+					<li><%= link_to "#{fandom.name}", user_drawings_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
+				<% end %>
+			</ul>
+		</div>
+
+		<div class="listbox">
+			<h3 class="listbox-heading">Recent drawings</h3>
+			<ul class="drawing-list">
+				<%= render @user_drawings, user_page: true %>
+			</ul>
+		</div>
+	<% end %>
+	<% if @user_scanlations.any? %>
+		<div class="listbox">
+			<h3 class="listbox-heading">Fandoms (scanlations)</h3>
+			<ul class="fandom-list">
+				<% @scanlation_fandoms.each do |fandom| %>
+					<li><%= link_to "#{fandom.name}", user_scanlations_by_tags_path(id: @user.id, tags: fandom.name) %> (<%= fandom.count %>)</li>
+				<% end %>
+			</ul>
+		</div>
+
+		<div class="listbox">
+			<h3 class="listbox-heading">Recent scanlations</h3>
+			<ul class="comic-list">
+				<%= render @user_scanlations, user_page: true %>
+			</ul>
+		</div>
+	<% end %>
+<% end %>
+<%= render 'display' %>

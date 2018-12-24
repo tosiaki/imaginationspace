@@ -1,6 +1,33 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :tagging do
+    tag nil
+    tagged nil
+  end
+  factory :tag do
+    name "MyText"
+    type "MyText"
+  end
+  factory :article_picture do
+    picture "MyString"
+  end
+  factory :page do
+    article nil
+    content "MyText"
+  end
+  factory :signal_boost do
+    article nil
+  end
+  factory :article do
+    title "MyString"
+    description "MyText"
+    content "MyText"
+  end
+  factory :post do
+    type 1
+    user nil
+  end
   factory :user do
     id { 1 }
     name { 'TestUser' }

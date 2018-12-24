@@ -1,0 +1,4 @@
+<% if article.reply_to %>
+	<%= render 'statuses/reply_above', article: article.reply_to %>
+<% end %>
+<li class="reply"><%= render 'statuses/article_listing', article: article %></li>

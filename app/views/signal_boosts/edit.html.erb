@@ -1,0 +1,40 @@
+<% provide(:title, "Edit signal_boost") %>
+<div class="submission-form" id="post-drawing-form">
+  <%= form_for(@signal_boost, html: { multipart: true }, url: edit_user_signal_boost_path(@user,@signal_boost)) do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+    <h2 class="heading">Edit article details</h2>
+
+    <div class="form-input-box">
+      <ul class="form-inputs clear">
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :comment, "Comment" %>
+            </div>
+            <div class="form-input">
+              <%= f.text_area :comment %>
+            </div>
+          </div>
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :picture, "Additional picture(s)" %>
+            </div>
+            <div class="form-input">
+              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true %>
+            </div>
+          </div>
+        </li>
+        <li class="form-element">
+          <%= render 'statuses/article', article: @article %>
+        </li>
+        <li class="form-element">
+          <div class="actions">
+            <%= f.submit "Update" %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+</div>

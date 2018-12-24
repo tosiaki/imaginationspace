@@ -1,0 +1,159 @@
+<% provide(:title, [@article.title,@article.user.name].reject{|e| e.empty?}.join(' - ')) %>
+<% if @article.reply_to %>
+	<ul class="reply-above">
+		<%= render 'statuses/reply_above', article: @article.reply_to %>
+	</ul>
+<% end %>
+<%= render 'action_menu' %>
+<div class="landmark" id="article-identifier"><%= @article.id %></div>
+
+<div class="info-wrapper">
+	<div class="info-display">
+		<ul>
+			<% if @article.article_tags.any? %>
+				<% if @article.get_tags('fandom').count > 0 %>
+					<li>
+						<div class="info-label">Fandoms:</div>
+						<div class="info">
+							<% @article.get_tags('fandom').each_with_index do |tag, index| %><% if index > 0 %>, <% end %>
+								<%= link_to tag, articles_path(tags: tag), class: "tag" %>
+							<% end %>
+						</div>
+					</li>
+				<% end %>
+				<% if @article.get_tags('character').count > 0 %>
+					<li>
+						<div class="info-label">Characters:</div>
+						<div class="info">
+							<% @article.get_tags('character').each_with_index do |tag, index| %><% if index > 0 %>, <% end %>
+								<%= link_to tag, articles_path(tags: tag), class: "tag" %>
+							<% end %>
+						</div>
+					</li>
+				<% end %>
+				<% if @article.get_tags('relationship').count > 0 %>
+					<li>
+						<div class="info-label">Relationships:</div>
+						<div class="info">
+							<% @article.get_tags('relationship').each_with_index do |tag, index| %><% if index > 0 %>, <% end %>
+								<%= link_to tag, articles_path(tags: tag), class: "tag" %>
+							<% end %>
+						</div>
+					</li>
+				<% end %>
+				<% if @article.get_tags('other').count > 0 %>
+					<li>
+						<div class="info-label">Other tags:</div>
+						<div class="info">
+							<% @article.get_tags('other').each_with_index do |tag, index| %><% if index > 0 %>, <% end %>
+								<%= link_to tag, articles_path(tags: tag), class: "tag" %>
+							<% end %>
+						</div>
+					</li>
+				<% end %>
+			<% end %>
+			<li>
+				<div class="info-label">Stats:</div>
+				<div class="info">
+					<ul class="stats">
+						<li>Published: <%= @article.created_at.strftime(display_time_string) %></li>
+						<% if @article.status.timeline_time > @article.created_at + 1.day %>
+							<li>Updated: <%= @article.status.timeline_time.strftime(display_time_string) %></li>
+						<% end %>
+						<% if @article.kudos_count > 0 %>
+							<li>Kudos: <%= @article.kudos_count %></li>
+						<% end %>
+						<% if @article.signal_boosts_count > 0 %>
+							<li>Signal boosts: <%= @article.signal_boosts_count %></li>
+						<% end %>
+						<% if @article.reply_number > 0 %>
+							<li>Replies: <%= @article.reply_number %></li>
+						<% end %>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="preface">
+	<% if @article.title.present? %>
+		<h2 class="heading"><%= @article.title %></h2>
+	<% end %>
+	<h3 class="byline"><%= link_to @user.name, @article.user %></h3>
+	<div class="complentary">
+		<% if @article.description.present? %>
+			<h3 class="heading">Description:</h3>
+			<blockquote class="user-summary">
+				<%= simple_format sanitize @article.description, tags: %w(strong em a), attributes: %w(href) %>
+			</blockquote>
+		<% end %>
+	</div>
+</div>
+
+<h3 class="landmark page-landmark">Page Management</h3>
+
+<% if @article.user == current_user %>
+	<ul class="actions page-actions">
+		<li>
+			<%= link_to "Edit page", edit_user_article_path(@user,@article, page_number: params[:page_number]) %>
+		</li>
+		<li>
+			<%= link_to "Add page before", add_page_at_user_article_path(@user,@article,@current_page) %>
+		</li>
+		<li>
+			<%= link_to "Add page after", add_page_at_user_article_path(@user,@article,@current_page+1) %>
+		</li>
+		<% if @article.current_max_page > 1 %>
+			<li>
+				<%= link_to "Remove this page", remove_page_user_article_path(@user,@article,@current_page), method: :delete %>
+			</li>
+		<% end %>
+	</ul>
+<% end %>
+
+<div class="preface page-preface">
+	<% if @page.title.present? %>
+		<h3 class="page-title" %><%= @page.title %></h3>
+	<% end %>
+</div>
+<% if @article.pages.count > 1 %>
+	<h3 class="page-indicator"><%= render 'page_indicator', user: @user, article: @article, page: @page %></h3>
+<% end %>
+
+<div class="article-page-display" id="article-page-display">
+	<%= link_to "", (@page.page_number > 1 ? show_page_user_article_path(@user, @article, @page.page_number-1) : ""), class: "arrow " + (@page.page_number == 1 ? "non-" : "") + "arrow-left page-navigator", id: "previous-page-link" %>
+	<div class="article-page-content">
+		<%= render 'content', content: @page.content %>
+	</div>
+	<%= link_to "", (@page.page_number < @article.pages.count ? show_page_user_article_path(@user, @article, @page.page_number+1) : ""), class: "arrow " + (@page.page_number == @article.pages.count ? "non-" : "") + "arrow-right page-navigator", id: "next-page-link" %>
+</div>
+<% if @article.pages.count > 1 %>
+	<h3 class="page-indicator" %><%= render 'page_indicator', user: @user, article: @article, page: @page %></h3>
+<% end %>
+<% if @article.kudos.any? %>
+	<div id="kudos"><p class="kudos"><%= kudos_display(@article).html_safe %></p></div>
+<% end %>
+<div class="action-menu">
+	<ul class="actions">
+		<li><%= link_to "⬆️ Top", user_article_path(@user,@article), anchor: "main" %></li>
+		<% count = @article.signal_boosts.count %>
+		<li><%= link_to "Signal Boost 📣 #{count > 0 ? count : ''}", boost_user_article_path(@article.user, @article) %></li>
+		<% count = @article.kudos.count %>
+		<% if current_user == @user %>
+			<% if count>0 %>
+				<li>Kudos ❤ <%= count > 0 ? count : '' %></li>
+			<% end %>
+		<% else %>
+			<li><%= link_to "Kudos ❤️ #{count > 0 ? count : ''}", kudos_user_article_path(@user, @article), method: :post %></li>
+		<% end %>
+	</ul>
+</div>
+<%= render 'shared/posting_form', post_target: reply_user_article_path(@user, @article), placeholder: "Post reply here..." %>
+<% if @article.replies %>
+	<ul class="reply-thread">
+		<% @article.replies.each do |reply| %>
+			<%= render 'statuses/reply_below', article: reply %>
+		<% end %>
+	</ul>
+<% end %>

@@ -1,0 +1,37 @@
+<%= form_for(@new_article, url: (local_assigns[:post_target].nil? ? articles_path : post_target ), html: { multipart: true }) do |f| %>
+	<div class="main-form-body">
+		<%= fields_for :new_page do |ff| %>
+			<div class="main-posting-area">
+				<%= ff.text_area :content, placeholder: local_assigns[:placeholder].nil? ? "New post here..." : placeholder %>
+				<div class="posting-bottom-line">
+					<div class="file-input">
+						<%= ff.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures" %>
+						<%= fields_for :options do |o| %>
+					       <%= o.label :new_pages, "Put additional images in new pages" %>
+					       <%= o.check_box :new_pages %>
+					    <% end %>
+					</div>
+					<%= f.submit "Post", class: "make-new-post" %>
+				</div>
+			</div>
+		<% end %>
+		<div class="extra-posting-options">
+			<ol class="additional-options-list">
+				<%= fields_for :tags do |t| %>
+					<h2>Optional info</h2>
+					<li><%= f.label :title %><%= f.text_field :title %></li>
+					<li><%= f.label :description %><%= f.text_area :description, id: "description-box" %></li>
+					<li>
+						<ol class="posting-tag-inputs">
+							<li><h4 class="optional-info-heading">Tags</h4></li>
+							<li><%= t.label :fandoms %> <%= t.text_field :fandom %></li>
+							<li><%= t.label :relationships %><%= t.text_field :relationship %></li>
+							<li><%= t.label :characters %><%= t.text_field :character %></li>
+							<li><%= t.label :other_tags %><%= t.text_field :other %></li>
+						</ol>
+					</li>
+				<% end %>
+			</ol>
+		</div>
+	</div>
+<% end %>
