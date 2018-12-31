@@ -63,7 +63,7 @@ function changeToNormal() {
 }
 
 function setSizeFromUrl(pageSize) {
-	if (pageSize=="normal") {
+	if (pageSize==="normal") {
 		changeToNormal();
 	}
 	else {
@@ -104,7 +104,139 @@ function setCurrentState(callback) {
 	}
 }
 
+function load_article_page(data) {
+	$("#article-page-content").html(data.content);
+	$("#next-page-link,.next-page-arrow").attr("href", data.next_url);
+	$("#previous-page-link,previous-page-arrow").attr("href", data.previous_url);
+	$('title').text(data.page_title);
+	if (data.title) {
+		$(".page-title").text(data.title);
+		$(".page-title").show();
+	} else {
+		$(".page-title").hide();
+	}
+	if (data.next_url) {
+		$("#next-page-link").removeClass("non-arrow-right");
+		$("#next-page-link").addClass("arrow-right");
+		$("#image-link").addClass("image-next");
+		$(".next-page-arrow").removeClass("arrow-placeholder")
+	}
+	else {
+		$("#next-page-link").removeClass("arrow-right");
+		$("#next-page-link").addClass("non-arrow-right");
+		$("#image-link").removeClass("image-next");
+		$("#next-page-link, #image-link").attr("href", "#new_comment")
+		$(".next-page-arrow").addClass("arrow-placeholder")
+	}
+	if (data.previous_url) {
+		$("#previous-page-link").removeClass("non-arrow-left");
+		$("#previous-page-link").addClass("arrow-left");
+		$(".previous-page-arrow").removeClass("arrow-placeholder")
+	}
+	else {
+		$("#previous-page-link").removeClass("arrow-left");
+		$("#previous-page-link").addClass("non-arrow-left");
+		$(".previous-page-arrow").addClass("arrow-placeholder")
+	}
+	if (data.next_page_content) {
+		$("#next-page-content").html(data.next_page_content);
+	}
+	if (data.previous_page_content) {
+		$("#previous-page-content").html(data.previous_page_content);
+	}
+	$(".current-page-display").text(data.page_number);
+	$("#edit-page-link").attr("href", data.edit_url);
+	$("#edit-article-link").attr("href", data.edit_url);
+	$("#add-page-before-link").attr("href", data.add_page_before_url);
+	$("#add-page-after-link").attr("href", data.add_page_after_url);
+	$("#remove-page-link").attr("href", data.remove_page_url);
+}
+
+function load_article_page_from_url(page_url) {
+	$.ajax({
+		type: "GET",
+		dataType: "json",
+		url: page_url.split("?")[0]+".json"+(page_url.split("?")[1] ? "?" + page_url.split("?")[1]: ""),
+		success: function(data, status){
+			load_article_page(data);
+		}
+	});
+}
+
+function load_next_article_page(page_url) {
+	current_article = history.state.article;
+	history.pushState({ url: page_url, article: current_article }, null, page_url);
+	load_article_page_from_url(page_url);
+}
+
+function setCurrentArticleState(callback) {
+	if(typeof history.state.url === 'undefined') {
+		current_path = window.location.pathname;
+		$.ajax({
+			type: "GET",
+			dataType: "json",
+			url: current_path,
+			success: function(data, status){
+				history.replaceState({ url: current_path, article: data.article }, null, current_path);
+				callback();
+			}
+		});
+	}
+	else {
+		callback();
+	}
+}
+
 $(document).on('turbolinks:load', function(){
+	$('.page-navigation-select input[type="submit"]').remove();
+	if($("#article-identifier").length) {
+		$(".page-navigator").click(function(e){
+			page_url = $(this).attr('href');
+
+			if($(this).attr('href') != "#new_comment") {
+				e.preventDefault();
+				setCurrentArticleState(function() {
+					load_next_article_page(page_url);
+					$('#article-page-content')[0].scrollIntoView({ behavior: "smooth", block: "start" });
+				});
+			}
+		});
+
+		$("body").keydown(function(e) {
+			function findPos(obj) {
+			    var curtop = 0;
+			    if (obj.offsetParent) {
+			        do {
+			            curtop += obj.offsetTop;
+			        } while (obj = obj.offsetParent);
+			    return [curtop];
+			    }
+			}
+
+			window.scroll(0,findPos(document.getElementById("article-page-content")));
+			if(e.keyCode === 37) {
+				$('#previous-page-link').click();
+			}
+			else if(e.keyCode === 39) {
+				$('#next-page-link').click();
+			}
+		});
+
+		$("#go_to_page").on('change', function(e) {
+			var selectedPage = $("option:selected", this).val();
+			page_url = $(this).attr('href');
+			$.ajax({
+				type: "GET",
+				dataType: "json",
+				url: page_url,
+				data: {go_to_page: selectedPage},
+				success: function(data, status){
+					load_next_article_page(data.destination_url);
+				}
+			});
+		});
+	}
+
 	if($("#comic-identifier").length) {
 		$(".page-navigator").click(function(e){
 			page_url = $(this).attr('href');
@@ -130,10 +262,10 @@ $(document).on('turbolinks:load', function(){
 			}
 
 			window.scroll(0,findPos(document.getElementById("image-view")));
-			if(e.keyCode == 37) {
+			if(e.keyCode === 37) {
 				$('#previous-page-link').click();
 			}
-			else if(e.keyCode == 39) {
+			else if(e.keyCode === 39) {
 				$('#next-page-link').click();
 			}
 		});
@@ -156,14 +288,28 @@ $(document).on('turbolinks:load', function(){
 
 
 $(window).on("popstate", function(e) {
-	comic_identifier = Number($('#comic-identifier').text());
-	setCurrentState(function() {
-		if(typeof e.originalEvent.state.url !== 'undefined' && e.originalEvent.state.comic == comic_identifier ) {
-			load_comic_page_from_url(e.originalEvent.state.url);
-			setSizeFromUrl(e.originalEvent.state.pageSize);
-		}
-		else {
-			location.reload();
-		}
-	});
+	if($("#comic-identifier").length) {
+		comic_identifier = Number($('#comic-identifier').text());
+		setCurrentState(function() {
+			if(typeof e.originalEvent.state.url !== 'undefined' && e.originalEvent.state.comic === comic_identifier ) {
+				load_comic_page_from_url(e.originalEvent.state.url);
+				setSizeFromUrl(e.originalEvent.state.pageSize);
+			}
+			else {
+				location.reload();
+			}
+		});
+	}
+
+	if($("#article-identifier").length) {
+		article_identifier = Number($('#article-identifier').text());
+		setCurrentArticleState(function() {
+			if(typeof e.originalEvent.state.url !== 'undefined' && e.originalEvent.state.article === article_identifier ) {
+				load_article_page_from_url(e.originalEvent.state.url);
+			}
+			else {
+				location.reload();
+			}
+		});
+	}
 });

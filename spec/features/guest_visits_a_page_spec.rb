@@ -6,10 +6,6 @@ RSpec.feature "Guest visits a page", :type => :feature do
       visit '/'
     end
 
-    it 'includes the site name' do
-      expect(page.body).to include("Fancomics")
-    end
-
     it 'includes Home in the title' do
       expect(page.title).to include("Home")
     end

@@ -9,7 +9,7 @@ class BookmarksController < ApplicationController
     else
       flash[:danger] = "Bookmarking unsuccessful"
     end
-    redirect_to @work
+    redirect_back fallback_location: @work
   end
 
   def destroy
@@ -19,7 +19,7 @@ class BookmarksController < ApplicationController
     else
       flash[:danger] = "Unbookmarking unsuccessful"
     end
-    redirect_to @work
+    redirect_back fallback_location: @work
   end
 
   private
@@ -27,8 +27,10 @@ class BookmarksController < ApplicationController
     def find_work
       if params[:work] == 'drawings'
         @work = Drawing.find(params[:id])
-      else
+      elsif params[:work] == 'comics'
         @work = Comic.find(params[:id])
+      else
+        @work = Article.find(params[:id])
       end
     end
 

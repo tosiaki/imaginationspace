@@ -1,0 +1,4 @@
+<ul class="actions" role="navigation">
+	<li><%= nav_item "Edit article", edit_article_path(article) %></li>
+	<li><%= nav_item "Add page", add_page_at_article_path(article,article.next_page) %></li>
+</ul>

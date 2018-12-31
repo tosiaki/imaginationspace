@@ -1,1 +1,1 @@
-<%= sanitize content, tags: %w(b i u strong em a ul ol li p br img), attributes: %w(href style src) %>
+<%= sanitize (simple_format content, sanitize: false), tags: %w(b i u s strong em a ul ol li p br img div span table tr th td figure dd dl dt), attributes: %w(href style src class) %>

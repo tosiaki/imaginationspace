@@ -1,0 +1,30 @@
+<% provide(:title, "Remove article") %>
+<%= render 'shared/flash_messages' %>
+<div class="submission-form" id="post-drawing-form">
+  <%= form_for(@article, html: { multipart: true }, method: :delete) do |f| %>
+
+    <%= render 'shared/error_messages', object: f.object if params[:article] %>
+    <h2 class="heading">Remove article</h2>
+
+    <div class="form-input-box">
+      <ul class="form-inputs clear">
+        <li class="form-element">
+          <div class="field">
+            <div class="form-label">
+              <%= f.label :editing_password %>
+            </div>
+            <div class="form-input">
+              <%= f.text_field :editing_password, value: cookies[:editing_password] %>
+            </div>
+          </div>
+        </li>
+        <li class="form-element">
+          <div class="actions">
+            <%= f.submit "Remove" %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  <% end %>
+
+</div>

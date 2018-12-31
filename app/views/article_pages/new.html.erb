@@ -1,11 +1,29 @@
 <% provide(:title, "Add page to article") %>
 <div class="submission-form" id="post-drawing-form">
-  <%= form_for(@page, html: { multipart: true }, url: add_page_user_article_path(@article.user, @article)) do |f| %>
+  <%= form_for(@page, html: { multipart: true }, url: add_page_article_path(@article)) do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
+  <%= render 'shared/error_messages', object: @article %>
+    <%= render 'articles/edit_menu', article: @article %>
     <h2 class="heading">New page</h2>
 
     <div class="form-input-box">
+      <% unless @article.user %>
+        <%= fields_for :article do |a| %>
+          <ul class="form-inputs clear">
+            <li class="form-element">
+              <div class="field">
+                <div class="form-label">
+                  <%= a.label :editing_password %>
+                </div>
+                <div class="form-input">
+                  <%= a.text_field :editing_password, value: cookies[:editing_password] %>
+                </div>
+              </div>
+            </li>
+          </ul>
+        <% end %>
+      <% end %>
       <ul class="form-inputs clear">
         <li class="form-element">
           <div class="field">
@@ -47,13 +65,13 @@
               <%= f.label :page_number %>
             </div>
             <div class="form-input">
-              <%= f.text_field :page_number, class: "pages", value: params[:page_number] %>
+              <%= f.text_field :page_number, class: "pages", value: params[:page_number] || params[:page][:page_number] %>
             </div>
           </div>
         </li>
         <li class="form-element">
           <div class="actions">
-            <%= f.submit "Post" %>
+            <%= f.submit "Post", class: "submit-button" %>
           </div>
         </li>
       </ul>

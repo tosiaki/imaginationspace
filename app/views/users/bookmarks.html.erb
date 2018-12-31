@@ -1,0 +1,16 @@
+<% provide(:title, "#Bookmarks by {@user.name}") %>
+<%= render 'shared/flash_messages' %>
+<%= render 'user_header' %>
+<div class="statuspage-content">
+	<div class="status-area">
+		<% if @tag_list.present? %>
+			<div class="results-count"><h2 class="heading"><%= @statuses.count %> bookmarks in <%= tags_heading(@tag_list) %></h2></div>
+		<% end %>
+		<% if @statuses.any? %>
+			<ol class="status-list">
+				<%= render @statuses %>
+			</ol>
+		<% end %>
+	</div>
+	<%= render 'layouts/tags_area', path_helper: :bookmarks_user_path %>
+</div>

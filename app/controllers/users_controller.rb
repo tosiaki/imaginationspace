@@ -1,12 +1,16 @@
 class UsersController < ApplicationController
-  before_action :get_user, only: [:show, :old_show, :profile, :edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password, :drawings, :comics, :bookmarked_drawings, :bookmarked_comics, :subscribe, :unsubscribe, :subscriptions, :subscribers]
+  before_action :get_user, only: [:show, :old_show, :profile, :edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password, :drawings, :comics, :bookmarked_drawings, :bookmarked_comics, :bookmarks, :subscribe, :unsubscribe, :subscriptions, :subscribers]
   before_action :is_current_user, only: [:edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password]
 
   include Concerns::TagsFunctionality
 
   def show
+    if @user == current_user
+      @new_article = Article.new
+    end
+    
     get_associated_tags
-    @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order])
+    @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order], page_number: params[:page].present? ? params[:page].to_i : 1)
   end
 
   def old_show
@@ -33,7 +37,7 @@ class UsersController < ApplicationController
   def update
     if @user.update_attributes(edit_user_params)
       flash[:success] = "Profile updated!"
-      redirect_to profile_user_path(@user)
+      redirect_to @user
     else
       render 'edit'
     end
@@ -57,7 +61,7 @@ class UsersController < ApplicationController
   def update_icon
     if @user.update change_icon_params
       flash[:success] = "Icon updated!"
-      redirect_to profile_user_path(@user)
+      redirect_to @user
     else
       render 'change_icon'
     end
@@ -70,7 +74,7 @@ class UsersController < ApplicationController
     if @user.update_with_password(change_password_params)
       bypass_sign_in(@user)
       flash[:success] = "Password updated!"
-      redirect_to profile_user_path(@user)
+      redirect_to @user
     else
       render 'change_password'
     end
@@ -96,25 +100,50 @@ class UsersController < ApplicationController
     list_works 'comics', bookmarks: true
   end
 
+  def bookmarks
+    get_associated_tags
+    @statuses = Status.select_by(tags: @tag_list, bookmarked_by: @user, order: params[:order])
+  end
+
   def subscribe
     @subscription = current_user.bookmarks.build(bookmarkable: @user)
     if @subscription.save
-      flash[:success] = render_to_string(partial: 'now_subscribed')
+      flash[:success] = render_to_string(partial: 'now_subscribed') unless request.format.json?
     else
-      flash[:danger] = "Subscription unsuccessful"
+      flash[:danger] = "Following unsuccessful"
     end
-    redirect_back fallback_location: @user
+    respond_to do |format|
+      format.html do
+        redirect_back fallback_location: @user
+      end
+      format.json do
+        render json: {
+          current_followers: @user.subscribers_count,
+          new_link: unsubscribe_from_user_path(@user)
+        }.to_json
+      end
+    end
   end
 
   def unsubscribe
     unless @user == current_user
       @subscription = current_user.bookmarks.find_by(bookmarkable: @user)
       if @subscription.destroy
-        flash[:success] = "Unsubscribed"
+        flash[:success] = "Unfollowed" unless request.format.json?
       else
-        flash[:danger] = "Unsubscription unsuccessful"
+        flash[:danger] = "Unfollowing unsuccessful"
       end
-      redirect_back fallback_location: @user
+    end
+    respond_to do |format|
+      format.html do
+        redirect_back fallback_location: @user
+      end
+      format.json do
+        render json: {
+          current_followers: @user.subscribers_count,
+          new_link: subscribe_to_user_path(@user)
+        }.to_json
+      end
     end
   end
 

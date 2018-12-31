@@ -1,19 +1,18 @@
 <div class="tags-area">
 	<div class="box-area">
 		<h4 class="heading-label">Order by</h4>
-		<%= form_tag request.path, method: :get do %>
+		<%= form_tag request.path, method: :get, class: "sort-status-form" do %>
 			<%= hidden_field_tag 'tags', params[:tags] if @tag_list.present? %>
-			<%= select_tag 'order', options_for_select([['Update time','updated'], ['Publish time','published'], ['Kudos','kudos'], ['Signal boosts','signal_boosts'], ['Replies','replies']], params[:order]) %>
+			<%= select_tag 'order', options_for_select([['Update time','updated'], ['Publish time','published'], ['Bookmarks','bookmarks'], ['Kudos','kudos'], ['Signal boosts','signal_boosts'], ['Replies','replies'], ['Hits','hits']], params[:order]), class: "sort-status-results" %>
 			<%= submit_tag 'Reorder results' %>
 		<% end %>
 	</div>
-	<% if @fandom_tags.any? || @relationship_tags.any? || @character_tags.any? || @other_tags.any? %>
+	<% if @tag_present %>
 		<div class="box-area">
 			<h4 class="heading-label">Additional tags</h4>
-			<%= render 'shared/tag_listing', path_helper: path_helper, context_label: 'Fandoms', tags: @fandom_tags %>
-			<%= render 'shared/tag_listing', path_helper: path_helper, context_label: 'Relationships', tags: @relationship_tags %>
-			<%= render 'shared/tag_listing', path_helper: path_helper, context_label: 'Characters', tags: @character_tags %>
-			<%= render 'shared/tag_listing', path_helper: path_helper, context_label: 'Other tags', tags: @other_tags %>
+			<% ArticleTag.contexts.each do |context| %>
+				<%= render 'shared/tag_listing', path_helper: path_helper, context_label: context[:name], tags: @tag_hash[context[:context]] %>
+			<% end %>
 		</div>
 	<% end %>
 </div>

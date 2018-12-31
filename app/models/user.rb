@@ -10,8 +10,9 @@ class User < ApplicationRecord
 
   has_many :statuses
   has_many :articles, through: :statuses, source: :post, source_type: "Article"
-  belongs_to :sticky, class_name: "Article"
+  belongs_to :sticky, class_name: "Article", optional: true
   has_many :signal_boosts, through: :statuses, source: :post, source_type: "SignalBoost"
+  has_many :signal_boosted_articles, through: :signal_boosts, source: :origin
 
   has_many :drawings, -> { where authorship: :own }
   has_many :comics, -> { where authorship: :own }
@@ -21,6 +22,7 @@ class User < ApplicationRecord
   has_many :bookmarks, inverse_of: :user
   has_many :bookmarked_drawings, through: :bookmarks, source: :bookmarkable, source_type: 'Drawing'
   has_many :bookmarked_comics, through: :bookmarks, source: :bookmarkable, source_type: 'Comic'
+  has_many :bookmarked_articles, through: :bookmarks, source: :bookmarkable, source_type: 'Article'
   has_many :comments, inverse_of: :user
 
   has_many :subscriptions, through: :bookmarks, source: :bookmarkable, source_type: 'User'

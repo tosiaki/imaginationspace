@@ -1,0 +1,36 @@
+<% if placement==:on_article %>
+	<li><%= link_to "⬆️ Top", anchor: "main" %></li>
+<% end %>
+<% unless placement==:on_article %>
+	<% count = article.reply_number %>
+	<li><%= link_to "Reply 💬 #{count > 0 ? count : ''}", article_path(article, anchor: "new_article") %></li>
+<% end %>
+<% count = article.kudos.count %>
+<% if article.user==current_user %>
+	<% if count>0 %>
+		<li><span class="stat-box">💗 <%= count > 0 ? count : '' %></span></li>
+	<% end %>
+<% else %>
+	<li><%= link_to "Kudos 💗️ #{count > 0 ? count : ''}", kudos_article_path(article), method: :post %></li>
+<% end %>
+<% count = article.signal_boosts.count %>
+<% if user_signed_in? %>
+	<li><%= link_to "Signal Boost 📣 #{count > 0 ? count : ''}", new_signal_boost_path(article) %></li>
+<% elsif count > 0 %>
+	<li><span class="stat-box">📣 <%= count %></span></li>
+<% end %>
+<% count = article.bookmarks.count %>
+<% if user_signed_in? %>
+	<% if current_user.bookmarked_articles.include? article %>
+		<li><%= link_to "Unbookmark ⭐ #{count > 0 ? count : ''}", unbookmark_article_path(article), method: :delete %></li>
+	<% else %>
+		<li><%= link_to "Bookmark ⭐ #{count > 0 ? count : ''}", bookmark_article_path(article), method: :post %></li>
+	<% end %>
+<% elsif count > 0 %>
+	<li><span class="stat-box">⭐ <%= count %></span></li>
+<% end %>
+<% unless placement==:on_article %>
+	<% if article.impressions_count > 0 %>
+		<li><span class="stat-box">👁️ <%= article.impressions_count %></span></li>
+	<% end %>
+<% end %>

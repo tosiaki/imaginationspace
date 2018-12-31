@@ -2,21 +2,29 @@
 	<ul class="actions">
 		<% if @article.pages.count > 1 %>
 			<li>
-				<%= form_tag request.path, method: :get, class: "page-navigation-select" do %>
+				Go to page: <%= form_tag request.path, method: :get, class: "page-navigation-select" do %>
 					<%= select_tag 'go_to_page', options_for_select(@page_options, params[:page_number]) %>
 					<%= submit_tag 'Go' %>
 				<% end %>
 			</li>
 		<% end %>
-		<% if @article.user == current_user %>
+		<% count = @article.bookmarks.count %>
+		<% if user_signed_in? %>
+			<% if current_user.bookmarked_articles.include? @article %>
+				<li><%= link_to "Unbookmark ⭐ #{count > 0 ? count : ''}", unbookmark_article_path(@article), method: :delete %></li>
+			<% else %>
+				<li><%= link_to "Bookmark ⭐ #{count > 0 ? count : ''}", bookmark_article_path(@article), method: :post %></li>
+			<% end %>
+		<% end %>
+		<% if can_edit(@article) %>
 			<li>
-				<%= link_to "Edit article", edit_user_article_path(@user,@article, page_number: params[:page_number]) %>
+				<%= link_to "Edit article", edit_article_path(@article, page_number: params[:page_number]), id: "edit-article-link" %>
 			</li>
 			<li>
-				<%= link_to "Add page", add_page_at_user_article_path(@user,@article,@article.next_page) %>
+				<%= link_to "Add page", add_page_at_article_path(@article,@article.next_page) %>
 			</li>
 			<li>
-				<%= link_to "Delete article", user_article_path(@user,@article), method: "delete" %>
+				<%= link_to "Delete article", @article, method: :delete, class: "deletion-link" %>
 			</li>
 		<% end %>
 	</ul>

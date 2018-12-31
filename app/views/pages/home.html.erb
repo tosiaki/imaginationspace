@@ -8,9 +8,7 @@
 <!-- <div class="module">
 	<h3 class="heading">Top tags</h3>
 </div> -->
-<% if user_signed_in? %>
-	<%= render 'shared/posting_form' %>
-<% end %>
+<%= render 'shared/posting_form' %>
 <% if @feed_statuses.any? %>
 	<div class="module">
 		<h3 class="heading">Latest from your followed users:</h3>

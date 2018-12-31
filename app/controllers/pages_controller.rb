@@ -1,11 +1,14 @@
 class PagesController < ApplicationController
+
+  include Concerns::GuestFunctions
+
   def home
     if user_signed_in?
-      @feed_statuses = current_user.feed_statuses
-      @new_article = Article.new
+      @feed_statuses = current_user.feed_statuses.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
     else
-      @feed_statuses = Status.all
+      @feed_statuses = Status.all.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
     end
+    @new_article = Article.new(guest_params)
   end
 
   def old_home

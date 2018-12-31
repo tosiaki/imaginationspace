@@ -1,6 +1,6 @@
 <% provide(:title, "Edit page") %>
 <div class="submission-form" id="post-drawing-form">
-  <%= form_for(@page, html: { multipart: true }, url: edit_page_user_article_path(@article.user,@article, @page.page_number)) do |f| %>
+  <%= form_for(@page, html: { multipart: true }, url: edit_page_article_path(@article, @page.page_number)) do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
     <h2 class="heading">Edit page</h2>

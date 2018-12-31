@@ -1,19 +1,37 @@
-<% unless @user==article.user %>
+<% if article.user %>
+	<% if article.attribution_tags.present? || @user!=article.user %>
+		<h4 class="heading byline status-byline">
+			<% unless @user==article.user %>
+				<%= link_to render('shared/user_icon_status', user: article.user), article.user, class: 'image-link' %>
+				<span class="tag-wrapper"><%= link_to article.user.name, article.user, class: 'user-name-listing user-profile-link' %></span>
+				<% if user_signed_in? && !current_user.is_subscribed_to?(article.user) %>
+					<span class="actions status-follow-action" data-user-id="<%= article.user.id %>"><%= link_to "Follow", subscribe_to_user_path(article.user), method: :post, class: "status-listing-follow-button", data: { 'link-user-id': article.user.id } %></span>
+				<% end %>
+			<% end %>
+			<% if article.attribution_tags.any? %>
+				<% article.attribution_tags.each do |tag| %>
+					<span class="tag-wrapper"><%= link_to tag.name, articles_path(tags: tag.name), class: 'user-name-listing' %></span>
+				<% end %>
+			<% end %>
+		</h4>
+	<% end %>
+<% else %>
 	<h4 class="heading byline status-byline">
-		<%= link_to render('shared/user_icon_status', user: article.user), article.user, class: 'image-link' %>
-		<%= link_to article.user.name, article.user, class: 'user-name-listing' %>
-		<% if user_signed_in? && !current_user.is_subscribed_to?(article.user) %>
-			<span class="actions"><%= link_to "Follow", subscribe_to_user_path(article.user), method: :post %></span>
+		<span class='user-name-listing tag-wrapper'><%= article.authored_by %></span>
+		<% if article.attribution_tags.any? %>
+			<% article.attribution_tags.each do |tag| %>
+				<span class="tag-wrapper"><%= link_to tag.name, articles_path(tags: tag.name), class: 'user-name-listing' %></span>
+			<% end %>
 		<% end %>
 	</h4>
 <% end %>
-<% if article.title or article.pages.count>1 or article.fandom_tags.any? %>
+<% if article.title.present? or article.pages.count>1 or article.fandom_tags.any? %>
 	<div class='article-listing-heading'>
-		<% if article.title %>
-			<b><%= link_to article.title, user_article_path(article.user,article, {anchor: (article.reply_to ? 'article-page-display' : nil)}.compact), class: "title-link" %></b>
+		<% if article.title.present? %>
+			<b><%= link_to article.title, article_path(article, anchor: article.reply_to ? 'article-page-display' : nil), class: "title-link" %></b>
 		<% end %>
 		<% if article.pages.count>1 %>
-			Page 1/<%= article.pages.count %> <%= link_to "Next page ➡️", show_page_user_article_path(article.user,article,2, {anchor: (article.reply_to ? 'article-page-display' : nil)}.compact) %>
+			Page 1/<%= article.pages.count %> <%= link_to "Next page ➡️", show_page_article_path(article,2, anchor: article.reply_to ? 'article-page-display' : nil) %>
 		<% end %>
 		<% fandoms = article.fandom_tags %>
 		<% if fandoms.any? %>

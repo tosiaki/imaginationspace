@@ -1,10 +1,4 @@
 Rails.application.routes.draw do
-  get 'signal_boosts/new'
-  get 'article_pages/edit'
-  get 'articles/show'
-  get 'statuses/create'
-  get 'statuses/edit'
-  get 'statuses/destroy'
   get 'pages/home'
   root 'pages#home'
   get 'old_home', to: 'pages#old_home'
@@ -40,37 +34,44 @@ Rails.application.routes.draw do
       delete :unsubscribe, as: :unsubscribe_from
       get :subscriptions
       get :subscribers
+      get :bookmarks
       get :preferences
       patch :preferences, to: 'users#update_preferences'
       get 'old_show'
     end
-    resources :articles, only: [:show, :index, :edit, :update, :destroy] do
-      member do
-        get 'page/:page_number', action: :show, as: :show_page
-        get 'edit/:page_number', to: 'article_pages#edit', as: :edit_page
-        patch 'edit/:page_number', to: 'article_pages#update'
-        get 'add_page', to: 'article_pages#new', as: :add_page
-        get 'add_page/:page_number', to: 'article_pages#new', as: :add_page_at
-        post 'add_page', to: 'article_pages#create'
-        delete 'remove_page/:page_number', to: 'article_pages#destroy', as: :remove_page
-
-        get 'boost', to: 'signal_boosts#new'
-        post 'boost', to: 'signal_boosts#create'
-
-        post 'sticky', to: 'sticky#create'
-        delete 'sticky', to: 'sticky#destroy'
-
-        post 'kudos', to: 'kudos#create'
-
-        post 'reply', to: 'articles#create_reply'
-      end
-    end
-    resources :signal_boosts, path: :boosts, only: [:edit, :update, :destroy]
+    resources :articles, only: :index
   end
 
   resources :statuses, only: :create
 
-  resources :articles, only: [:show, :create, :edit, :update, :destroy, :index]
+  resources :articles, only: [:show, :create, :edit, :update, :destroy, :index] do
+    member do
+      get 'page/:page_number', action: :show, as: :show_page
+      get 'add_page', to: 'article_pages#new', as: :add_page
+      get 'add_page/:page_number', to: 'article_pages#new', as: :add_page_at
+      post 'add_page', to: 'article_pages#create'
+      # patch 'merge_page/:page_number', to: 'article_pages#merge'
+      delete 'remove_page/:page_number', to: 'article_pages#destroy', as: :remove_page
+
+      resources :signal_boosts, only: [:new, :create]
+
+      post 'bookmark', to: 'bookmarks#create'
+      delete 'unbookmark', to: 'bookmarks#destroy'
+
+      post 'sticky', to: 'sticky#create'
+      delete 'sticky', to: 'sticky#destroy'
+
+      post 'kudos', to: 'kudos#create'
+
+      post 'reply', to: 'articles#create', defaults: { reply: true }
+    end
+  end
+  
+  resources :signal_boosts, only: [:edit, :update, :destroy]
+
+  resources :article_tags, only: :index
+
+  mount Shrine.presign_endpoint(:cache) => "/s3/params"
 
   resources :drawings, only: [:new, :create, :show, :index, :edit, :update, :destroy], parent: "Drawing" do
     resources :comments, only: :create

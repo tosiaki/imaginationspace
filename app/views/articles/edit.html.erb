@@ -1,11 +1,28 @@
 <% provide(:title, "Edit article") %>
+<%= render 'shared/flash_messages' %>
 <div class="submission-form" id="post-drawing-form">
-  <%= form_for(@article, html: { multipart: true }, url: user_article_path(@user,@article)) do |f| %>
+  <%= form_for(@article, html: { multipart: true }) do |f| %>
 
-  <%= render 'shared/error_messages', object: f.object %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <%= render 'shared/error_messages', object: @page %>
+    <%= render 'edit_menu', article: @article %>
     <h2 class="heading">Edit article</h2>
 
     <div class="form-input-box">
+      <% unless @article.user %>
+        <ul class="form-inputs clear">
+          <li class="form-element">
+            <div class="field">
+              <div class="form-label">
+                <%= f.label :editing_password %>
+              </div>
+              <div class="form-input">
+                <%= f.text_field :editing_password, value: cookies[:editing_password] %>
+              </div>
+            </div>
+          </li>
+        </ul>
+      <% end %>
       <h3 class="form-heading">Edit page <%= @page_number %></h3>
       <%= fields_for :page do |pp| %>
         <%= pp.hidden_field :page_number %>
@@ -42,7 +59,7 @@
           </li>
           <li class="form-element">
             <div class="actions">
-              <%= f.submit "Update" %>
+              <%= f.submit "Update", class: "submit-button" %>
             </div>
           </li>
         </ul>
@@ -69,38 +86,35 @@
           </div>
           <div class="field">
             <div class="form-label">
-              <%= f.label :fandoms %>
+              <%= f.label :planned_pages, "Planned number of pages" %>
             </div>
             <div class="form-input">
-              <%= f.text_field :fandom %>
+              <%= f.text_field :planned_pages, class: "pages" %>
             </div>
           </div>
           <div class="field">
             <div class="form-label">
-              <%= f.label :characters %>
+              <%= f.label :media %>
             </div>
             <div class="form-input">
-              <%= f.text_field :character %>
+              <span class="media-option"><%= f.radio_button :media, 'Status', checked: @article.media.name=='Status' %> <%= f.label :status %></span>
+              <span class="media-option"><%= f.radio_button :media, 'Story', checked: @article.media.name=='Story' %> <%= f.label :story %></span>
+              <span class="media-option"><%= f.radio_button :media, 'Drawing(s)', checked: @article.media.name=='Drawing(s)' %> <%= f.label :drawing, "Drawing(s)" %></span>
+              <span class="media-option"><%= f.radio_button :media, 'Comic', checked: @article.media.name=='Comic' %> <%= f.label :comic %></span>
             </div>
           </div>
-          <div class="field">
-            <div class="form-label">
-              <%= f.label :relationships %>
+          <% ArticleTag.tag_box_contexts.each do |context| %>
+            <div class="field">
+              <div class="form-label">
+                <%= f.label context[:name] %>
+              </div>
+              <div class="form-input">
+                <%= f.text_field context[:context], class: "tags-input-field", data: { tagify: true, context: context[:context] } %>
+              </div>
             </div>
-            <div class="form-input">
-              <%= f.text_field :relationship %>
-            </div>
-          </div>
-          <div class="field">
-            <div class="form-label">
-              <%= f.label :other_tags %>
-            </div>
-            <div class="form-input">
-              <%= f.text_field :other %>
-            </div>
-          </div>
+          <% end %>
           <div class="actions">
-            <%= f.submit "Update" %>
+            <%= f.submit "Update", class: "submit-button" %>
           </div>
         </li>
       </ul>
@@ -116,9 +130,9 @@
     <li class="page-listing-entry">
       <span><%= page_title(page) %></span>
       <ul class="page-management actions">
-        <li><%= link_to "Edit", edit_user_article_path(@user,@article, page_number: page.page_number) %></li>
+        <li><%= link_to "Edit", edit_article_path(@article, page_number: page.page_number) %></li>
         <% if @article.pages.count > 1 %>
-          <li><%= link_to "Delete", remove_page_user_article_path(@user,@article,page.page_number), method: :delete %></li>
+          <li><%= link_to "Delete", remove_page_article_path(@article,page.page_number), method: :delete %></li>
         <% end %>
       </ul>
     </li>

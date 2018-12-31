@@ -4,7 +4,7 @@ class ArticleTag < ApplicationRecord
 
   validates :name, presence: true
 
-  def self.associate_tags(context: nil, tags: nil, user: nil, exclusions: nil)
+  def self.associate_tags(context: nil, tags: nil, user: nil, bookmarked_by: nil, exclusions: nil)
     article_tags = Arel::Table.new(:article_tags)
     relation = article_tags.project(article_tags[Arel.sql("*")],article_tags[:id].count.as('count'))
 
@@ -34,6 +34,10 @@ class ArticleTag < ApplicationRecord
 
       relation = relation.where(status[:user_id].eq(user[:id]))
     end
+    if bookmarked_by
+      bookmarks = Arel::Table.new(:bookmarks)
+      relation = relation.join(bookmarks).on(bookmarks[:bookmarkable_id].eq(article[:id]).and(bookmarks[:bookmarkable_type].eq("Article"))).where(bookmarks[:user_id].eq(bookmarked_by.id))
+    end
     relation = relation.group(article_tags[:id]).order(article_tags[:id].count.desc)
     self.find_by_sql(relation.to_sql)
   end
@@ -48,4 +52,33 @@ class ArticleTag < ApplicationRecord
   #   end
   #   current_scope.group(:id).order('COUNT(*) DESC')
   # end
+
+  def self.contexts
+    [
+      { context: 'media', name: "Media"},
+      { context: 'fandom', name: "Fandoms"},
+      { context: 'relationship', name: "Relationships"},
+      { context: 'character', name: "Characters"},
+      { context: 'other', name: "Other tags"},
+      { context: 'attribution', name: "Attribution"}
+    ]
+  end
+
+  def self.tag_box_contexts
+    @contexts = self.contexts.reject{ |context| context[:name] == "Media"}
+  end
+
+  def self.context_strings
+    @strings ||= self.contexts.map{|c| c[:context]}
+  end
+
+  def self.context_names
+    @names ||= self.contexts.map{|c| c[:name]}
+  end
+
+  scope :find_tags, ->(starting_with:, context: nil) do
+    result_scope = where("name LIKE ?", "#{sanitize_sql_like(starting_with)}%").joins(:articles)
+    result_scope = result_scope.where(context: context) if context
+    result_scope.select("article_tags.name, COUNT(articles.id) as article_count").group(:article_tag_id).order("article_count DESC").limit(20)
+  end
 end

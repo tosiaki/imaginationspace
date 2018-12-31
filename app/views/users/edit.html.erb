@@ -1,59 +1,60 @@
 <% content_for :title, "Edit User" %>
-<% content_for :user_page_content do %>
-	<div class="edit-user-form-header">
-		<h3 class="heading">Edit my profile</h3>
-		<%= render 'user_setting_navigation' %>
-	</div>
+<%= render 'shared/flash_messages' %>
+<%= render 'shared/error_messages', object: @user %>
 
-	<div class="submission-form" id="user-profile-form">
+<%= render 'user_header' %>
+<div class="edit-user-form-header">
+	<h3 class="heading">Edit my profile</h3>
+	<%= render 'user_setting_navigation' %>
+</div>
 
-		<%= form_for(@user) do |f| %>
-		    <div class="form-input-box">
-		    	<ul class="form-inputs">
-	        		<li class="form-element">
-						<div class="field">
-	            			<div class="form-label">
-								<%= f.label :name %>
-							</div>
-	            			<div class="form-input">
-								<%= f.text_field :name %>
-								<%= render 'shared/character_counter', max_length: User.validators_on(:name)[1].options[:maximum], counter_id: "name_counter", input_field: "input#user_name" %>
-							</div>
+<div class="submission-form" id="user-profile-form">
+
+	<%= form_for(@user) do |f| %>
+	    <div class="form-input-box">
+	    	<ul class="form-inputs">
+        		<li class="form-element">
+					<div class="field">
+            			<div class="form-label">
+							<%= f.label :name %>
 						</div>
-					</li>
-
-	        		<li class="form-element">
-						<div class="field">
-	            			<div class="form-label">
-								<%= f.label :title %>
-							</div>
-	            			<div class="form-input">
-								<%= f.text_field :title %>
-								<%= render 'shared/character_counter', max_length: User.validators_on(:title)[0].options[:maximum], counter_id: "title_counter", input_field: "input#user_title" %>
-							</div>
+            			<div class="form-input">
+							<%= f.text_field :name %>
+							<%= render 'shared/character_counter', max_length: User.validators_on(:name)[1].options[:maximum], counter_id: "name_counter", input_field: "input#user_name" %>
 						</div>
-					</li>
+					</div>
+				</li>
 
-	        		<li class="form-element">
-						<div class="field">
-	            			<div class="form-label">
-								<%= f.label :bio, "About me" %>
-							</div>
-	            			<div class="form-input">
-								<%= f.text_area :bio %>
-								<%= render 'shared/character_counter', max_length: User.validators_on(:bio)[0].options[:maximum], counter_id: "bio_counter", input_field: "textarea#user_bio" %>
-							</div>
+        		<li class="form-element">
+					<div class="field">
+            			<div class="form-label">
+							<%= f.label :title %>
 						</div>
-					</li>
+            			<div class="form-input">
+							<%= f.text_field :title %>
+							<%= render 'shared/character_counter', max_length: User.validators_on(:title)[0].options[:maximum], counter_id: "title_counter", input_field: "input#user_title" %>
+						</div>
+					</div>
+				</li>
 
-	        		<li class="form-element">
-						<div class="actions">
-				    		<%= f.submit "Update" %>
-				    	</div>
-				    </li>
-				</ul>
-			</div>
-		<% end %>
-	</div>
-<% end %>
-<%= render 'display' %>
+        		<li class="form-element">
+					<div class="field">
+            			<div class="form-label">
+							<%= f.label :bio, "About me" %>
+						</div>
+            			<div class="form-input">
+							<%= f.text_area :bio %>
+							<%= render 'shared/character_counter', max_length: User.validators_on(:bio)[0].options[:maximum], counter_id: "bio_counter", input_field: "textarea#user_bio" %>
+						</div>
+					</div>
+				</li>
+
+        		<li class="form-element">
+					<div class="actions">
+			    		<%= f.submit "Update" %>
+			    	</div>
+			    </li>
+			</ul>
+		</div>
+	<% end %>
+</div>

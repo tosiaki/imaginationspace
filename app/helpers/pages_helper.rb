@@ -6,4 +6,12 @@ module PagesHelper
       page.title
     end
   end
+
+  def head_title(article, page)
+    [article.title,page.title,article.authored_by].reject{|e| e.blank?}.join(' - ')
+  end
+
+  def full_title_article(article,page)
+    full_title head_title(article,page)
+  end
 end

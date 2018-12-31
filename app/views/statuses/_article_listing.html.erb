@@ -1,40 +1,25 @@
 <div class="datetime">
 	<ul class="actions">
-		<% if article.user==current_user %>
+		<% if can_edit(article) %>
 			<% if @show_pin_option %>
-				<li><%= link_to "📌 Pin to top", sticky_user_article_path(article.user,article), method: "post" %></li>
+				<li><%= link_to "📌 Pin to top", sticky_article_path(article), method: "post" %></li>
 			<% end %>
-			<li><%= link_to "📝 Edit", edit_user_article_path(article.user,article) %></li>
-			<li><%= link_to "❌ Remove", user_article_path(article.user,article), method: "delete" %></li>
+			<li><%= link_to "📝 Edit", edit_article_path(article) %></li>
+			<li><%= link_to "❌ Remove", article, method: "delete", class: "deletion-link" %></li>
 		<% end %>
-		<li>
-			<% if article.reply_to %>
-				<%= link_to "👉 #{article.status.updated_at.strftime("%d %b %Y")}", user_article_path(article.user,article, anchor: "article-page-display") %>
-			<% else %>
-				<%= link_to "👉 #{article.status.updated_at.strftime("%d %b %Y")}", user_article_path(article.user,article) %>
-			<% end %>
-		</li>
+		<li><%= link_to "👉 #{article.status.updated_at.strftime("%d %b %Y")}", article_path(article, anchor: article.reply_to ? "article-page-display" : nil) %></li>
 	</ul>
 </div>
 <%= yield :pinned %>
 <% if article.reply_to %>
-	<div>↩️ Reply to <%= link_to article.reply_to.user.name, article.reply_to.user %></div>
+	<div>↩️ Reply to <%= link_to article.reply_to.authored_by, article.reply_to.user %></div>
 <% end %>
 <%= render 'statuses/article', article: article %>
+<% if article.pages.count>1 %>
+	Page 1/<%= article.pages.count %> <%= link_to "Next page ➡️", show_page_article_path(article,2, anchor: article.reply_to ? 'article-page-display' : nil) %>
+<% end %>
 <div class="action-menu">
 	<ul class="actions left-actions">
-		<% count = article.reply_number %>
-		<li><%= link_to "Reply 💬 #{count > 0 ? count : ''}", user_article_path(article.user, article, anchor: "new_article") %></li>
-		<% count = article.signal_boosts.count %>
-		<li><%= link_to "Signal Boost 📣 #{count > 0 ? count : ''}", boost_user_article_path(article.user, article) %></li>
-		<% if article.user==current_user %>
-			<% count = article.kudos.count %>
-			<% if count>0 %>
-				<li>Kudos ❤ <%= count > 0 ? count : '' %></li>
-			<% end %>
-		<% else %>
-			<% count = article.kudos.count %>
-			<li><%= link_to "Kudos ❤️ #{count > 0 ? count : ''}", kudos_user_article_path(article.user, article), method: :post %></li>
-		<% end %>
+		<%= render 'shared/article_actions', article: article, placement: :on_status %>
 	</ul>
 </div>

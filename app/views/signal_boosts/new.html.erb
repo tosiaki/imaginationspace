@@ -1,6 +1,7 @@
 <% provide(:title, "Make signal boost") %>
+<%= render 'shared/flash_messages' %>
 <div class="submission-form" id="post-drawing-form">
-  <%= form_for(@signal_boost, html: { multipart: true }, url: boost_user_article_path(@article.user, @article)) do |f| %>
+  <%= form_for(@signal_boost, html: { multipart: true }, url: signal_boosts_path(@article)) do |f| %>
 
   <%= render 'shared/error_messages', object: f.object %>
     <h2 class="heading">Signal boost</h2>
@@ -26,9 +27,6 @@
           </div>
         </li>
         <li class="form-element">
-        	<%= render 'statuses/article', article: @article %>
-        </li>
-        <li class="form-element">
           <div class="actions">
             <%= f.submit "Signal boost" %>
           </div>
@@ -37,4 +35,8 @@
     </div>
   <% end %>
 
+</div>
+
+<div class="status-quotation">
+  <%= render 'statuses/article_listing', article: @article %>
 </div>

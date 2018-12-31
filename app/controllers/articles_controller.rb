@@ -1,21 +1,17 @@
 class ArticlesController < ApplicationController
-  before_action :get_article, only: [:show, :edit, :update, :destroy]
-  before_action :get_page, only: :show
+  before_action :check_user, only: [:edit, :update, :destroy]
 
   include Concerns::TagsFunctionality
   include Concerns::PictureFunctions
+  include Concerns::GuestFunctions
+
+  impressionist actions: [:show]
 
   def create
-    article = Article.new(article_params)
-    article.pages.build(new_article_params)
-    article.max_pages = 1
-    current_user.statuses.create(post: article, timeline_time: Time.now)
-
-    ['fandom', 'character', 'relationship', 'other'].each do |context|
-      if params[:tags][context.to_sym]
-        article.set_tags(params[:tags][context.to_sym],context)
-      end
-    end
+    @new_article = Article.new(article_params)
+    @new_page = @new_article.pages.build(new_article_params)
+    @new_article.max_pages = 1
+    @new_article.reply_to = Article.find(params[:id]) if params[:reply]
 
     if params[:new_page][:picture]
       page_number=1
@@ -23,53 +19,75 @@ class ArticlesController < ApplicationController
         if index > 0
           if params[:options][:new_pages] == '1'
             page_number += 1
-            article.add_page(page_number: page_number)
+            @new_page = @new_article.pages.build(page_number: page_number, content: '')
           end
         end
-        add_picture_to_page(picture, article, page_number)
-      end
-    end
-    redirect_to current_user
-  end
-
-  def create_reply
-    article = Article.new(article_params)
-    article.pages.build(new_article_params)
-    article.max_pages = 1
-    article.reply_to = Article.find(params[:id])
-    current_user.statuses.create(post: article, timeline_time: Time.now)
-
-    ['fandom', 'character', 'relationship', 'other'].each do |context|
-      if params[:tags][context.to_sym]
-        article.set_tags(params[:tags][context.to_sym],context)
+        add_picture_to_page(picture, @new_page)
       end
     end
 
-    if params[:new_page][:picture]
-      page_number=1
-      params[:new_page][:picture].each_with_index do |picture, index|
-        if index > 0
-          if params[:options][:new_pages] == '1'
-            page_number += 1
-            article.add_page(page_number: page_number)
-          end
+    if user_signed_in?
+      new_status = current_user.statuses.build(post: @new_article, timeline_time: Time.now)
+    else
+      new_status = Status.new(post: @new_article, timeline_time: Time.now)
+      cookies.permanent[:display_name] = @new_article.display_name
+    end
+
+    if new_status.save
+      ArticleTag.context_strings.each do |context|
+        if params[:tags][context.to_sym]
+          @new_article.set_tags(params[:tags][context.to_sym],context)
         end
-        add_picture_to_page(picture, article, page_number)
       end
+
+      @new_article.reply_to.add_reply if params[:reply]
+    else
+      flash[:danger] = 'New post requires content.'
     end
-    article.reply_to.add_reply
-    redirect_to user_article_path(article.user,article)
+    redirect_back fallback_location: @new_article
   end
 
 
-  def show
+  def show(submitted_new_article=false)
+    @article = Article.find(params[:id])
+    @page = @article.pages.find_by(page_number: current_page)
     if params[:go_to_page]
-      redirect_to show_page_user_article_path(@user, @article, params[:go_to_page])
-    end
-    @current_page = (params[:page_number] || 1).to_i
-    @new_article = Article.new
-    if @article.pages.count > 1
-      @page_options = @article.pages.map(&:display_title).zip 1..@article.pages.count
+      if request.format.json?
+        render json: {
+          destination_url: (show_page_article_path(@article, params[:go_to_page]) if params[:go_to_page])
+        }.to_json
+      else
+        redirect_to show_page_article_path(@article, params[:go_to_page])
+      end
+    else
+      @current_page = (params[:page_number] || 1).to_i
+
+      @new_article = Article.new(guest_params) unless submitted_new_article
+      if @article.pages.count > 1
+        @page_options = @article.pages.map(&:display_title).zip 1..@article.pages.count
+      end
+
+      respond_to do |format|
+        format.html
+        format.json do
+          render json: {
+            article: @article.id,
+            page_title: [@article.title,@page.title,@article.authored_by].reject{|e| e.blank?}.join(' - ') + " | Imagination Space",
+            page_number: @page.page_number,
+            title: @page.title,
+            content: (render_to_string partial: 'articles/content', formats: :html, locals: {content: @page.content}),
+            previous_page_content: (render_to_string partial: 'articles/content', formats: :html, locals: {content: @page.previous_page.content} if @page.page_number > 1),
+            next_page_content: (render_to_string partial: 'articles/content', formats: :html, locals: {content: @page.next_page.content} if @page.page_number < @article.pages.count),
+            previous_url: (show_page_article_path(@article, @page.page_number-1) if @page.page_number > 1 ),
+            next_url: (show_page_article_path(@article, @page.page_number+1) if @page.page_number < @article.pages.count),
+            article_pages: @article.pages.count,
+            edit_url: edit_article_path(@article, page_number: params[:page_number]),
+            add_page_before_url: add_page_at_article_path(@article,@page.page_number),
+            add_page_after_url: add_page_at_article_path(@article,@page.page_number+1),
+            remove_page_url: remove_page_article_path(@article,@page.page_number)
+          }.reject{|key, value| value.nil?}.to_json
+        end
+      end
     end
   end
 
@@ -79,48 +97,51 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    @article.update_attributes(article_params)
     @page_number = params[:page][:page_number] || 1
     @page = @article.pages.find_by(page_number: @page_number)
-    @page.update_attributes(article_page_params)
 
-    params[:page][:picture].each do |picture|
-      add_picture_to_page(picture, @article, @page_number)
-    end
-
-    redirect_to show_page_user_article_path(@article.user,@article,page_number: @page_number)
-
-    ['fandom', 'character', 'relationship', 'other'].each do |context|
-      if params[:article][context.to_sym]
-        @article.set_tags(params[:article][context.to_sym],context)
+    if @article.update_attributes(article_params) && @page.update_attributes(article_page_params)
+      ArticleTag.context_strings.each do |context|
+        if params[:article][context.to_sym]
+          @article.set_tags(params[:article][context.to_sym],context)
+        end
       end
+
+      if params[:page][:picture]
+        params[:page][:picture].each do |picture|
+          add_picture_to_article(picture, @article, @page_number)
+        end
+      end
+
+      redirect_to show_page_article_path(@article,page_number: @page_number)
+    else
+      render 'edit'
     end
   end
 
   def destroy
-    if @article.reply_to
-      decrease_reply_number(@article.reply_to, 1+@article.reply_number)
+    unless @article.user
+      @article.editing_password = params[:article] ? params[:article][:editing_password] : cookies[:editing_password]
     end
-    @article.destroy
-    redirect_to @user
+    if @article.destroy
+      redirect_back fallback_location: @article.user || @article.reply_to || Rails.root
+    end
   end
 
   def index
     get_associated_tags
-    @statuses = Status.select_by(tags: @tag_list)
-    if user_signed_in?
-      @new_article = Article.new
-    end
+    @statuses = Status.select_by(tags: @tag_list, order: params[:order], page_number: params[:page].present? ? params[:page].to_i : 1)
+    @new_article = Article.new(guest_params)
   end
 
   private
-    def get_article
-      @user = User.find(params[:user_id])
-      @article = @user.articles.find(params[:id])
-    end
-
-    def get_page
-      @page = @article.pages.find_by(page_number: current_page)
+    def check_user
+      if user_signed_in?
+        @article = current_user.articles.find(params[:id])
+      else
+        @article = Article.joins(:status).where(statuses: {user_id: nil}).find(params[:id])
+      end
+      redirect_to Article.find(params[:id]) unless @article
     end
 
     def current_page
@@ -129,7 +150,7 @@ class ArticlesController < ApplicationController
     end
 
     def article_params
-      params.require(:article).permit(:title,:description)
+      params.require(:article).permit(:title,:description,:planned_pages,:display_name,:editing_password)
     end
 
     def new_article_params

@@ -6,28 +6,31 @@
 				<% if user_signed_in? && current_user != @user %>
 					<span class="actions">
 						<% if current_user.is_subscribed_to? @user %>
-							<%= link_to "Unfollow", unsubscribe_from_user_path(@user), method: :delete %>
+							<%= link_to "Unfollow", unsubscribe_from_user_path(@user), method: :delete, class: "follow-action-link" %>
 						<% else %>
-							<%= link_to "Follow", subscribe_to_user_path(@user), method: :post %>
+							<%= link_to "Follow", subscribe_to_user_path(@user), method: :post, class: "follow-action-link" %>
 						<% end %>
 					</span>
 				<% end %>
-				<% if @user.subscribers_count > 0 || @user.subscriptions_count > 0 %>
-					<% if @user.subscribers_count > 0 %>
-						<span class="subscribing">
-							<%= link_to "Followers #{@user.subscribers_count}", subscribers_user_path(@user) %>
-						</span>
+				<span class="user-menu<%= " hidden-user-option" if @user.subscribers_count == 0 %>" id="follower-count-area">
+					<%= link_to subscribers_user_path(@user) do %>
+						Followers <span class="current-followers-count"><%= @user.subscribers_count %></span>
 					<% end %>
-					<% if @user.subscriptions_count > 0 %>
-						<span class="subscribing">
-							<%= link_to "Following #{@user.subscriptions_count}", subscriptions_user_path(@user) %>
-						</span>
-					<% end %>
+				</span>
+				<% if @user.subscriptions_count > 0 %>
+					<span class="user-menu">
+						<%= link_to "Following #{@user.subscriptions_count}", subscriptions_user_path(@user) %>
+					</span>
+				<% end %>
+				<% if @user.bookmarked_articles.count > 0 %>
+					<span class="user-menu">
+						<%= link_to "Bookmarks #{@user.bookmarked_articles.count}", bookmarks_user_path(@user) %>
+					</span>
 				<% end %>
 			</div> 
 		</div>
 		<div class="display-bio">
-			<%= @user.bio %>
+			<span class="user-title"><%= @user.title %></span> <%= @user.bio %>
 		</div>
 	</div>
 </div>

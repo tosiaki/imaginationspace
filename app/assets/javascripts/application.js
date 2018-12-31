@@ -14,5 +14,6 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-//= require_tree .
 //= require page_navigation
+//= require @yaireo/tagify/dist/tagify.min.js
+//= require_tree .

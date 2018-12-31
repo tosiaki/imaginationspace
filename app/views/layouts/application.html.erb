@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= yield(:title) %> | Imagination Space</title>
+    <title><%= full_title yield(:title) %></title>
     <link rel="manifest" href="/manifest.json">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield(:itemprop) %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'https://transloadit.edgly.net/releases/uppy/v0.28.0/dist/uppy.min.css' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag "https://unpkg.com/babel-polyfill@6.26.0/dist/polyfill.min.js" %>
+    <%= javascript_include_tag "https://unpkg.com/whatwg-fetch@2.0.3/fetch.js" %>
+    <%= javascript_include_tag "https://transloadit.edgly.net/releases/uppy/v0.28.0/dist/uppy.min.js" %>
   </head>
 
   <body>

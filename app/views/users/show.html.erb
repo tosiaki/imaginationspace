@@ -1,35 +1,35 @@
 <% provide(:title, @user.name) %>
-<%# content_for :user_page_content do %>
-	<%= render 'user_header' %>
-	<% if @user == current_user %>
-		<%= render 'shared/posting_form' %>
-	<% end %>
-	<div class="statuspage-content">
-		<div class="status-area">
-			<% if @tag_list.present? %>
-				<div class="results-count"><h2 class="heading"><%= @statuses.count %> posts in <%= tags_heading(@tag_list) %></h2></div>
-			<% end %>
-			<% if @statuses.any? %>
-				<ol class="status-list">
-					<% if !@tag_list.present? && @user.sticky %>
-						<% content_for :pinned do %>
-							<p>📌 Pinned
-								<% if @user == current_user %>
-									<%= link_to "(Unpin)", sticky_user_article_path(@user,@user.sticky), method: "delete" %>
-								<% end %>
-							</p>
-						<% end %>
-						<%= render @user.sticky.status %>
-						<% content_for :pinned, flush: true do %>
-
-						<% end %>
+<%= render 'shared/flash_messages' %>
+<%= render 'user_header' %>
+<% if @user == current_user %>
+	<%= render 'shared/posting_form' %>
+<% end %>
+<div class="statuspage-content">
+	<div class="status-area">
+		<% if @tag_list.present? %>
+			<div class="results-count"><h2 class="heading"><%= @statuses.total_entries %> posts in <%= tags_heading(@tag_list) %></h2></div>
+		<% end %>
+		<% if @statuses.any? %>
+			<%= will_paginate @statuses, class: "pagination actions", param_name: :page %>
+			<ol class="status-list">
+				<% if !@tag_list.present? && @user.sticky %>
+					<% content_for :pinned do %>
+						<p>📌 Pinned
+							<% if @user == current_user %>
+								<%= link_to "(Unpin)", sticky_article_path(@user.sticky), method: "delete" %>
+							<% end %>
+						</p>
 					<% end %>
-					<% @show_pin_option = true if @user == current_user %>
-					<%= render @statuses %>
-				</ol>
-			<% end %>
-		</div>
-		<%= render 'layouts/tags_area', path_helper: :user_path %>
+					<%= render @user.sticky.status %>
+					<% content_for :pinned, flush: true do %>
+
+					<% end %>
+				<% end %>
+				<% @show_pin_option = true if @user == current_user %>
+				<%= render @statuses %>
+			</ol>
+			<%= will_paginate @statuses, class: "pagination actions", param_name: :page %>
+		<% end %>
 	</div>
-<%# end %>
-<%#= render 'display' %>
+	<%= render 'layouts/tags_area', path_helper: :user_path %>
+</div>

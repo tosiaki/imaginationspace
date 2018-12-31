@@ -25,9 +25,16 @@
 
 /public/assets
 .byebug_history
+.env
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
 # Ignore uploaded test images.
 /public/uploads
+
+# Ignore nod modules
+/node_modules
+
+# Ignore the uppy server
+/uppy/*

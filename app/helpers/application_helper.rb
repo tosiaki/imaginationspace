@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def full_title(title)
+    "#{title} | Imagination Space"
+  end
+  
   def tag_contexts 
     ["fandom", "relationship", "character", "tag"]
   end

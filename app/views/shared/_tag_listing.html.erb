@@ -1,4 +1,4 @@
-<% if tags.any? %>
+<% if tags.present? %>
 	<div class="heading-label"><%= context_label %></div>
 	<ol class="tags-list"%>
 		<% tags.each do |tag| %>

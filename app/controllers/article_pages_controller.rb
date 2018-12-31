@@ -1,5 +1,5 @@
 class ArticlePagesController < ApplicationController
-  before_action :check_user, only: [:new, :create, :edit, :update, :destroy]
+  before_action :check_user
   before_action :check_pages, only: :destroy
 
   include Concerns::PictureFunctions
@@ -9,23 +9,17 @@ class ArticlePagesController < ApplicationController
   end
 
   def create
-    page_number = sanitize_page_number(params[:page][:page_number].to_i)
-    if @article.add_page(content: params[:page][:content], title: params[:page][:title], page_number: page_number)
-      if params[:page][:picture]
-        params[:page][:picture].each_with_index do |picture, index|
-          if index > 0
-            if params[:options][:new_pages] == '1'
-              page_number += 1
-              @article.add_page(page_number: page_number)
-            end
-          end
-          add_picture_to_page(picture, @article, page_number)
-        end
-      end
+    @article.editing_password = params[:article][:editing_password] unless @article.user
+    @page = @article.pages.build(page_params)
+    @page.normalize_page_number
+
+    @page = add_pictures_to_article(params[:page][:picture], @article, @page, params[:options][:new_pages] == '1')
+
+    if @article.save
+      redirect_to show_page_article_path(@article, page_number: @page.page_number)
     else
-      flash[:warning] = "Not all pages were successfully added"
+      render 'new'
     end
-    redirect_to show_page_user_article_path(current_user,@article, page_number: page_number)
   end
 
   def edit
@@ -39,34 +33,36 @@ class ArticlePagesController < ApplicationController
     else
       flash[:warning] = "Update unsuccessful"
     end
-    redirect_to show_page_user_article_path(current_user, @article, page_number)
+    redirect_to show_page_article_path(@article, page_number)
   end
 
   def destroy
-    if @article.pages.count > 1
-      @page = @article.pages.find_by( page_number: params[:page_number].to_i )
-      @page.destroy
-      @article.pages.each do |page|
-        page.decrement!(:page_number) if page.page_number > params[:page_number].to_i
-      end
-      redirect_to show_page_user_article_path(current_user, @article, [params[:page_number].to_i, @article.pages.map(&:page_number).max].min)
+    @current_page = params[:page_number].to_i
+    unless @article.user
+      @article.editing_password = params[:article] ? params[:article][:editing_password] : cookies[:editing_password]
+    end
+    if @article.remove_page(@current_page)
+      redirect_to show_page_article_path(@article, [@current_page, @article.current_max_page].min)
     end
   end
 
   private
 
+    def page_params
+      params.require(:page).permit(:title,:content,:page_number)
+    end
+
     def check_user
-      @article = current_user.articles.find_by(id: params[:id])
+      if user_signed_in?
+        @article = current_user.articles.find(params[:id])
+      else
+        @article = Article.joins(:status).where(statuses: {user_id: nil}).find(params[:id])
+      end
       redirect_to Article.find(params[:id]) unless @article
     end
 
     def check_pages
       redirect_to @article unless @article.pages.count > 1
-    end
-
-    def sanitize_page_number(page)
-      page_number = page || @article.next_page
-      page_number = [[page_number.abs.round, @article.next_page].min, 1].max
     end
 
     def check_pages

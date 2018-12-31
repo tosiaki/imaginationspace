@@ -1,33 +1,6 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
-  factory :tagging do
-    tag nil
-    tagged nil
-  end
-  factory :tag do
-    name "MyText"
-    type "MyText"
-  end
-  factory :article_picture do
-    picture "MyString"
-  end
-  factory :page do
-    article nil
-    content "MyText"
-  end
-  factory :signal_boost do
-    article nil
-  end
-  factory :article do
-    title "MyString"
-    description "MyText"
-    content "MyText"
-  end
-  factory :post do
-    type 1
-    user nil
-  end
   factory :user do
     id { 1 }
     name { 'TestUser' }
@@ -106,5 +79,26 @@ FactoryBot.define do
   end
 
   factory :bookmark do
+  end
+
+  factory :status do |status|
+    user
+    status.post { |a| a.association(:article) }
+    timeline_time { Time.now }
+  end
+
+  factory :article do
+    title { "This is an artile" }
+    description { "This article has a description" }
+    max_pages { 1 }
+    before(:create) do |article|
+      article.pages << FactoryBot.build(:page)
+    end
+  end
+
+  factory :page do
+    content { "This is some page content." }
+    page_number { 1 }
+    title { "Article title" }
   end
 end

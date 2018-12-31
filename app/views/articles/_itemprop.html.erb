@@ -1,0 +1,18 @@
+<% content_for :itemprop do %>
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:site" content="@Tosiaki1">
+	<meta name="twitter:description" content="<%= article.description %>">
+	<meta property="og:type" content="article">
+	<meta property="og:image:width" content="600">
+	<meta property="og:image:height" content="315">
+	<meta itemprop="name" content="<%= full_title_article(article,page) %>">
+	<meta name="twitter:title" content="<%= full_title_article(article,page) %>">
+	<meta property="og:title" content="<%= full_title_article(article,page) %>">
+	<% if page.display_image %>
+		<link rel="icon" href="<%= page.display_image %>">
+		<meta itemprop="image" content="<%= page.display_image %>">
+		<meta name="twitter:image" content="<%= page.display_image %>">
+		<meta property="og:image" content="<%= page.display_image %>">
+		<link rel="image_src" href="<%= page.display_image %>">
+	<% end %>
+<% end %>

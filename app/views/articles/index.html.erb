@@ -1,15 +1,16 @@
 <% provide(:title, "Posts tagged with #{@tag_list.join(', ')}") %>
-<% if user_signed_in? %>
-	<%= render 'shared/posting_form' %>
-<% end %>
+<%= render 'shared/flash_messages' %>
+<%= render 'shared/posting_form' %>
 <div class="statuspage-content">
 	<div class="status-area">
 		<% if @tag_list.present? %>
-			<div class="results-count"><h2 class="heading"><%= @statuses.count %> posts in <%= tags_heading(@tag_list) %></h2></div>
+			<div class="results-count"><h2 class="heading"><%= @statuses.total_entries %> posts in <%= tags_heading(@tag_list) %></h2></div>
 		<% end %>
+		<%= will_paginate @statuses, class: "pagination actions", param_name: :page %>
 		<ol class="status-list">
 			<%= render @statuses %>
 		</ol>
+		<%= will_paginate @statuses, class: "pagination actions", param_name: :page %>
 	</div>
 	<%= render 'layouts/tags_area', path_helper: :articles_path %>
 </div>

@@ -10,7 +10,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_24_200146) do
+ActiveRecord::Schema.define(version: 2018_12_30_004358) do
+
+  create_table "ahoy_events", force: :cascade do |t|
+    t.integer "visit_id"
+    t.integer "user_id"
+    t.string "name"
+    t.text "properties"
+    t.datetime "time"
+    t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
+    t.index ["user_id"], name: "index_ahoy_events_on_user_id"
+    t.index ["visit_id"], name: "index_ahoy_events_on_visit_id"
+  end
+
+  create_table "ahoy_visits", force: :cascade do |t|
+    t.string "visit_token"
+    t.string "visitor_token"
+    t.integer "user_id"
+    t.string "ip"
+    t.text "user_agent"
+    t.text "referrer"
+    t.string "referring_domain"
+    t.text "landing_page"
+    t.string "browser"
+    t.string "os"
+    t.string "device_type"
+    t.string "country"
+    t.string "region"
+    t.string "city"
+    t.string "utm_source"
+    t.string "utm_medium"
+    t.string "utm_term"
+    t.string "utm_content"
+    t.string "utm_campaign"
+    t.datetime "started_at"
+    t.index ["user_id"], name: "index_ahoy_visits_on_user_id"
+    t.index ["visit_token"], name: "index_ahoy_visits_on_visit_token", unique: true
+  end
 
   create_table "article_pictures", force: :cascade do |t|
     t.string "picture"
@@ -46,6 +82,12 @@ ActiveRecord::Schema.define(version: 2018_12_24_200146) do
     t.integer "reply_number", default: 0
     t.integer "kudos_count", default: 0
     t.integer "signal_boosts_count", default: 0
+    t.integer "planned_pages", default: 1
+    t.integer "bookmarks_count", default: 0
+    t.integer "impressions_count", default: 0
+    t.text "display_name"
+    t.text "editing_password_digest"
+    t.text "display_image"
     t.index ["reply_to_id"], name: "index_articles_on_reply_to_id"
   end
 
@@ -165,7 +207,15 @@ ActiveRecord::Schema.define(version: 2018_12_24_200146) do
     t.datetime "updated_at", null: false
     t.integer "page_number", default: 1
     t.text "title"
+    t.text "display_image"
+    t.index ["article_id", "page_number"], name: "page_number_index", unique: true
     t.index ["article_id"], name: "index_pages_on_article_id"
+  end
+
+  create_table "shrine_pictures", force: :cascade do |t|
+    t.text "picture_data"
+    t.integer "width"
+    t.integer "height"
   end
 
   create_table "signal_boosts", force: :cascade do |t|
@@ -241,6 +291,7 @@ ActiveRecord::Schema.define(version: 2018_12_24_200146) do
     t.boolean "site_updates", default: false
     t.integer "article_id"
     t.integer "sticky_id"
+    t.integer "bookmarks_count", default: 0
     t.index ["article_id"], name: "index_users_on_article_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
