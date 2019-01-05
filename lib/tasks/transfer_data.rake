@@ -17,7 +17,7 @@ namespace :transfer_data do
   end
 
   desc "Resume previous task that failed due to missed capitalization"
-  task resume_transfer :environment do
+  task resume_transfer: :environment do
     DrawingsConverter.new(Drawing.find(12), true) #Resume for id 12
     Drawing.where.not(id: 12).each do |drawing|
       DrawingsConverter.new(drawing)
