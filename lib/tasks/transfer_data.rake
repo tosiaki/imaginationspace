@@ -2,12 +2,15 @@ namespace :transfer_data do
   require_relative '../comics_converter'
   require_relative '../drawings_converter'
 
-  desc "Transfer all data on the current site to the new system"
-  task current_site: :environment do
+  desc "Transfer comics"
+  task transfer_comics: :environment do
     Comic.all.each do |comic|
       ComicsConverter.new(comic)
     end
+  end
 
+  desc "Transfer drawings"
+  task transfer_drawings: :environment do
     Drawing.all.each do |drawing|
       DrawingsConverter.new(drawing)
     end

@@ -59,7 +59,7 @@ class WorksConverter
     end
     if @work.class == Comic
       @article.add_tag("Comic", "media")
-    elsif @work.class == drawing
+    elsif @work.class == Drawing
       @article.add_tag("Drawing(s)", "media")
     end
   end
