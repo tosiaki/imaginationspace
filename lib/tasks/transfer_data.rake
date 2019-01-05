@@ -28,7 +28,7 @@ namespace :transfer_data do
   task set_comments_media: :environment do
     Article.all.each do |article|
       if article.media.nil?
-        @article.add_tag("Status", "media")
+        article.add_tag("Status", "media")
       end
     end
   end
