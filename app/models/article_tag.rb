@@ -79,6 +79,6 @@ class ArticleTag < ApplicationRecord
   scope :find_tags, ->(starting_with:, context: nil) do
     result_scope = where("name LIKE ?", "#{sanitize_sql_like(starting_with)}%").joins(:articles)
     result_scope = result_scope.where(context: context) if context
-    result_scope.select("article_tags.name, COUNT(articles.id) as article_count").group(:article_tag_name).group(:article_tag_id).order("article_count DESC").limit(20)
+    result_scope.select("article_tags.name, COUNT(articles.id) as article_count").group(:name).group(:article_tag_id).order("article_count DESC").limit(20)
   end
 end
