@@ -99,7 +99,7 @@ class WorksConverter
       if drawing.width > 1200 || drawing.height > 2000
         doc.div(class: "note page-note") {
           doc.text "This image has been resized from the original size of " + drawing.width.to_s + " by " + drawing.height.to_s + " To see the full image, click "
-          doc.a(href: drawing.drawing.url) { "here" }
+          doc.a(href: drawing.drawing.url) { doc.text "here" }
           doc.text "or on the image itself."
         }
       end
