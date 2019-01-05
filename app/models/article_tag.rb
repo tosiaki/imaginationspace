@@ -77,7 +77,7 @@ class ArticleTag < ApplicationRecord
   end
 
   scope :find_tags, ->(starting_with:, context: nil) do
-    result_scope = where("name COLLATE UTF8_GENERAL_CI LIKE ?", "#{sanitize_sql_like(starting_with.downcase)}%").joins(:articles)
+    result_scope = where("name ILIKE ?", "#{sanitize_sql_like(starting_with.downcase)}%").joins(:articles)
     result_scope = result_scope.where(context: context) if context
     result_scope.select("article_tags.name, COUNT(articles.id) as article_count").group(:name).group(:article_tag_id).order("article_count DESC").limit(20)
   end
