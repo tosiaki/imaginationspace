@@ -38,12 +38,12 @@ class DrawingsController < ApplicationController
   def update
     @drawing.assign_attributes(drawing_params)
     update_tags
-    if @drawing.save
-      flash[:success] = "Details updated!"
-      redirect_to @drawing
-    else
-      render 'edit'
-    end
+    # if @drawing.save
+    #   flash[:success] = "Details updated!"
+        redirect_to @drawing
+    # else
+    #   render 'edit'
+    # end
   end
 
   def destroy

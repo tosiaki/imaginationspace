@@ -37,15 +37,15 @@ class ComicPagesController < ApplicationController
   end
 
   def update
-    page_number = sanitize_page_number(params[:page].to_i)
-    params[:comic_page][:new_page].each do |new_page|
-      if @comic.replace_page(drawing: new_page, page_number: page_number)
-        flash[:success] = "Page has been updated"
-      else
-        flash[:warning] = "Not all pages were successfully updated"
-      end
-      page_number += 1
-    end
+    # page_number = sanitize_page_number(params[:page].to_i)
+    # params[:comic_page][:new_page].each do |new_page|
+    #   if @comic.replace_page(drawing: new_page, page_number: page_number)
+    #     flash[:success] = "Page has been updated"
+    #   else
+    #     flash[:warning] = "Not all pages were successfully updated"
+    #   end
+    #   page_number += 1
+    # end
     redirect_to show_page_comic_path(@comic, page: page_number-1)
   end
 
