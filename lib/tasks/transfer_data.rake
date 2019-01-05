@@ -23,4 +23,13 @@ namespace :transfer_data do
       DrawingsConverter.new(drawing)
     end
   end
+
+  desc "Give media type 'Status' to all comments without a media type"
+  task set_comments_media: :environment do
+    Article.all.each do |article|
+      if article.media.nil?
+        @article.add_tag("Status", "media")
+      end
+    end
+  end
 end

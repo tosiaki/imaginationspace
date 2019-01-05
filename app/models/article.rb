@@ -49,7 +49,7 @@ class Article < ApplicationRecord
 
   def media
     @media = article_tags.where(context: 'media').first
-    @media ||= ArticleTag.find_by(name: 'Status')
+    @media ||= ArticleTag.find_by(name: 'Status', context: "media")
   end
 
   def fandom
