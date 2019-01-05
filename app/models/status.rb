@@ -44,19 +44,19 @@ class Status < ApplicationRecord
 
     case order
     when 'published'
-      relation = relation.order(status[:created_at].desc)
+      relation = relation.group(status[:created_at]).order(status[:created_at].desc)
     when 'bookmarks'
-      relation = relation.order(article[:bookmarks_count].desc)
+      relation = relation.group(article[:bookmarks_count]).order(article[:bookmarks_count].desc)
     when 'kudos'
-      relation = relation.order(article[:kudos_count].desc)
+      relation = relation.group(article[:kudos_count]).order(article[:kudos_count].desc)
     when 'signal_boosts'
-      relation = relation.order(article[:signal_boosts_count].desc)
+      relation = relation.group(article[:signal_boosts_count]).order(article[:signal_boosts_count].desc)
     when 'replies'
-      relation = relation.order(article[:reply_number].desc)
+      relation = relation.group(article[:reply_number]).order(article[:reply_number].desc)
     when 'hits'
-      relation = relation.order(article[:impressions_count].desc)
+      relation = relation.group(article[:impressions_count]).order(article[:impressions_count].desc)
     else
-      relation = relation.order(status[:timeline_time].desc)
+      relation = relation.group(status[:timeline_time]).order(status[:timeline_time].desc)
     end
 
     if count

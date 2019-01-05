@@ -7,4 +7,10 @@ namespace :initialize_article_counters do
     end
   end
 
+  task initialize_reply_number: :environment do
+    Article.find_each do |article|
+      article.reply_to.add_reply if article.reply_to
+    end
+  end
+
 end
