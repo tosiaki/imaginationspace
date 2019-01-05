@@ -88,7 +88,7 @@ class ComicsController < ApplicationController
   end
 
   def destroy
-    @comic.destroy
+    # @comic.destroy
     flash[:success] = "Fancomic deleted."
     redirect_to current_user
   end

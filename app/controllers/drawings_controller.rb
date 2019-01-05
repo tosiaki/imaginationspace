@@ -47,7 +47,7 @@ class DrawingsController < ApplicationController
   end
 
   def destroy
-    @drawing.destroy
+    # @drawing.destroy
     flash[:success] = "Fanart deleted."
     redirect_to current_user
   end

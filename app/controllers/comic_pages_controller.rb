@@ -51,9 +51,9 @@ class ComicPagesController < ApplicationController
 
   def destroy
     @comic_page = @comic.comic_pages.find_by( page: params[:page].to_i )
-    @comic_page.destroy
+    # @comic_page.destroy
     @comic.comic_pages.each do |page|
-      page.decrement!(:page) if page.page > params[:page].to_i
+      # page.decrement!(:page) if page.page > params[:page].to_i
     end
     redirect_to show_page_comic_path(@comic, page: [params[:page].to_i, @comic.comic_pages.map(&:page).max].min)
   end
