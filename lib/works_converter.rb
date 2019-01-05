@@ -13,11 +13,16 @@ class WorksConverter
     @unformatted_html ||= Nokogiri::XML::Node::SaveOptions.class_eval { |m| m::DEFAULT_HTML ^ m::FORMAT }
   end
 
-  def initialize(old_work)
+  def initialize(old_work, resume = false)
     @work = old_work
-    create_article
-    convert_comments(@article, @work)
-    convert_tags
+    if resume
+      @article = Article.find(98)
+      @article.add_tag("Drawings(s)", "media")
+    else
+      create_article
+      convert_comments(@article, @work)
+      convert_tags
+    end
     convert_kudos
     convert_impressions
     return @status
