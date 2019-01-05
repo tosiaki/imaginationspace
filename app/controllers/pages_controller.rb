@@ -5,8 +5,12 @@ class PagesController < ApplicationController
   def home
     if user_signed_in?
       @feed_statuses = current_user.feed_statuses.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
+      leftover_amount = 20 - @feed_statuses.total_entries
+      if leftover_amount > 0
+        @all_statuses = Status.all.order(timeline_time: :desc).paginate(page: 1, per_page: leftover_amount)
+      end
     else
-      @feed_statuses = Status.all.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
+      @all_statuses = Status.all.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
     end
     @new_article = Article.new(guest_params)
   end

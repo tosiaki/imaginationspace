@@ -2,12 +2,12 @@
 <div class="submission-form" id="post-drawing-form">
   <%= form_for(@page, html: { multipart: true }, url: add_page_article_path(@article)) do |f| %>
 
-  <%= render 'shared/error_messages', object: f.object %>
-  <%= render 'shared/error_messages', object: @article %>
+    <%= render 'shared/error_messages', object: f.object %>
+    <%= render 'shared/error_messages', object: @article %>
     <%= render 'articles/edit_menu', article: @article %>
     <h2 class="heading">New page</h2>
 
-    <div class="form-input-box">
+    <div class="form-input-box posting-form-unit">
       <% unless @article.user %>
         <%= fields_for :article do |a| %>
           <ul class="form-inputs clear">
@@ -39,26 +39,22 @@
               <%= f.label :content %>
             </div>
             <div class="form-input">
-              <%= f.text_area :content %>
+              <%= f.text_area :content, placeholder: "New page content here...", class: "page-content-input" %>
             </div>
           </div>
           <div class="field">
             <div class="form-label">
-              <%= f.label :picture, "Picture(s)" %>
+              <%= f.label :picture_label, "Picture(s)" %>
             </div>
-            <div class="form-input">
-              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true %>
+            <div class="form-input file-input-area">
+              <div class="preview-area"></div>
+              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures" %>
+              <%= f.label :picture, "Choose picture(s)", class: "file-upload-label edit-form-buttons hidden-label" %>
+              <%= fields_for(:options) do |o| %>
+                <%= o.check_box :new_pages, class: "new-page-option", checked: true %>
+                <%= o.label :new_pages, "Put additional images in new pages", class: "in-edit-form new-pages-option-label" %>
+              <% end %>
             </div>
-          </div>
-          <div class="field">
-            <%= fields_for(:options) do |o| %>
-              <div class="form-label">
-                <%= o.label :new_pages, "Put additional images in new pages" %>
-              </div>
-              <div class="form-input">
-                <%= o.check_box :new_pages %>
-              </div>
-            <% end %>
           </div>
           <div class="field">
             <div class="form-label">

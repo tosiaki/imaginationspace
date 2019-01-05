@@ -131,7 +131,7 @@
 		<%= render 'shared/article_actions', article: @article, placement: :on_article %>
 	</ul>
 </div>
-<%= render 'shared/posting_form', post_target: reply_article_path(@article), placeholder: "Post reply here..." %>
+<%= render 'shared/posting_form', reply_to: @article, placeholder: "Post reply here..." %>
 <% if @article.replies %>
 	<ul class="reply-thread">
 		<% @article.replies.each do |reply| %>

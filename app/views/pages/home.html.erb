@@ -9,11 +9,23 @@
 	<h3 class="heading">Top tags</h3>
 </div> -->
 <%= render 'shared/posting_form' %>
-<% if @feed_statuses.any? %>
+<% if @feed_statuses.present? %>
 	<div class="module">
 		<h3 class="heading">Latest from your followed users:</h3>
 		<ol class="status-list">
 			<%= render @feed_statuses %>
+		</ol>
+	</div>
+<% end %>
+<% if @all_statuses.present? %>
+	<div class="module">
+		<% if user_signed_in? %>
+			<h3 class="heading">Latest:</h3>
+		<% else %>
+			<h3 class="heading">More from all users:</h3>
+		<% end %>
+		<ol class="status-list">
+			<%= render @all_statuses %>
 		</ol>
 	</div>
 <% end %>

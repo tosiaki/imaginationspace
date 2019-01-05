@@ -5,9 +5,7 @@ class UsersController < ApplicationController
   include Concerns::TagsFunctionality
 
   def show
-    if @user == current_user
-      @new_article = Article.new
-    end
+    @new_article = Article.new
     
     get_associated_tags
     @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order], page_number: params[:page].present? ? params[:page].to_i : 1)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_30_004358) do
+ActiveRecord::Schema.define(version: 2019_01_04_152111) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.integer "visit_id"
@@ -216,6 +216,10 @@ ActiveRecord::Schema.define(version: 2018_12_30_004358) do
     t.text "picture_data"
     t.integer "width"
     t.integer "height"
+    t.string "page_type"
+    t.integer "page_id"
+    t.boolean "inline_picture", default: false
+    t.index ["page_type", "page_id"], name: "index_shrine_pictures_on_page_type_and_page_id"
   end
 
   create_table "signal_boosts", force: :cascade do |t|

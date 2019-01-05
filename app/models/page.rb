@@ -2,6 +2,8 @@ class Page < ApplicationRecord
   belongs_to :article, inverse_of: :pages
   default_scope -> { order(page_number: :asc) }
 
+  has_many :shrine_pictures
+
   before_create :make_room
   after_create :update_article_planned_pages
   after_create :update_article_timeline_time
@@ -16,14 +18,6 @@ class Page < ApplicationRecord
 
   def display_title
     @title ||= title.present? ? title : "Page #{page_number}"
-  end
-
-  def append(addition)
-    if new_record?
-      self.content = content+addition
-    else
-      update(content: content+addition)
-    end
   end
 
   def previous_page

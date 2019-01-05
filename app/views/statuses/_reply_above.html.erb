@@ -2,3 +2,4 @@
 	<%= render 'statuses/reply_above', article: article.reply_to %>
 <% end %>
 <li class="reply"><%= render 'statuses/article_listing', article: article %></li>
+<li class="reply-placeholder"><%= render 'shared/posting_form', reply_to: article, placeholder: "Post reply here..." %></li>

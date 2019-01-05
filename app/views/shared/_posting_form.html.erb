@@ -1,18 +1,20 @@
-<%= form_for(@new_article, url: (local_assigns[:post_target].nil? ? articles_path : post_target ), html: { multipart: true }) do |f| %>
+<% namespace = local_assigns[:reply_to].present? ? "reply_to_#{reply_to.id}" : "new_article" %>
+<% namespace += "_boost_#{boost}" if local_assigns[:boost].present? %>
+<%= form_for(@new_article, url: (local_assigns[:reply_to].present? ? reply_article_path(reply_to) : articles_path ), html: { multipart: true }, namespace: namespace) do |f| %>
 	<div class="main-form-body">
 		<%= fields_for :new_page do |ff| %>
-			<div class="main-posting-area">
-				<%= ff.text_area :content, placeholder: local_assigns[:placeholder].nil? ? "New post here..." : placeholder %>
-				<div class="posting-bottom-area">
-					<div class="preview-area" id="preview-area"></div>
+			<div class="main-posting-area posting-form-unit">
+				<%= ff.text_area :content, placeholder: local_assigns[:placeholder].nil? ? "New post here..." : placeholder, class: "new-page-content page-content-input", id: "content_#{namespace}" %>
+				<div class="posting-bottom-area file-input-area">
+					<div class="preview-area"></div>
 					<div class="posting-bottom-line">
 						<div class="file-input">
-							<%= ff.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures" %>
-							<%= ff.label :picture, "Add picture(s)", class: "file-upload-label" %>
+							<%= ff.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures status-list-new-post-pictures", id: "new_post_pictures_#{namespace}" %>
+							<%= ff.label :picture, "Add picture(s)", class: "file-upload-label posting-form-file-upload-label hidden-label", for: "new_post_pictures_#{namespace}" %>
 							<div class="file-input-option">
 								<%= fields_for :options do |o| %>
-							       <%= o.check_box :new_pages %>
-							       <%= o.label :new_pages, "Put these images in separate pages" %>
+							       <%= o.check_box :new_pages, class: "new-page-option", id: "new_pages_#{namespace}", checked: true %>
+							       <%= o.label :new_pages, "Put these images in separate pages", for: "new_pages_#{namespace}", class: "in-posting-box new-pages-option-label" %>
 							    <% end %>
 							</div>
 						</div>
@@ -31,18 +33,18 @@
 							<li><%= f.label :editing_password %><%= f.text_field :editing_password %></li>
 						<% end %>
 						<li><%= f.label :title %><%= f.text_field :title %></li>
-						<li><%= f.label :description %><%= f.text_area :description, id: "description-box" %></li>
+						<li><%= f.label :description %><%= f.text_area :description, class: "description-box" %></li>
 						<li>
 							<ol class="posting-tag-inputs">
 								<li><h4 class="optional-info-heading">Tags</h4></li>
-								<li class="media-type-listing">
-									<span><%= t.radio_button :media, 'Status', checked: true %> <%= t.label :media_status, "Status" %></span>
-									<span><%= t.radio_button :media, 'Story' %> <%= t.label :media_story, "Story" %></span>
-									<span><%= t.radio_button :media, 'Drawing(s)', id: :tags_media_drawing %> <%= t.label :media_drawing, "Drawing(s)" %></span>
-									<span><%= t.radio_button :media, 'Comic' %> <%= t.label :media_comic, "Comic" %></span>
+								<li class="media-type-listing status-form-media-type-listing">
+									<span><%= t.radio_button :media, 'Status', checked: true, id: "media_status_#{namespace}" %> <%= t.label :media_status, "Status", for: "media_status_#{namespace}" %></span>
+									<span><%= t.radio_button :media, 'Story', class: "tags-media-story", id: "media_story_#{namespace}" %> <%= t.label :media_story, "Story", for: "media_story_#{namespace}" %></span>
+									<span><%= t.radio_button :media, 'Drawing(s)', class: "tags-media-drawing", id: "media_drawing_#{namespace}" %> <%= t.label :media_drawing, "Drawing(s)", for: "media_drawing_#{namespace}" %></span>
+									<span><%= t.radio_button :media, 'Comic', class: "tags-media-comic", id: "media_comic_#{namespace}" %> <%= t.label :media_comic, "Comic", for: "media_comic_#{namespace}" %></span>
 								</li>
 								<% ArticleTag.tag_box_contexts.each do |context| %>
-									<li><%= t.label context[:name] %> <%= t.text_field context[:context], class: "tags-input-field", data: { tagify: true, context: context[:context] } %></li>
+									<li><%= t.label context[:name] %> <%= t.text_field context[:context], class: "tags-input-field", id: "tags_input_field_#{namespace}", data: { tagify: true, context: context[:context] } %></li>
 								<% end %>
 							</ol>
 						</li>

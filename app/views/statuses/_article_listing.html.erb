@@ -7,7 +7,7 @@
 			<li><%= link_to "📝 Edit", edit_article_path(article) %></li>
 			<li><%= link_to "❌ Remove", article, method: "delete", class: "deletion-link" %></li>
 		<% end %>
-		<li><%= link_to "👉 #{article.status.updated_at.strftime("%d %b %Y")}", article_path(article, anchor: article.reply_to ? "article-page-display" : nil) %></li>
+		<li><%= link_to "👉 #{article.status.timeline_time.strftime("%d %b %Y")}", article_path(article, anchor: article.reply_to ? "article-page-display" : nil) %></li>
 	</ul>
 </div>
 <%= yield :pinned %>

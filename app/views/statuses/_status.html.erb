@@ -28,5 +28,13 @@
 				(This post has been deleted.)
 			<% end %>
 		</div>
+		<div class="status-quotation reply-placeholder">
+			<%= render 'shared/posting_form', reply_to: status.post.origin, placeholder: "Post reply here...", boost: status.id %>
+		</div>
 	<% end %>
 </li>
+<% if status.post_type == "Article" %>
+	<li class="reply-placeholder">
+		<%= render 'shared/posting_form', reply_to: status.post, placeholder: "Post reply here..." %>
+	</li>
+<% end %>

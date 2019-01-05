@@ -3,10 +3,10 @@
 <% end %>
 <% unless placement==:on_article %>
 	<% count = article.reply_number %>
-	<li><%= link_to "Reply 💬 #{count > 0 ? count : ''}", article_path(article, anchor: "new_article") %></li>
+	<li><%= link_to "Reply 💬 #{count > 0 ? count : ''}", article_path(article, anchor: "new_article"), class: "reply-button", data: { replyformpath: new_article_path(reply_to_id: article.id) } %></li>
 <% end %>
 <% count = article.kudos.count %>
-<% if article.user==current_user %>
+<% if article.user && article.user==current_user %>
 	<% if count>0 %>
 		<li><span class="stat-box">💗 <%= count > 0 ? count : '' %></span></li>
 	<% end %>

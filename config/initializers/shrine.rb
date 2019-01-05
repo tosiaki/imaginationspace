@@ -12,7 +12,7 @@ if Rails.env.development? || Rails.env.production?
 
   Shrine.storages = {
     cache: Shrine::Storage::S3.new(prefix: "cache", **s3_options),
-    store: Shrine::Storage::S3.new(prefix: "store", **s3_options)
+    store: Shrine::Storage::S3.new(prefix: "store", public: true, **s3_options)
   }
 end
 

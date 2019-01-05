@@ -4,7 +4,7 @@ class Article < ApplicationRecord
   has_many :pages, inverse_of: :article, dependent: :delete_all
 
   belongs_to :reply_to, class_name: "Article", optional: true
-  has_many :replies, class_name: "Article", foreign_key: :reply_to
+  has_many :replies, -> { order(kudos_count: :desc) }, class_name: "Article", foreign_key: :reply_to
 
   has_many :signal_boosts, foreign_key: :origin_id, inverse_of: :origin
   has_many :kudos, as: :work, dependent: :destroy, inverse_of: :work
@@ -115,21 +115,11 @@ class Article < ApplicationRecord
     end
   end
 
+  # Unused
   def update_page(content:, page_number:, title: "")
     touch
     page = pages.find_by( page_number: page_number )
     page.update_attributes(content: content, title: title)
-  end
-
-  def add_page(content: "", page_number:, title: "")
-    page_result = pages.create(content: content, page_number: page_number, title: title)
-    page_result.valid?
-  end
-
-  def append(content:, page_number:)
-    page = pages.find_by( page_number: page_number )
-    page ||= add_page(page_number: page_number)
-    page.append(content)
   end
 
   def remove_page(page_number)

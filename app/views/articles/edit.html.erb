@@ -8,7 +8,7 @@
     <%= render 'edit_menu', article: @article %>
     <h2 class="heading">Edit article</h2>
 
-    <div class="form-input-box">
+    <div class="form-input-box posting-form-unit">
       <% unless @article.user %>
         <ul class="form-inputs clear">
           <li class="form-element">
@@ -43,17 +43,19 @@
                 <%= pp.label :page_content %>
               </div>
               <div class="form-input">
-                <%= pp.text_area :content %>
+                <%= pp.text_area :content, placeholder: "Page content here...", class: "page-content-input" %>
               </div>
             </div>
           </li>
           <li class="form-element">
             <div class="field">
               <div class="form-label">
-                <%= pp.label :picture, "Add picture(s) to page" %>
+                <%= pp.label :picture_label, "Add picture(s) to page" %>
               </div>
-              <div class="form-input">
-                <%= pp.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true %>
+              <div class="form-input file-input-area">
+                <div class="preview-area"></div>
+                <%= pp.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures" %>
+                <%= pp.label :picture, "Choose picture(s)", class: "file-upload-label edit-form-buttons hidden-label" %>
               </div>
             </div>
           </li>
@@ -96,11 +98,11 @@
             <div class="form-label">
               <%= f.label :media %>
             </div>
-            <div class="form-input">
-              <span class="media-option"><%= f.radio_button :media, 'Status', checked: @article.media.name=='Status' %> <%= f.label :status %></span>
-              <span class="media-option"><%= f.radio_button :media, 'Story', checked: @article.media.name=='Story' %> <%= f.label :story %></span>
-              <span class="media-option"><%= f.radio_button :media, 'Drawing(s)', checked: @article.media.name=='Drawing(s)' %> <%= f.label :drawing, "Drawing(s)" %></span>
-              <span class="media-option"><%= f.radio_button :media, 'Comic', checked: @article.media.name=='Comic' %> <%= f.label :comic %></span>
+            <div class="form-input media-type-listing edit-form-media-type-listing">
+              <span class="media-option"><%= f.radio_button :media, 'Status', checked: @article.media.name=='Status' %> <%= f.label :status, for: "article_media_status" %></span>
+              <span class="media-option"><%= f.radio_button :media, 'Story', checked: @article.media.name=='Story', class: "tags-media-story" %> <%= f.label :story, for: "article_media_story" %></span>
+              <span class="media-option"><%= f.radio_button :media, 'Drawing(s)', checked: @article.media.name=='Drawing(s)', class: "tags-media-drawing", id: "article_media_drawing" %> <%= f.label :drawing, "Drawing(s)", for: "article_media_drawing" %></span>
+              <span class="media-option"><%= f.radio_button :media, 'Comic', checked: @article.media.name=='Comic', class: "tags-media-comic" %> <%= f.label :comic, for: "article_media_comic" %></span>
             </div>
           </div>
           <% ArticleTag.tag_box_contexts.each do |context| %>

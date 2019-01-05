@@ -7,9 +7,22 @@ class ArticlesController < ApplicationController
 
   impressionist actions: [:show]
 
+  def new
+    article = Article.find(params[:reply_to_id])
+    @new_article = Article.new
+    render json: {
+      result_template: render_to_body(partial: 'shared/posting_form', locals: { reply_to: article, placeholder: "Post reply here..." })
+    }
+    respond_to do |format|
+      format.json
+    end
+  end
+
   def create
     @new_article = Article.new(article_params)
     @new_page = @new_article.pages.build(new_article_params)
+    @new_page.content = process_inline_uploads(@new_page)
+
     @new_article.max_pages = 1
     @new_article.reply_to = Article.find(params[:id]) if params[:reply]
 
@@ -92,6 +105,8 @@ class ArticlesController < ApplicationController
   end
 
   def edit
+    session[:return_to] ||= request.referer unless session[:editing].present?
+    session[:editing] = true
     @page_number = params[:page_number] || 1
     @page = @article.pages.find_by(page_number: @page_number)
   end
@@ -100,20 +115,25 @@ class ArticlesController < ApplicationController
     @page_number = params[:page][:page_number] || 1
     @page = @article.pages.find_by(page_number: @page_number)
 
-    if @article.update_attributes(article_params) && @page.update_attributes(article_page_params)
-      ArticleTag.context_strings.each do |context|
-        if params[:article][context.to_sym]
-          @article.set_tags(params[:article][context.to_sym],context)
-        end
-      end
+    @article.assign_attributes(article_params)
+    @page.assign_attributes(article_page_params)
+    @page.content = process_inline_uploads(@page)
 
-      if params[:page][:picture]
-        params[:page][:picture].each do |picture|
-          add_picture_to_article(picture, @article, @page_number)
-        end
+    ArticleTag.context_strings.each do |context|
+      if params[:article][context.to_sym]
+        @article.set_tags(params[:article][context.to_sym],context)
       end
+    end
 
-      redirect_to show_page_article_path(@article,page_number: @page_number)
+    if params[:page][:picture]
+      params[:page][:picture].each do |picture|
+        add_picture_to_page(picture, @page)
+      end
+    end
+
+    if @article.save && @page.save
+      session.delete(:editing)
+      redirect_to session.delete(:return_to) || show_page_article_path(@article,page_number: @page_number)
     else
       render 'edit'
     end

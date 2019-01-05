@@ -11,6 +11,7 @@ class SignalBoostsController < ApplicationController
 
   def create
     @signal_boost = SignalBoost.new(origin: @article, comment: params[:signal_boost][:comment])
+    @signal_boost.comment = process_inline_uploads(@signal_boost)
     process_pictures
     if current_user.statuses.create(post: @signal_boost, timeline_time: Time.now)
       flash[:success] = "Posted signal boost."
@@ -24,8 +25,10 @@ class SignalBoostsController < ApplicationController
   end
 
   def update
+    @signal_boost.assign_attributes(signal_boost_params)
+    @signal_boost.comment = process_inline_uploads(@signal_boost)
     process_pictures
-    if @signal_boost.update_attributes(signal_boost_params)
+    if @signal_boost.save
       flash[:success] = "Signal boost updated."
     else
       flash[:danger] = "Signal boost update unsuccessful."

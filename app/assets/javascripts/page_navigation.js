@@ -145,6 +145,7 @@ function load_article_page(data) {
 		$("#previous-page-content").html(data.previous_page_content);
 	}
 	$(".current-page-display").text(data.page_number);
+	$("#go_to_page").val(data.page_number);
 	$("#edit-page-link").attr("href", data.edit_url);
 	$("#edit-article-link").attr("href", data.edit_url);
 	$("#add-page-before-link").attr("href", data.add_page_before_url);
@@ -202,6 +203,22 @@ $(document).on('turbolinks:load', function(){
 			}
 		});
 
+		$("#go_to_page").on('change', function(e) {
+			var selectedPage = $("option:selected", this).val();
+			page_url = $(this).attr('href');
+			setCurrentArticleState(function() {
+				$.ajax({
+					type: "GET",
+					dataType: "json",
+					url: page_url,
+					data: {go_to_page: selectedPage},
+					success: function(data, status){
+						load_next_article_page(data.destination_url);
+					}
+				});
+			});
+		});
+
 		$("body").keydown(function(e) {
 			function findPos(obj) {
 			    var curtop = 0;
@@ -220,20 +237,6 @@ $(document).on('turbolinks:load', function(){
 			else if(e.keyCode === 39) {
 				$('#next-page-link').click();
 			}
-		});
-
-		$("#go_to_page").on('change', function(e) {
-			var selectedPage = $("option:selected", this).val();
-			page_url = $(this).attr('href');
-			$.ajax({
-				type: "GET",
-				dataType: "json",
-				url: page_url,
-				data: {go_to_page: selectedPage},
-				success: function(data, status){
-					load_next_article_page(data.destination_url);
-				}
-			});
 		});
 	}
 

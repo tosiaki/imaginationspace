@@ -1,6 +1,6 @@
-$(document).on('turbolinks:load', function(){
-	var tagify_elements = document.querySelectorAll("[data-tagify]");
-	if ($(".tagify").length === 0) {
+function enableTagsInput(element) {
+	var tagify_elements = element.querySelectorAll("[data-tagify]");
+	if (element.getElementsByClassName('tagify').length === 0) {
 		Array.prototype.forEach.call(tagify_elements, function(form_element) {
 			var tagify = new Tagify(form_element, {whitelist:[]});
 			var controller;
@@ -38,4 +38,8 @@ $(document).on('turbolinks:load', function(){
 			});
 		});
 	}
+}
+
+$(document).on('turbolinks:load', function() {
+	enableTagsInput(document);
 });

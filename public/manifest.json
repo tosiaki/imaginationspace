@@ -1,11 +1,11 @@
 {
-  "name": "Fancomics",
-  "short_name": "Fancomics",
+  "name": "Imagination Space",
+  "short_name": "Imagination Space",
   "icons": [{
     "src": "images/41422553_p0.jpg",
     "sizes": "192x192",
     "type": "image/jpg"
   }],
   "start_url": "/",
-  "display": "standalone",
+  "display": "standalone"
 }

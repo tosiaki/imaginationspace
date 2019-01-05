@@ -1,4 +1,5 @@
 <li class="reply"><%= render 'statuses/article_listing', article: article %></li>
+<li class="reply-placeholder"><%= render 'shared/posting_form', reply_to: article, placeholder: "Post reply here..." %></li>
 <% if article.replies.count>0 %>
 	<ul class="reply-thread">
 		<% article.replies.each do |reply| %>

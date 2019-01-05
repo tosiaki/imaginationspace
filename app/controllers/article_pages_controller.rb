@@ -5,6 +5,7 @@ class ArticlePagesController < ApplicationController
   include Concerns::PictureFunctions
 
   def new
+    session[:editing] = true
     @page = @article.pages.build
   end
 
@@ -12,21 +13,23 @@ class ArticlePagesController < ApplicationController
     @article.editing_password = params[:article][:editing_password] unless @article.user
     @page = @article.pages.build(page_params)
     @page.normalize_page_number
+    @page.content = process_inline_uploads(@page)
 
     @page = add_pictures_to_article(params[:page][:picture], @article, @page, params[:options][:new_pages] == '1')
 
     if @article.save
+      session.delete(:editing)
       redirect_to show_page_article_path(@article, page_number: @page.page_number)
     else
       render 'new'
     end
   end
 
-  def edit
+  def edit #This is unused
     @page = @article.pages.find_by( page_number: params[:page_number].to_i )
   end
 
-  def update
+  def update #This is unused
     page_number = sanitize_page_number(params[:page_number].to_i)
     if @article.update_page(content: params[:page][:content], title: params[:page][:title], page_number: page_number)
       flash[:success] = "Page has been updated"

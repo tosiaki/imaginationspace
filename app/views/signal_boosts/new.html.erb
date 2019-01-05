@@ -6,7 +6,7 @@
   <%= render 'shared/error_messages', object: f.object %>
     <h2 class="heading">Signal boost</h2>
 
-    <div class="form-input-box">
+    <div class="form-input-box posting-form-unit">
       <ul class="form-inputs clear">
         <li class="form-element">
           <div class="field">
@@ -14,15 +14,17 @@
               <%= f.label :comment, "Comment" %>
             </div>
             <div class="form-input">
-              <%= f.text_area :comment %>
+              <%= f.text_area :comment, placeholder: "Add comment here...", class: "page-content-input" %>
             </div>
           </div>
           <div class="field">
             <div class="form-label">
-              <%= f.label :picture, "Picture(s)" %>
+              <%= f.label :picture_label, "Picture(s)" %>
             </div>
-            <div class="form-input">
-              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true %>
+            <div class="form-input file-input-area">
+              <div class="preview-area"></div>
+              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures" %>
+              <%= f.label :picture, "Choose picture(s)", class: "file-upload-label edit-form-buttons hidden-label" %>
             </div>
           </div>
         </li>

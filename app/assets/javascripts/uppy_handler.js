@@ -1,4 +1,4 @@
-function fileUpload(uppyNode) {
+function fileUpload(uppyNode, fileInputElement, inPostingBoxElement) {
   var uppyInfoContainer = document.createElement('div');
   uppyInfoContainer.classList.add("uppy-info-container");
 
@@ -14,14 +14,21 @@ function fileUpload(uppyNode) {
   uppyNode.appendChild(uppyRemoveItem);
 
   uppyRemoveItem.addEventListener('click', function() {
-    uppyNode.parentNode.removeChild(uppyNode);
+    preview_area = uppyNode.parentNode;
+    preview_area.removeChild(uppyNode);
+    if (preview_area.children.length === 0) {
+      preview_area.style.display = "none";
+      if(inPostingBoxElement) {
+        inPostingBoxElement.classList.add("hidden-label");
+      }
+    }
   });
 
   var uppy = Uppy.Core({
-      // id: fileInput.id,
+      id: fileInputElement.id,
       autoProceed: true,
       restrictions: {
-        allowedFileTypes: document.getElementById('new_page_picture').accept.split(','),
+        allowedFileTypes: fileInputElement.accept.split(','),
       }
     })
     .use(Uppy.Informer, {
@@ -58,36 +65,50 @@ function fileUpload(uppyNode) {
     var newHiddenInput = document.createElement('input');
     newHiddenInput.type = "hidden";
     newHiddenInput.value = uploadedFileData;
-    newHiddenInput.name = "new_page[picture][]";
-    uppyInfoContainer.appendChild(newHiddenInput, fileInput);
+    newHiddenInput.name = fileInputElement.name;
+    uppyInfoContainer.appendChild(newHiddenInput);
   });
 
   return uppy;
 }
 
-$(document).on('turbolinks:load', function(){
-  fileInput = document.getElementById('new_page_picture');
-  previewArea = document.getElementById('preview-area');
-  fileInput.style.display = 'none';
-  Array.from(document.getElementsByClassName("file-upload-label")).forEach(function (element) {
-    element.style.display = "flex";
+function useUppy(element){
+  Array.from(element.getElementsByClassName("file-upload-label")).forEach(function (labelElement) {
+    labelElement.classList.remove("hidden-label");
   });
 
-  var fileInputLabel = document.createElement('label');
+  Array.from(element.getElementsByClassName("new-post-pictures")).forEach(function (fileInputElement) {
+    fileInputElement.style.display = 'none';
+    inPostingBoxElement = fileInputElement.closest('.file-input-area').getElementsByClassName("new-pages-option-label")[0];
+    if(inPostingBoxElement) {
+      inPostingBoxElement.classList.add('hidden-label');
+    }
 
-  fileInput.addEventListener('change', function(event) {
-    previewArea.style.display = 'flex';
+    (function(inPostingBoxElement) {
+      fileInputElement.addEventListener('change', function(event) {
+        if (inPostingBoxElement) {
+          inPostingBoxElement.classList.remove('hidden-label');
+        }
 
-    Array.from(fileInput.files).forEach(function (file) {
-      var newImageContainer = document.createElement('div');
-      newImageContainer.classList.add("image-preview-container");
+        previewArea = fileInputElement.closest(".file-input-area").getElementsByClassName('preview-area')[0];
+        previewArea.style.display = 'flex';
 
-      previewArea.appendChild(newImageContainer);
+        Array.from(fileInputElement.files).forEach(function (file) {
+          var newImageContainer = document.createElement('div');
+          newImageContainer.classList.add("image-preview-container");
 
-      uppy = fileUpload(newImageContainer);
-      uppy.addFile({name: file.name, type: file.type, data: file});
-    });
+          previewArea.appendChild(newImageContainer);
 
-    fileInput.value = '';
+          uppy = fileUpload(newImageContainer, fileInputElement, inPostingBoxElement);
+          uppy.addFile({name: file.name, type: file.type, data: file});
+        });
+
+        fileInputElement.value = '';
+      });
+    })(inPostingBoxElement);
   });
+}
+
+$(document).on('turbolinks:load', function() {
+  useUppy(document);
 });

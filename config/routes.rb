@@ -44,7 +44,7 @@ Rails.application.routes.draw do
 
   resources :statuses, only: :create
 
-  resources :articles, only: [:show, :create, :edit, :update, :destroy, :index] do
+  resources :articles, only: [:new, :show, :create, :edit, :update, :destroy, :index] do
     member do
       get 'page/:page_number', action: :show, as: :show_page
       get 'add_page', to: 'article_pages#new', as: :add_page
