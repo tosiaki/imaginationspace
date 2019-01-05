@@ -22,4 +22,5 @@ namespace :transfer_data do
     Drawing.where.not(id: 12).each do |drawing|
       DrawingsConverter.new(drawing)
     end
+  end
 end
