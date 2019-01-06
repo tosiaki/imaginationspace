@@ -24,7 +24,7 @@ namespace :fix_typos do
           page_content = Nokogiri::HTML.fragment(page.content)
           first_div = page_content.css("div").first
           if first_div.content[0] == "\n"
-            image_url = first_div.css("a").first.attributes["src"].value
+            image_url = first_div.css("a").first.attributes["href"].value
             anchor_tag = Nokogiri::XML::Node.new "a", page_content
             anchor_tag['href'] = image_url
             img_tag = Nokogiri::XML::Node.new "img", page_content
