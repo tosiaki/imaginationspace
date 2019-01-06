@@ -12,9 +12,12 @@
 
 ActiveRecord::Schema.define(version: 2019_01_04_152111) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "ahoy_events", force: :cascade do |t|
-    t.integer "visit_id"
-    t.integer "user_id"
+    t.bigint "visit_id"
+    t.bigint "user_id"
     t.string "name"
     t.text "properties"
     t.datetime "time"
@@ -26,7 +29,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   create_table "ahoy_visits", force: :cascade do |t|
     t.string "visit_token"
     t.string "visitor_token"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "ip"
     t.text "user_agent"
     t.text "referrer"
@@ -57,8 +60,8 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   end
 
   create_table "article_taggings", force: :cascade do |t|
-    t.integer "article_tag_id"
-    t.integer "article_id"
+    t.bigint "article_tag_id"
+    t.bigint "article_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["article_id"], name: "index_article_taggings_on_article_id"
@@ -78,7 +81,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "max_pages"
-    t.integer "reply_to_id"
+    t.bigint "reply_to_id"
     t.integer "reply_number", default: 0
     t.integer "kudos_count", default: 0
     t.integer "signal_boosts_count", default: 0
@@ -92,9 +95,9 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   end
 
   create_table "bookmarks", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "bookmarkable_type"
-    t.integer "bookmarkable_id"
+    t.bigint "bookmarkable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["bookmarkable_type", "bookmarkable_id"], name: "index_bookmarks_on_bookmarkable_type_and_bookmarkable_id"
@@ -103,7 +106,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   end
 
   create_table "comic_pages", force: :cascade do |t|
-    t.integer "comic_id"
+    t.bigint "comic_id"
     t.integer "page", default: 1
     t.string "drawing"
     t.datetime "created_at", null: false
@@ -116,7 +119,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   create_table "comics", force: :cascade do |t|
     t.string "title"
     t.text "description"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.integer "pages"
     t.integer "rating"
     t.integer "front_page_rating"
@@ -131,11 +134,11 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "commentable_type"
-    t.integer "commentable_id"
+    t.bigint "commentable_id"
     t.string "work_type"
-    t.integer "work_id"
+    t.bigint "work_id"
     t.string "name"
     t.string "email"
     t.text "content"
@@ -149,7 +152,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   create_table "drawings", force: :cascade do |t|
     t.string "title"
     t.text "caption"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "drawing"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -189,9 +192,9 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   end
 
   create_table "kudos", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "work_type"
-    t.integer "work_id"
+    t.bigint "work_id"
     t.string "ip_address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -201,7 +204,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   end
 
   create_table "pages", force: :cascade do |t|
-    t.integer "article_id"
+    t.bigint "article_id"
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -214,28 +217,24 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
 
   create_table "shrine_pictures", force: :cascade do |t|
     t.text "picture_data"
-    t.integer "width"
-    t.integer "height"
     t.string "page_type"
-    t.integer "page_id"
+    t.bigint "page_id"
     t.boolean "inline_picture", default: false
     t.index ["page_type", "page_id"], name: "index_shrine_pictures_on_page_type_and_page_id"
   end
 
   create_table "signal_boosts", force: :cascade do |t|
-    t.integer "post_id"
-    t.integer "origin_id"
+    t.bigint "origin_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "comment"
     t.index ["origin_id"], name: "index_signal_boosts_on_origin_id"
-    t.index ["post_id"], name: "index_signal_boosts_on_post_id"
   end
 
   create_table "statuses", force: :cascade do |t|
-    t.integer "user_id"
+    t.bigint "user_id"
     t.string "post_type"
-    t.integer "post_id"
+    t.bigint "post_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "timeline_time"
@@ -243,7 +242,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
     t.index ["user_id"], name: "index_statuses_on_user_id"
   end
 
-  create_table "taggings", force: :cascade do |t|
+  create_table "taggings", id: :serial, force: :cascade do |t|
     t.integer "tag_id"
     t.string "taggable_type"
     t.integer "taggable_id"
@@ -262,7 +261,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
     t.index ["tagger_id"], name: "index_taggings_on_tagger_id"
   end
 
-  create_table "tags", force: :cascade do |t|
+  create_table "tags", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
@@ -293,14 +292,24 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
     t.string "icon_comment"
     t.boolean "show_adult", default: false
     t.boolean "site_updates", default: false
-    t.integer "article_id"
-    t.integer "sticky_id"
+    t.bigint "sticky_id"
     t.integer "bookmarks_count", default: 0
-    t.index ["article_id"], name: "index_users_on_article_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["sticky_id"], name: "index_users_on_sticky_id"
   end
 
+  add_foreign_key "article_taggings", "article_tags"
+  add_foreign_key "article_taggings", "articles"
+  add_foreign_key "articles", "articles", column: "reply_to_id"
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "comic_pages", "comics"
+  add_foreign_key "comics", "users"
+  add_foreign_key "comments", "users"
+  add_foreign_key "drawings", "users"
+  add_foreign_key "pages", "articles"
+  add_foreign_key "signal_boosts", "articles", column: "origin_id"
+  add_foreign_key "statuses", "users"
+  add_foreign_key "users", "articles", column: "sticky_id"
 end

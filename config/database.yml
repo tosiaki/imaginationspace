@@ -5,24 +5,31 @@
 #   gem 'sqlite3'
 #
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: utf8
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   timeout: 5000
 
 development:
   <<: *default
-  database: db/development.sqlite3
+  database: db/fancomics_development
+  username: postgres
+  password: <%= ENV['PG_DEVELOPMENT_PASSWORD'] %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test: &test
   <<: *default
-  database: db/test.sqlite3
+  database: db/fancomics_test
+  username: postgres
+  password: <%= ENV['PG_DEVELOPMENT_PASSWORD'] %>
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: fancomics_production
+  username: fancomics
+  password: <%= ENV['FANCOMICS_DATABASE_PASSWORD'] %>
 
 cucumber:
   <<: *test

@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails','~> 5.2.0'
 gem 'puma', '~> 3.7'
+gem 'pg', '~> 1.1.0'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
@@ -22,7 +23,7 @@ gem 'shrine', "~> 2.0"
 gem 'image_processing', "~> 1.0"
 gem 'fastimage'
 gem 'aws-sdk-s3', '~> 1.2'
-gem 'sidekiq'
+# gem 'sidekiq'
 gem 'content_disposition', '~> 1.0'
 
 # Not being used on currently active features
@@ -60,7 +61,6 @@ group :test do
 end
 
 group :production do
-  gem 'pg', '~> 0.20.0'
   gem 'fog', '~> 1.42'
 end
 
