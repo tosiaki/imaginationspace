@@ -15,6 +15,7 @@ namespace :fix_typos do
     end
   end
 
+  desc "Restore the images removed as a result of the above task"
   task restore_images: :environment do
     status_tag = ArticleTag.find_by(name: 'Status', context: "media")
     unformatted_html = Nokogiri::XML::Node::SaveOptions.class_eval { |m| m::DEFAULT_HTML ^ m::FORMAT }
@@ -35,6 +36,26 @@ namespace :fix_typos do
             img_tag.parent = anchor_tag
           end
           page.update_attribute(:content, page_content.to_html(save_with: unformatted_html))
+        end
+      end
+    end
+  end
+
+  desc "Change the images that were restored to the show_page version"
+  task switch_images: :environment do
+    require 'uri'
+    status_tag = ArticleTag.find_by(name: 'Status', context: "media")
+    unformatted_html = Nokogiri::XML::Node::SaveOptions.class_eval { |m| m::DEFAULT_HTML ^ m::FORMAT }
+    Article.find_each do |article|
+      unless article.media == status_tag
+        article.pages.each do |page|
+          page_content = Nokogiri::HTML.fragment(page.content)
+          img_tag = page_content.css("img").first
+          img_url = img_tag.attributes["src"].value
+          new_path = "show_page_" + File.basename(URI.parse(img_url).path)
+          img_tag['src'] = File.dirname(img_url) + "/" + new_path
+          # page.update_attribute(:content, page_content.to_html(save_with: unformatted_html))
+          puts page_content.to_html(save_with: unformatted_html)
         end
       end
     end
