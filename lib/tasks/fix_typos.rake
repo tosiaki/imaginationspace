@@ -54,8 +54,7 @@ namespace :fix_typos do
           img_url = img_tag.attributes["src"].value
           new_path = "show_page_" + File.basename(URI.parse(img_url).path)
           img_tag['src'] = File.dirname(img_url) + "/" + new_path
-          # page.update_attribute(:content, page_content.to_html(save_with: unformatted_html))
-          puts page_content.to_html(save_with: unformatted_html)
+          page.update_attribute(:content, page_content.to_html(save_with: unformatted_html))
         end
       end
     end
