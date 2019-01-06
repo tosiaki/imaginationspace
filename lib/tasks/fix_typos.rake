@@ -34,7 +34,7 @@ namespace :fix_typos do
             anchor_tag.parent = first_div
             img_tag.parent = anchor_tag
           end
-          puts page_content.to_html(save_with: unformatted_html)
+          page.update_attribute(:content, page_content.to_html(save_with: unformatted_html))
         end
       end
     end
