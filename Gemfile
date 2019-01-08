@@ -32,6 +32,14 @@ gem 'webpush'
 gem 'serviceworker-rails'
 gem 'ahoy_matey'
 
+group :development, :test, :transfer do
+  gem 'dotenv-rails'
+end
+
+group :development, :transfer do
+  gem 'mysql2'
+end
+
 group :development, :test do
   gem 'sqlite3', '~> 1.3.13'
   gem 'byebug',  '~> 10.0.2', platforms: [:mri, :mingw, :x64_mingw]
@@ -43,7 +51,6 @@ group :development, :test do
   gem 'factory_bot_rails', "~> 4.0"
   gem 'selenium-webdriver'
   gem 'geckodriver-helper'
-  gem 'dotenv-rails'
 end
 
 group :development do
@@ -51,7 +58,6 @@ group :development do
   gem 'listen',                '~> 3.1.5'
   gem 'spring',                '~> 2.0.2'
   gem 'spring-watcher-listen', '~> 2.0.1'
-  gem 'mysql2'
 end
 
 group :test do

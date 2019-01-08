@@ -20,7 +20,7 @@ end
 
 if Rails.env.transfer?
   Shrine.storages = {
-    cache: Shrine::Storage::S3.new(prefix: "legacy", **s3_options),
+    cache: Shrine::Storage::S3.new(prefix: "legacy_cache", **s3_options),
     store: Shrine::Storage::S3.new(prefix: "legacy", public: true, **s3_options)
   }
 end

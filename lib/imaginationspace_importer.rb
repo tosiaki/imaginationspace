@@ -27,7 +27,7 @@ class ImaginationspaceImporter
   end
 
   def initialize
-    @report_additions = false
+    @report_additions = true
     @upload_images = true
     mysql_db = ActiveRecord::Base.establish_connection(
       adapter: "mysql2",
@@ -46,7 +46,7 @@ class ImaginationspaceImporter
   end
 
   def store_data
-    ActiveRecord::Base.establish_connection(:development)
+    ActiveRecord::Base.establish_connection(Rails.env.to_sym)
     store_users
     store_illusts
     store_novels

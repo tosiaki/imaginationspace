@@ -21,7 +21,7 @@ transfer:
   host: <%= ENV['HEROKU_HOST'] %>
   port: <%= ENV['HEROKU_PORT'] %>
   database: <%= ENV['HEROKU_DATABASE'] %>
-  usrename: <%= ENV['HEROKU_USERNAME'] %>
+  username: <%= ENV['HEROKU_USERNAME'] %>
   password: <%= ENV['HEROKU_PASSWORD'] %>
 
 # Warning: The database defined as "test" will be erased and
