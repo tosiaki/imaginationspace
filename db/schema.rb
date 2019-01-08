@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_04_152111) do
+ActiveRecord::Schema.define(version: 2019_01_07_224948) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
     t.text "context"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "bookmarks_count", default: 0
   end
 
   create_table "articles", force: :cascade do |t|
@@ -91,6 +92,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
     t.text "display_name"
     t.text "editing_password_digest"
     t.text "display_image"
+    t.boolean "anonymous", default: false
     t.index ["reply_to_id"], name: "index_articles_on_reply_to_id"
   end
 
@@ -203,6 +205,15 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
     t.index ["work_type", "work_id"], name: "index_kudos_on_work_type_and_work_id"
   end
 
+  create_table "legacy_users", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "legacy_username"
+    t.text "legacy_password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_legacy_users_on_user_id"
+  end
+
   create_table "pages", force: :cascade do |t|
     t.bigint "article_id"
     t.text "content"
@@ -294,6 +305,8 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
     t.boolean "site_updates", default: false
     t.bigint "sticky_id"
     t.integer "bookmarks_count", default: 0
+    t.integer "legacy_password"
+    t.text "website"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -308,6 +321,7 @@ ActiveRecord::Schema.define(version: 2019_01_04_152111) do
   add_foreign_key "comics", "users"
   add_foreign_key "comments", "users"
   add_foreign_key "drawings", "users"
+  add_foreign_key "legacy_users", "users"
   add_foreign_key "pages", "articles"
   add_foreign_key "signal_boosts", "articles", column: "origin_id"
   add_foreign_key "statuses", "users"

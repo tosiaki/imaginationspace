@@ -16,9 +16,11 @@ class Status < ApplicationRecord
       relation = status.project(status[Arel.sql("*")])
     end
 
+    article = Arel::Table.new(:articles)
     if tags.present? || %w(bookmarks kudos signal_boosts replies hits).include?(order) || bookmarked_by.present?
-      article = Arel::Table.new(:articles)
       relation.join(article).on(status[:post_id].eq(article[:id]).and(status[:post_type].eq("Article")))
+    else
+      relation.join(article, Arel::Nodes::OuterJoin).on(status[:post_id].eq(article[:id]).and(article[:anonymous].eq(false))).where(article[:id].not_eq(nil).or(status[:post_type].eq("SignalBoost")))
     end
 
     if tags.present?

@@ -32,5 +32,10 @@
 		<div class="display-bio">
 			<span class="user-title"><%= @user.title %></span> <%= @user.bio %>
 		</div>
+		<% if @user.website.present? %>
+			<div class="display-website">
+				<span class="user-website">Website: <%= link_to @user.website, valid_url(@user.website) %></span>
+			</div>
+		<% end %>
 	</div>
 </div>

@@ -12,7 +12,7 @@
 </div>
 <%= yield :pinned %>
 <% if article.reply_to %>
-	<div>↩️ Reply to <%= link_to article.reply_to.authored_by, article.reply_to.user %></div>
+	<div>↩️ Reply to <%= link_to article.reply_to.authored_by, (article.reply_to.anonymous ? nil : article.reply_to.user) %></div>
 <% end %>
 <%= render 'statuses/article', article: article %>
 <% if article.pages.count>1 %>

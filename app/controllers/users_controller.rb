@@ -99,6 +99,7 @@ class UsersController < ApplicationController
   end
 
   def bookmarks
+    @new_article = Article.new
     get_associated_tags
     @statuses = Status.select_by(tags: @tag_list, bookmarked_by: @user, order: params[:order])
   end
@@ -181,7 +182,7 @@ class UsersController < ApplicationController
     end
 
     def edit_user_params
-      params.require(:user).permit(:name, :title, :bio)
+      params.require(:user).permit(:name, :title, :bio, :website)
     end
 
     def preferences_params

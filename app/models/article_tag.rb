@@ -30,7 +30,7 @@ class ArticleTag < ApplicationRecord
     end
     if user
       status = Arel::Table.new(:statuses)
-      relation = relation.join(status).on(status[:post_id].eq(article[:id]).and(status[:post_type].eq("Article")))
+      relation = relation.join(status).on(status[:post_id].eq(article[:id]).and(status[:post_type].eq("Article")).and(article[:anonymous].eq(false)))
 
       relation = relation.where(status[:user_id].eq(user[:id]))
     end

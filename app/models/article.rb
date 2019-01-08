@@ -93,7 +93,9 @@ class Article < ApplicationRecord
   end
 
   def authored_by
-    if user
+    if anonymous
+      "Anonymous"
+    elsif user
       user.name
     else
       if display_name.present?

@@ -1,6 +1,11 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :legacy_user do
+    user { nil }
+    legacy_password { "MyText" }
+    legacy_username { "MyText" }
+  end
   factory :user do
     id { 1 }
     name { 'TestUser' }

@@ -8,6 +8,8 @@ class User < ApplicationRecord
 
   mount_uploader :icon, IconUploader
 
+  has_one :legacy_user
+
   has_many :statuses
   has_many :articles, through: :statuses, source: :post, source_type: "Article"
   belongs_to :sticky, class_name: "Article", optional: true
@@ -28,7 +30,7 @@ class User < ApplicationRecord
   has_many :subscriptions, through: :bookmarks, source: :bookmarkable, source_type: 'User'
   has_many :feed_drawings, through: :subscriptions, source: :drawings
   has_many :feed_comics, through: :subscriptions, source: :comics
-  has_many :feed_statuses, -> { order(timeline_time: :desc) }, through: :subscriptions, source: :statuses
+  has_many :feed_statuses, -> { order(timeline_time: :desc).joins("LEFT OUTER JOIN articles ON statuses.post_id = articles.id AND statuses.post_type = 'Article'").where("statuses.post_type = 'SignalBoost' OR articles.anonymous = false") }, through: :subscriptions, source: :statuses
 
   has_many :subscribeds, foreign_key: :bookmarkable, class_name: "Bookmark"
   has_many :subscribers, through: :subscribeds, source: :user
@@ -36,6 +38,27 @@ class User < ApplicationRecord
   validates :name, presence: true, length: { maximum: 255 }
   validates :title, length: { maximum: 255 }
   validates :bio, length: { maximum: 2000 }
+  validates :website, length: { maximum: 255 }
+
+  def valid_password?(password)
+    if legacy_password == 1
+      if legacy_user.validate(password)
+        self.password = password
+        self.legacy_password = 0
+        self.save!
+        true
+      else
+        false
+      end
+    else
+      super
+    end
+  end
+
+  def reset_password!(*args)
+    self.legacy_password = 0
+    super
+  end
 
   def is_subscribed_to?(user)
     subscriptions.include?(user)

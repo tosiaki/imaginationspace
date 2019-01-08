@@ -49,6 +49,18 @@
 					</div>
 				</li>
 
+				<li class="form-element">
+					<div class="field">
+						<div class="form-label">
+							<%= f.label :website, "Website" %>
+						</div>
+						<div class="form-input">
+							<%= f.text_field :website %>
+							<%= render 'shared/character_counter', max_length: User.validators_on(:website)[0].options[:maximum], counter_id: "website_counter", input_field: "input#user_website" %>
+						</div>
+					</div>
+				</li>
+
         		<li class="form-element">
 					<div class="actions">
 			    		<%= f.submit "Update" %>

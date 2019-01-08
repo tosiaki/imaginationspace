@@ -11,6 +11,7 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 /db/*dumpfile*
+/db/legacy/*
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -34,8 +35,8 @@
 # Ignore uploaded test images.
 /public/uploads
 
-# Ignore nod modules
+# Ignore node modules
 /node_modules
 
-# Ignore the uppy server
-/uppy/*
+# Ignore the legacy files for the rake task for importing from ImaginationSpace
+/lib/tasks/legacy_i/*

@@ -63,14 +63,18 @@
 	<% if @article.title.present? %>
 		<h2 class="heading"><%= @article.title %></h2>
 	<% end %>
-	<h3 class="byline">
-		<span class="tag-wrapper"><%= link_to @article.authored_by, @article.user, class: "username-link user-profile-link" %></span>
-		<% if @article.attribution_tags.any? %>
-			<% @article.attribution_tags.each do |tag| %>
-				<span class="tag-wrapper"><%= link_to tag.name, articles_path(tags: tag.name) %></span>
+	<% if !@article.anonymous || @article.attribution_tags.any? %>
+		<h3 class="byline">
+			<% unless @article.anonymous %>
+				<span class="tag-wrapper"><%= link_to @article.authored_by, @article.user, class: "username-link user-profile-link" %></span>
 			<% end %>
-		<% end %>
-	</h3>
+			<% if @article.attribution_tags.any? %>
+				<% @article.attribution_tags.each do |tag| %>
+					<span class="tag-wrapper"><%= link_to tag.name, articles_path(tags: tag.name) %></span>
+				<% end %>
+			<% end %>
+		</h3>
+	<% end %>
 	<div class="complentary">
 		<% if @article.description.present? %>
 			<h3 class="heading">Description:</h3>

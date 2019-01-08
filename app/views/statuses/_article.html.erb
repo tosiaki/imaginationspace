@@ -1,7 +1,7 @@
 <% if article.user %>
 	<% if article.attribution_tags.present? || @user!=article.user %>
 		<h4 class="heading byline status-byline">
-			<% unless @user==article.user %>
+			<% unless @user==article.user || article.anonymous %>
 				<%= link_to render('shared/user_icon_status', user: article.user), article.user, class: 'image-link' %>
 				<span class="tag-wrapper"><%= link_to article.user.name, article.user, class: 'user-name-listing user-profile-link' %></span>
 				<% if user_signed_in? && !current_user.is_subscribed_to?(article.user) %>
