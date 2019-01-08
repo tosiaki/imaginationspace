@@ -1415,6 +1415,7 @@ div.post-comment-form, li.comment-group {
 	line-height: 1;
 	margin: .429em 0;
 	width: 100%;
+	padding-left: .429em
 }
 .user-name {
 	font-size: 2.143em;
@@ -1431,6 +1432,12 @@ div.post-comment-form, li.comment-group {
 }
 .user-title {
 	font-weight: 700
+}
+.display-bio {
+	padding-left: 1em;
+}
+.display-website {
+	padding-left: 1em;
 }
 
 .results-count {

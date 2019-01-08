@@ -67,8 +67,8 @@ group :test do
   gem 'guard-minitest',           '~> 2.4.6'
 end
 
-group :production do
-  gem 'fog', '~> 1.42'
+group :production, :transfer do
+  gem 'fog-aws'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
