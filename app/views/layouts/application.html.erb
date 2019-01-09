@@ -22,14 +22,14 @@
       <%= yield %>
     </div>
     <div class="text-options">
-      <div class="bold-option">&#xf032;</div>
-      <div class="italic-option">&#xf033;</div>
-      <div class="link-option">&#xf0c1;</div>
+      <div class="bold-option"><i class="fas fa-bold"></i></div>
+      <div class="italic-option"><i class="fas fa-italic"></i></div>
+      <div class="link-option"><i class="fas fa-link"></i></div>
       <div class="heading-option"><i class="fas fa-heading"></i></div>
-      <div class="strikethrough-option">&#xf0cc;</div>
-      <div class="ol-option">&#xf0cb;</div>
-      <div class="ul-option">&#xf0ca;</div>
-      <div class="blockquote-option">&#xf101;</div>
+      <div class="strikethrough-option"><i class="fas fa-strikethrough"></i></div>
+      <div class="ol-option"><i class="fas fa-list-ol"></i></div>
+      <div class="ul-option"><i class="fas fa-list-ul"></i></div>
+      <div class="blockquote-option"><i class="fas fa-angle-double-right"></i></div>
     </div>
     <div class="link-addition-form"><%= text_field_tag :link_input_field, "", placeholder: "http://" %><%= button_tag "Done", class: "link-input-done-button" %></div>
     <div class="link-options">
@@ -38,7 +38,7 @@
       <%= button_tag "Open", class: "link-input-open-button" %>
     </div>
     <div class="line-options">
-      <div><%= file_field_tag :inline_picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "inline-picture-field" %><%= label_tag :inline_picture, "&#xf03e;".html_safe %></div>
+      <div><%= file_field_tag :inline_picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "inline-picture-field" %><%= label_tag :inline_picture, '<i class="fas fa-image"></i>'.html_safe %></div>
     </div>
 
     <%= debug(params) if Rails.env.development? %>
