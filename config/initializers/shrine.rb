@@ -14,15 +14,19 @@ end
 if Rails.env.development?
   Shrine.storages = {
     cache: Shrine::Storage::S3.new(prefix: "development_cache", **s3_options),
-    store: Shrine::Storage::S3.new(prefix: "development_store", public: true, **s3_options)
+    store: Shrine::Storage::S3.new(prefix: "development_store", public: true, **s3_options),
+    # new_store: Shrine::Storage::S3.new(prefix: "new_development_store", public: true, **s3_options)
   }
+  # Shrine.plugin :default_storage, store: :store
 end
 
 if Rails.env.transfer?
   Shrine.storages = {
     cache: Shrine::Storage::S3.new(prefix: "legacy_cache", **s3_options),
-    store: Shrine::Storage::S3.new(prefix: "legacy", public: true, **s3_options)
+    store: Shrine::Storage::S3.new(prefix: "legacy", public: true, **s3_options),
+    # new_store: Shrine::Storage::S3.new(prefix: "new_legacy", public: true, **s3_options)
   }
+  # Shrine.plugin :default_storage, store: :store
 end
 
 if Rails.env.production?

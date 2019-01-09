@@ -374,6 +374,10 @@ $(document).on('turbolinks:load', function(){
 			});
 		});
 
+		contentEditableDiv.addEventListener("touchend", function(event) {
+			createEditingOptions();
+		});
+
 		submitElements = textareaElement.closest(".posting-form-unit").querySelectorAll("input[type=submit]");
 		Array.prototype.forEach.call(submitElements, function (submitElement) {
 			submitElement.addEventListener("click", function(event) {

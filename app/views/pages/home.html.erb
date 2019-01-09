@@ -20,9 +20,9 @@
 <% if @all_statuses.present? %>
 	<div class="module">
 		<% if user_signed_in? %>
-			<h3 class="heading">Latest:</h3>
-		<% else %>
 			<h3 class="heading">More from all users:</h3>
+		<% else %>
+			<h3 class="heading">Latest:</h3>
 		<% end %>
 		<ol class="status-list">
 			<%= render @all_statuses %>

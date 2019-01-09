@@ -1,13 +1,13 @@
 <% if article.pages.count > 1 %>
 	<% if page.page_number > 1 %>
-		<%= link_to "🠄", show_page_article_path(article, page.page_number-1), class: "page-navigator previous-page-arrow" %>
+		<%= link_to "⬅️", show_page_article_path(article, page.page_number-1), class: "page-navigator previous-page-arrow" %>
 	<% else %>
-		<%= link_to "🠄", show_page_article_path(article, page.page_number), class: "arrow-placeholder page-navigator previous-page-arrow" %>
+		<%= link_to "⬅️", show_page_article_path(article, page.page_number), class: "arrow-placeholder page-navigator previous-page-arrow" %>
 	<% end %>
 	Page <span class="current-page-display"><%= page.page_number %></span>/<%= article.current_max_page %>
 	<% if page.page_number < @article.pages.count %>
-		<%= link_to "🠆", show_page_article_path(article, page.page_number+1), class: "page-navigator next-page-arrow" %>
+		<%= link_to "➡️", show_page_article_path(article, page.page_number+1), class: "page-navigator next-page-arrow" %>
 	<% else %>
-		<%= link_to "🠆", show_page_article_path(article, page.page_number), class: "arrow-placeholder page-navigator next-page-arrow" %>
+		<%= link_to "➡️", show_page_article_path(article, page.page_number), class: "arrow-placeholder page-navigator next-page-arrow" %>
 	<% end %>
 <% end %>
