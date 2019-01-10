@@ -48,7 +48,7 @@
             </div>
             <div class="form-input file-input-area">
               <div class="preview-area"></div>
-              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures" %>
+              <%= f.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures", data: { prefix: Shrine.storages[:cache].prefix } %>
               <%= f.label :picture, "Choose picture(s)", class: "file-upload-label edit-form-buttons hidden-label" %>
               <%= fields_for(:options) do |o| %>
                 <%= o.check_box :new_pages, class: "new-page-option", checked: true %>

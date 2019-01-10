@@ -54,7 +54,7 @@
               </div>
               <div class="form-input file-input-area">
                 <div class="preview-area"></div>
-                <%= pp.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures" %>
+                <%= pp.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures", data: { prefix: Shrine.storages[:cache].prefix } %>
                 <%= pp.label :picture, "Choose picture(s)", class: "file-upload-label edit-form-buttons hidden-label" %>
               </div>
             </div>
