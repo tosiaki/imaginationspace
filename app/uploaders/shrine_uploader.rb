@@ -1,7 +1,7 @@
 require "image_processing/mini_magick"
 
 class ShrineUploader < Shrine
-  plugin :restore_cached_data
+  plugin :pretty_location
   plugin :refresh_metadata
   plugin :processing
   plugin :versions
