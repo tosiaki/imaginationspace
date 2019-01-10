@@ -3,9 +3,10 @@ class UsersController < ApplicationController
   before_action :is_current_user, only: [:edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password]
 
   include Concerns::TagsFunctionality
+  include Concerns::GuestFunctions
 
   def show
-    @new_article = Article.new
+    @new_article = Article.new(guest_params)
     
     get_associated_tags
     @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order], page_number: params[:page].present? ? params[:page].to_i : 1)
@@ -99,7 +100,7 @@ class UsersController < ApplicationController
   end
 
   def bookmarks
-    @new_article = Article.new
+    @new_article = Article.new(guest_params)
     get_associated_tags
     @statuses = Status.select_by(tags: @tag_list, bookmarked_by: @user, order: params[:order])
   end
