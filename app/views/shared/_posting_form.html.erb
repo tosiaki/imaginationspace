@@ -9,7 +9,7 @@
 					<div class="preview-area"></div>
 					<div class="posting-bottom-line">
 						<div class="file-input">
-							<%= ff.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures status-list-new-post-pictures", id: "new_post_pictures_#{namespace}" %>
+							<%= ff.file_field :picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "new-post-pictures status-list-new-post-pictures", id: "new_post_pictures_#{namespace}", data: { prefix: Shrine.storages[:cache].prefix } %>
 							<%= ff.label :picture, "Add picture(s)", class: "file-upload-label posting-form-file-upload-label hidden-label", for: "new_post_pictures_#{namespace}" %>
 							<div class="file-input-option">
 								<%= fields_for :options do |o| %>

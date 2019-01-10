@@ -43,7 +43,7 @@ function fileUpload(uppyNode, fileInputElement, inPostingBoxElement) {
   });
 
   uppy.on('upload-success', function (file, data) {
-    object_key = file.meta['key'].match(/^cache\/(.+)/)[1];
+    object_key = file.meta['key'].match(new RegExp("^" + fileInputElement.dataset.prefix + "\\/(.+)"))[1];
 
     // construct uploaded file data in the format that Shrine expects
     var uploadedFileData = JSON.stringify({
