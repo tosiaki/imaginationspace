@@ -230,12 +230,13 @@ $(document).on('turbolinks:load', function(){
 			    }
 			}
 
-			window.scroll(0,findPos(document.getElementById("article-page-content")));
 			if(e.keyCode === 37) {
 				$('#previous-page-link').click();
+				window.scroll(0,findPos(document.getElementById("article-page-content")));
 			}
 			else if(e.keyCode === 39) {
 				$('#next-page-link').click();
+				window.scroll(0,findPos(document.getElementById("article-page-content")));
 			}
 		});
 	}
