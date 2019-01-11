@@ -38,7 +38,7 @@
       <%= button_tag "Open", class: "link-input-open-button" %>
     </div>
     <div class="line-options">
-      <div><%= file_field_tag :inline_picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "inline-picture-field" %><%= label_tag :inline_picture, '<i class="fas fa-image"></i>'.html_safe %></div>
+      <div><%= file_field_tag :inline_picture, accept: 'image/jpeg,image/gif,image/png', multiple: true, class: "inline-picture-field", data: { prefix: Shrine.storages[:cache].prefix } %><%= label_tag :inline_picture, '<i class="fas fa-image"></i>'.html_safe %></div>
     </div>
 
     <%= debug(params) if Rails.env.development? %>
