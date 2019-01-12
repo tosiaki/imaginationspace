@@ -56,4 +56,5 @@ To summarize, after cloning or pulling from this repository:
 * Solve the N+1 database querying issues that arise from unnecessary usage of .present? and .count.
 * Remove polymorphism and replace them with explicit supertables.
 * Rename the ArticleTag and ArticleTaggings models to become more widely applicable.
-* Features to be added can be found on [this list](www.imaginationspace.org/about).
+* Implement ActivityPub so that content can be federated.
+* Features to be added can be found on [the list of features to be added](www.imaginationspace.org/about).
