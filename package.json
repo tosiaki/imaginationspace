@@ -1,10 +1,10 @@
 {
-  "name": "fancomics",
+  "name": "imaginationspace",
   "private": true,
   "dependencies": {
     "@yaireo/tagify": "^2.9.1"
   },
-  "description": "This will be an app for fancomics.",
+  "description": "The ImaginationSpace website.",
   "version": "1.0.0",
   "directories": {
     "lib": "lib",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tosiaki/fancomics.git"
+    "url": "git+https://github.com/tosiaki/imaginationspace.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tosiaki/fancomics/issues"
+    "url": "https://github.com/tosiaki/imaginationspace/issues"
   },
-  "homepage": "https://github.com/tosiaki/fancomics#readme",
+  "homepage": "https://github.com/tosiaki/imaginationspace#readme",
   "devDependencies": {
     "babel-core": "^6.26.3",
     "babel-polyfill": "^6.26.0",

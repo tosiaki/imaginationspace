@@ -51,6 +51,8 @@ To summarize, after cloning or pulling from this repository:
 
 ## To do list
 
+* Find out ways to possibly turn Shrine image processing into a background job so that large uploads do not time out.
+* Position the menu differently when a context menu shows up on mobile due to text selection.
 * Finish writing tests for this software using Rspec and find out why Capybara isn't attaching images correctly.
 * Clean up code duplication in the articles and article_pages controllers.
 * Solve the N+1 database querying issues that arise from unnecessary usage of .present? and .count.
