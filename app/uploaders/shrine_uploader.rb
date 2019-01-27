@@ -1,7 +1,6 @@
 require "image_processing/mini_magick"
 
 class ShrineUploader < Shrine
-  plugin :pretty_location
   plugin :refresh_metadata
   plugin :processing
   plugin :versions
@@ -24,6 +23,15 @@ class ShrineUploader < Shrine
     end
 
     versions # return the hash of processed files
+  end
+
+  def generate_location(io, context)
+    original_filename = context[:record]&.picture&.original_filename || context[:metadata]["filename"]
+    version_suffix    = "_#{context[:version]}" if context[:version] && context[:version] != :original
+    basename          = File.basename(original_filename, ".*")
+    extension         = File.extname(original_filename).downcase
+
+    "picture/#{context[:record].id}/#{basename}#{version_suffix}#{extension}"
   end
 
   # Attacher.promote { |data| PromoteWorker.perform_later(data) }
