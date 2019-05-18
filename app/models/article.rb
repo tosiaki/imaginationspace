@@ -274,4 +274,10 @@ class Article < ApplicationRecord
       signal_boost.update_attribute(:origin_id, nil)
     end
   end
+
+  def admin_destroy
+    self.editing_password = 'a'
+    hash_editing_password
+    destroy
+  end
 end
