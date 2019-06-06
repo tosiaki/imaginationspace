@@ -10,7 +10,7 @@ class PagesController < ApplicationController
         @all_statuses = Status.all.order(timeline_time: :desc).paginate(page: 1, per_page: leftover_amount)
       end
     else
-      @all_statuses = Status.all.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
+      @all_statuses = Status.where("timeline_time >= :date1 OR timeline_time <= :date2", date1: Date.new(2019,6,5), date2: Date.new(2018,4,5)).order(timeline_time: :desc).paginate(page: 1, per_page: 20)
     end
     @new_article = Article.new(guest_params)
   end
