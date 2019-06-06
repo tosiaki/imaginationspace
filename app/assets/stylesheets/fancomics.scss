@@ -14,6 +14,10 @@
 	src: font-url('jetblack.ttf');
 }
 @font-face {
+	font-family: "Chikara Yowaku 002";
+	src: font-url('851CHIKARA-YOWAKU_002.ttf');
+}
+@font-face {
 	font-family: "Computer Modern";
 	src: font-url('cmunss.ttf');
 }
@@ -279,7 +283,7 @@ a#logo, a:link#logo, a:visited:hover#logo {
 	text-decoration: none;
 	font-size: 1.714em;
 	line-height: 1.25em;
-	font-family: Ameiro, Georgia,serif;
+	font-family: 'Chikara Yowaku 002', Ameiro, Georgia,serif;
 }
 #greeting {
 	margin-right: .375em;
