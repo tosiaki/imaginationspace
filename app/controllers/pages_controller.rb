@@ -7,10 +7,10 @@ class PagesController < ApplicationController
       @feed_statuses = current_user.feed_statuses.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
       leftover_amount = 20 - @feed_statuses.total_entries
       if leftover_amount > 0
-        @all_statuses = Status.all.order(timeline_time: :desc).paginate(page: 1, per_page: leftover_amount)
+        @all_statuses = Status.joins(:article).merge(Article.order(bookmarks_count: :desc)).paginate(page: 1, per_page: leftover_amount)
       end
     else
-      @all_statuses = Status.where("timeline_time >= :date1 OR timeline_time <= :date2", date1: Date.new(2019,6,5), date2: Date.new(2018,4,5)).order(timeline_time: :desc).paginate(page: 1, per_page: 20)
+      @all_statuses = Status.joins(:article).merge(Article.order(bookmarks_count: :desc)).paginate(page: 1, per_page: 20)
     end
     @new_article = Article.new(guest_params)
   end

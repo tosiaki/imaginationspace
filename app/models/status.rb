@@ -1,11 +1,17 @@
 class Status < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :post, polymorphic: true, inverse_of: :status
+  belongs_to :article, -> { where(statuses: {post_type: "Article"}) }, foreign_key: 'post_id'
 
   # default_scope -> { order(timeline_time: :desc) }
 
   validates :post, presence: true
   validates_associated :post
+
+  def article
+    return unless post_type == "Article"
+    super
+  end
 
   def self.select_by(tags: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false)
     status = Arel::Table.new(:statuses)

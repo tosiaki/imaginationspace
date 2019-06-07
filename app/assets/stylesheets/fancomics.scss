@@ -392,7 +392,7 @@ span.search-button {
 div.module h3.heading {
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
-	border-bottom-color: rgb(200,200,200);
+	border-bottom-color: rgb(200,255,200);
 	color: rgb(0,153,0);
 	font-family: Ameiro, Georgia,serif;
 	font-weight: 400;
@@ -1587,7 +1587,7 @@ li.status-media-comic {
 	}
 }
 .tag-list {
-	display: flex;
+	// display: flex;
 }
 .tag-wrapper a {
 	border-bottom: 1px dotted;

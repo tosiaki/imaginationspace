@@ -68,12 +68,20 @@ class ArticleTag < ApplicationRecord
     @contexts = self.contexts.reject{ |context| context[:name] == "Media"}
   end
 
+  def self.front_page_contexts
+    @front_contexts = self.tag_box_contexts.reject{ |context| %w(Relationships Attribution).include? context[:name] }
+  end
+
   def self.context_strings
     @strings ||= self.contexts.map{|c| c[:context]}
   end
 
   def self.context_names
     @names ||= self.contexts.map{|c| c[:name]}
+  end
+
+  scope :get_top_tags, ->(context, number) do
+    where("context=?", context).joins(:articles).select("article_tags.name, COUNT(articles.id) as article_count").group(:name).group(:article_tag_id).order("article_count DESC").limit(number)
   end
 
   scope :find_tags, ->(starting_with:, context: nil) do
