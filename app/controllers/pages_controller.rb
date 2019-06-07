@@ -26,6 +26,9 @@ class PagesController < ApplicationController
     end
   end
 
+  def support
+  end
+
   def about
   end
 

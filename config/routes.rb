@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root 'pages#home'
   get 'old_home', to: 'pages#old_home'
   get 'about', to: 'pages#about'
+  get 'support_this_site', to: 'pages#support'
 
   devise_scope :user do
     get 'signup', to: 'users/registrations#new', as: :registration
