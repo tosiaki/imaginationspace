@@ -1,7 +1,7 @@
 class Status < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :post, polymorphic: true, inverse_of: :status
-  belongs_to :article, -> { where(statuses: {post_type: "Article"}) }, foreign_key: 'post_id'
+  belongs_to :article, -> { where(statuses: {post_type: "Article"}) }, foreign_key: 'post_id', optional: true
 
   # default_scope -> { order(timeline_time: :desc) }
 

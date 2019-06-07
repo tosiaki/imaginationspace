@@ -57,7 +57,11 @@ class ArticlesController < ApplicationController
     else
       flash[:danger] = 'New post requires content.'
     end
-    redirect_back fallback_location: @new_article
+    if request.referer == root_url
+      redirect_to @new_article
+    else
+      redirect_back fallback_location: @new_article
+    end
   end
 
 
