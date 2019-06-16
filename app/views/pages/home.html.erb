@@ -24,7 +24,7 @@
 		<% end %>
 	</ul>
 </div>
-<% if false && @feed_statuses.present? %>
+<% if @feed_statuses.present? %>
 	<div class="module">
 		<h3 class="heading">Latest from your followed users:</h3>
 		<ol class="status-list">
@@ -34,7 +34,7 @@
 <% end %>
 <% if @all_statuses.present? %>
 	<div class="module">
-		<% if false && user_signed_in? %>
+		<% if @feed_statuses.present? && user_signed_in? %>
 			<h3 class="heading">More from all users:</h3>
 		<% else %>
 			<h3 class="heading">Most bookmarked:</h3>

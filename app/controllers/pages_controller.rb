@@ -3,13 +3,8 @@ class PagesController < ApplicationController
   include Concerns::GuestFunctions
 
   def home
-    if false && user_signed_in?
+    if user_signed_in?
       @feed_statuses = current_user.feed_statuses.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
-      leftover_amount = 20 - @feed_statuses.total_entries
-      if leftover_amount > 0
-        @all_statuses = Status.joins(:article).merge(Article.order(bookmarks_count: :desc)).paginate(page: 1, per_page: leftover_amount)
-      end
-    else
       @all_statuses = Status.joins(:article).merge(Article.order(bookmarks_count: :desc)).paginate(page: 1, per_page: 20)
     end
     @new_article = Article.new(guest_params)
