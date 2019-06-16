@@ -839,7 +839,8 @@ ul.page-actions {
 		padding-left: 3em;
 	}
 	img {
-		max-width: 85%;
+		max-width: 100%;
+		margin: 0 auto;
 	}
 }
 .text-options {
@@ -1327,7 +1328,7 @@ li.status {
 	display: flex;
 }
 .article-page-content {
-	max-width: 95%;
+	max-width: 70%;
 	overflow: hidden;
 }
 .reply-thread li.reply {
@@ -1365,6 +1366,9 @@ li.status {
 	height: auto;
 	line-height: 1.286;
 	box-shadow: none;
+}
+.page-navigator {
+	font-family: 'GenEi Antique', serif;
 }
 
 /* Summary displays */
