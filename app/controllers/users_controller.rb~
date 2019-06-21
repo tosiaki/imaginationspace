@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     @new_article = Article.new(guest_params)
     
     get_associated_tags
-    @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1)
+    @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order], page_number: params[:page].present? ? params[:page].to_i : 1)
   end
 
   def old_show

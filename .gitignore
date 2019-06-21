@@ -40,3 +40,8 @@
 
 # Ignore the legacy files for the rake task for importing from ImaginationSpace
 /lib/tasks/legacy_i/*
+
+# Ignore vim temporary files
+*~
+*.swp
+*.swo
