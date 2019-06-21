@@ -13,7 +13,7 @@ class Status < ApplicationRecord
     super
   end
 
-  def self.select_by(tags: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false)
+  def self.select_by(tags: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false, include_replies: false)
     status = Arel::Table.new(:statuses)
 
     if count
@@ -24,9 +24,17 @@ class Status < ApplicationRecord
 
     article = Arel::Table.new(:articles)
     if tags.present? || %w(bookmarks kudos signal_boosts replies hits).include?(order) || bookmarked_by.present?
-      relation.join(article).on(status[:post_id].eq(article[:id]).and(status[:post_type].eq("Article")))
+      join_on = status[:post_id].eq(article[:id]).and(status[:post_type].eq("Article"))
+      unless include_replies
+        join_on = join_on.and(article[:reply_to_id].eq(nil))
+      end
+      relation.join(article).on(join_on)
     else
-      relation.join(article, Arel::Nodes::OuterJoin).on(status[:post_id].eq(article[:id]).and(article[:anonymous].eq(false))).where(article[:id].not_eq(nil).or(status[:post_type].eq("SignalBoost")))
+      article_condition = article[:id].not_eq(nil)
+      unless include_replies
+        article_condition = article_condition.and(article[:reply_to_id].eq(nil))
+      end
+      relation.join(article, Arel::Nodes::OuterJoin).on(status[:post_id].eq(article[:id]).and(article[:anonymous].eq(false))).where(article_condition.or(status[:post_type].eq("SignalBoost")))
     end
 
     if tags.present?

@@ -5,8 +5,8 @@ class PagesController < ApplicationController
   def home
     if user_signed_in?
       @feed_statuses = current_user.feed_statuses.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
-      @all_statuses = Status.joins(:article).merge(Article.order(bookmarks_count: :desc)).paginate(page: 1, per_page: 20)
     end
+    @all_statuses = Status.joins(:article).merge(Article.order(bookmarks_count: :desc)).paginate(page: 1, per_page: 20)
     @new_article = Article.new(guest_params)
   end
 

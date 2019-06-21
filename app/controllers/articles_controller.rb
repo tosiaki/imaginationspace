@@ -155,7 +155,7 @@ class ArticlesController < ApplicationController
 
   def index
     get_associated_tags
-    @statuses = Status.select_by(tags: @tag_list, order: params[:order], page_number: params[:page].present? ? params[:page].to_i : 1)
+    @statuses = Status.select_by(tags: @tag_list, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1)
     @new_article = Article.new(guest_params)
   end
 

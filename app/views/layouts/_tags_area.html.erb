@@ -4,6 +4,7 @@
 		<%= form_tag request.path, method: :get, class: "sort-status-form" do %>
 			<%= hidden_field_tag 'tags', params[:tags] if @tag_list.present? %>
 			<%= select_tag 'order', options_for_select([['Update time','updated'], ['Publish time','published'], ['Bookmarks','bookmarks'], ['Kudos','kudos'], ['Signal boosts','signal_boosts'], ['Replies','replies'], ['Hits','hits']], params[:order]), class: "sort-status-results" %>
+				<%= check_box_tag :show_replies, 1, params[:show_replies] %> <%= label_tag :show_replies, "Show replies" %>
 			<%= submit_tag 'Reorder results' %>
 		<% end %>
 	</div>
