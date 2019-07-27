@@ -57,3 +57,4 @@ Shrine.plugin :presign_endpoint, presign_options: -> (request) {
     content_length_range:   0..(1024*1024*1024),
   }
 }
+# Shrine::Attacher.promote { |data| PromoteJob.perform_later(data) }

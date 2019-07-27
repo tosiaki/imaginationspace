@@ -27,16 +27,8 @@ class ArticlesController < ApplicationController
     @new_article.reply_to = Article.find(params[:id]) if params[:reply]
 
     if params[:new_page][:picture]
-      page_number=1
-      params[:new_page][:picture].each_with_index do |picture, index|
-        if index > 0
-          if params[:options][:new_pages] == '1'
-            page_number += 1
-            @new_page = @new_article.pages.build(page_number: page_number, content: '')
-          end
-        end
-        add_picture_to_page(picture, @new_page)
-      end
+      add_picture_to_page(params[:new_page][:picture][0], @new_page)
+      @other_pictures = params[:new_page][:picture].drop(1)
     end
 
     if user_signed_in?
@@ -54,6 +46,18 @@ class ArticlesController < ApplicationController
       end
 
       @new_article.reply_to.add_reply if params[:reply]
+
+      if @other_pictures
+        page_number=1
+        @other_pictures.each do |picture|
+          if params[:options][:new_pages] == '1'
+            page_number += 1
+            AddPicturesJob.perform_later(picture: picture, article: @new_article, page_number: page_number)
+          else
+            AddPicturesJob.perform_later(picture: picture, page: @new_page)
+          end
+        end
+      end
     else
       flash[:danger] = 'New post requires content.'
     end

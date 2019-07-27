@@ -23,7 +23,7 @@ gem 'shrine', "~> 2.0"
 gem 'image_processing', "~> 1.0"
 gem 'fastimage'
 gem 'aws-sdk-s3', '~> 1.2'
-# gem 'sidekiq'
+gem 'sucker_punch'
 gem 'content_disposition', '~> 1.0'
 
 # Not being used on currently active features

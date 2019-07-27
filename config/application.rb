@@ -17,6 +17,6 @@ module Fancomics
     # the framework and any gems in your application.
     config.assets.paths << Rails.root.join('node_modules')
     config.assets.paths << Rails.root.join('app','assets','fonts')
-    # config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_adapter = :sucker_punch
   end
 end
