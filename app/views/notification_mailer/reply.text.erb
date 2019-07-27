@@ -1,0 +1,1 @@
+<%= @user ? "#{@user.name} (#{user_url(@user)})" : "A guest" %> has posted a reply to <%= "#{@reply_to.title.present? ? @reply_to.title : "your submission"} (#{article_url(@reply_to)})" %>. See the reply at <%= article_url(@reply) %>

@@ -19,6 +19,31 @@
 				</li>
         		<li class="form-element">
 					<div class="field">
+            			<%= f.check_box :notify_follow %><%= f.label :notify_follow, "Notify me of new followers." %>
+					</div>
+				</li>
+        		<li class="form-element">
+					<div class="field">
+            			<%= f.check_box :notify_kudos %><%= f.label :notify_kudos, "Notify me of new kudos." %>
+					</div>
+				</li>
+        		<li class="form-element">
+					<div class="field">
+            			<%= f.check_box :notify_bookmark %><%= f.label :notify_bookmark, "Notify me of new bookmarkings." %>
+					</div>
+				</li>
+        		<li class="form-element">
+					<div class="field">
+            			<%= f.check_box :notify_reply %><%= f.label :notify_reply, "Notify me of new replies." %>
+					</div>
+				</li>
+        		<li class="form-element">
+					<div class="field">
+            			<%= f.check_box :notify_signal_boost %><%= f.label :notify_signal_boost, "Notify me of signal boosts." %>
+					</div>
+				</li>
+        		<li class="form-element">
+					<div class="field">
             			<%= f.check_box :site_updates %><%= f.label :site_updates, "Send email notifications when something new is posted on this website." %>
 					</div>
 				</li>

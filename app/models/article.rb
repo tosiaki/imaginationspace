@@ -30,6 +30,8 @@ class Article < ApplicationRecord
   attr_accessor :signed_in
   attr_accessor :editing_password
 
+  after_save :notify_user
+
   # scope :tagged_with, -> (tags, context=nil) do
   #   if tags.length > 0
   #     arel_table_tagging = Arel::Table.new(:article_taggings, as: "tagging#{tags.length}")
@@ -283,5 +285,11 @@ class Article < ApplicationRecord
     self.editing_password = 'a'
     hash_editing_password
     destroy
+  end
+
+  def notify_user
+    if reply_to && reply_to.user.notify_reply
+      NotificationMailer.reply(reply_to, self, user).deliver_now
+    end
   end
 end

@@ -1,0 +1,1 @@
+<%= @user ? "#{@user.name} (#{user_url(@user)})" : "A guest" %> gave kudos to <%= "#{@submission.title.present? ? @submission.title : "your submission"} (#{article_url(@submission)})" %>. Hooray!

@@ -1,0 +1,16 @@
+<table align="center">
+	<tr>
+		<td valign="middle" style="vertcal-align: middle">
+			<%= link_to user_url(@user) do %>
+				<% if @user && @user.icon && @user.icon.url %>
+					<%= image_tag @user.icon.url %>
+				<% else %>
+					<%= image_tag image_url('default_icon.png'), style: "float: left" %>
+				<% end %>
+			<% end %>
+		</td>
+		<td valign="middle" style="vertcal-align: middle">
+			<b><%= link_to @user.name, user_url(@user) %></b> has bookmarked <%= link_to (@bookmarked.title.present? ? @bookmarked.title : "your submission"), article_url(@bookmarked) %>. Hooray!
+		</td>
+	</tr>
+</p>

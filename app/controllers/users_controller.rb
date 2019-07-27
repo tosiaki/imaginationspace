@@ -191,7 +191,7 @@ class UsersController < ApplicationController
     end
 
     def preferences_params
-      params.require(:user).permit(:show_adult,:site_updates)
+      params.require(:user).permit(:show_adult, :notify_follow, :notify_kudos, :notify_bookmark, :notify_reply, :notify_signal_boost, :site_updates)
     end
 
     def change_icon_params
