@@ -68,6 +68,10 @@ class Article < ApplicationRecord
     tag_string('other')
   end
 
+  def language
+    tag_string('language')
+  end
+
   def attribution
     tag_string('attribution')
   end

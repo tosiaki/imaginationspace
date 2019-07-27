@@ -40,6 +40,10 @@ class User < ApplicationRecord
   validates :bio, length: { maximum: 2000 }
   validates :website, length: { maximum: 255 }
 
+  has_many :user_languages
+  has_many :language_tags, through: :user_languages, source: :article_tag
+
+
   def valid_password?(password)
     if legacy_password == 1
       if legacy_user.validate(password)
@@ -82,5 +86,45 @@ class User < ApplicationRecord
 
   def subscriptions_count
     @subscriptions_count ||= proper_subscriptions.count
+  end
+
+  def languages
+    language_array.join(", ")
+  end
+
+  def language_array
+    language_tags.pluck(:name)
+  end
+
+  def add_tag(new_tag)
+    tag = ArticleTag.find_by(name: new_tag, context: "language")
+    tag ||= ArticleTag.create(name: new_tag, context: "language")
+    user_languages.create(article_tag: tag)
+  end
+
+  def remove_tag(old_tag)
+    tag = ArticleTag.find_by(name: old_tag, context: "language")
+    tag.user_languages.where(user_id: id).map(&:destroy)
+  end
+
+  def add_tags(tag_array)
+    tag_array.each do |tag|
+      add_tag(tag)
+    end
+  end
+
+  def remove_tags(tag_array)
+    tag_array.each do |tag|
+      remove_tag(tag)
+    end
+  end
+
+  def set_languages(tags)
+    new_tags = tags.split(/\s*,\s*/).reject { |c| c.empty? }
+    old_tags = language_array
+    unless new_tags == old_tags
+      remove_tags(old_tags - new_tags)
+      add_tags(new_tags - old_tags)
+    end
   end
 end

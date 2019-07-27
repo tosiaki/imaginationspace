@@ -46,6 +46,10 @@ class UsersController < ApplicationController
   end
 
   def update_preferences
+    if params[:user][:languages]
+      @user.set_languages(params[:user][:languages])
+    end
+
     if @user.update_attributes(preferences_params)
       flash[:success] = "Preferences updated!"
       redirect_to preferences_user_path(@user)

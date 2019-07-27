@@ -23,8 +23,16 @@
 					</div>
 				</li>
         		<li class="form-element">
+					<div class="form-label">
+						<%= f.label :languages, "Languages you wish to display" %>
+					</div>
+					<div class="field">
+			    		<%= f.text_field :languages, class: "tags-input-field", data: { tagify: true } %>
+			    	</div>
+			    </li>
+        		<li class="form-element">
 					<div class="actions">
-			    		<%= f.submit "Update" %>
+			    		<%= f.submit "Update", class: "submit-button" %>
 			    	</div>
 			    </li>
 			</ul>

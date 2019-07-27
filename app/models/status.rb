@@ -13,7 +13,7 @@ class Status < ApplicationRecord
     super
   end
 
-  def self.select_by(tags: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false, include_replies: false)
+  def self.select_by(tags: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false, include_replies: false, filter_languages_user: nil)
     status = Arel::Table.new(:statuses)
 
     if count
@@ -44,6 +44,24 @@ class Status < ApplicationRecord
         relation = relation.join(arel_table_tagging).on(article[:id].eq(arel_table_tagging[:article_id])).
         join(arel_table_tag).on(arel_table_tagging[:article_tag_id].eq(arel_table_tag[:id])).where(arel_table_tag[:name].eq(tag))
       end
+    end
+
+    if filter_languages_user
+      arel_language_tagging = Arel::Table.new(:article_taggings, as: "languagetagging")
+      arel_language_tag = Arel::Table.new(:article_tags, as: "languagetag")
+
+      user_language = UserLanguage.arel_table
+
+      exclude_articles = Arel::Table.new(:articles, as: "excludearticle")
+
+      exclude_subquery = exclude_articles.project(exclude_articles[Arel.sql("*")]).join(arel_language_tagging).on(exclude_articles[:id].eq(arel_language_tagging[:article_id]))
+      .join(arel_language_tag)
+      .on(arel_language_tagging[:article_tag_id].eq(arel_language_tag[:id]).and(arel_language_tag[:context].eq("language")))
+      .join(user_language, Arel::Nodes::OuterJoin)
+      .on(arel_language_tag[:id].eq(user_language[:article_tag_id]).and(user_language[:user_id].eq(filter_languages_user.id)))
+      .where(user_language[:id].eq(nil)).as('suba')
+
+      relation = relation.join(exclude_subquery,Arel::Nodes::OuterJoin).on(article[:id].eq(exclude_subquery[:id])).where(exclude_subquery[:id].eq(nil))
     end
 
     if user

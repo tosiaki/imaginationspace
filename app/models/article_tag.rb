@@ -2,6 +2,8 @@ class ArticleTag < ApplicationRecord
   has_many :article_taggings
   has_many :articles, through: :article_taggings
 
+  has_many :user_languages
+
   validates :name, presence: true
 
   def self.associate_tags(context: nil, tags: nil, user: nil, bookmarked_by: nil, exclusions: nil)

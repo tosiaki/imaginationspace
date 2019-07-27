@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_07_224948) do
+ActiveRecord::Schema.define(version: 2019_07_27_005749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -278,6 +278,15 @@ ActiveRecord::Schema.define(version: 2019_01_07_224948) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "user_languages", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "article_tag_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_tag_id"], name: "index_user_languages_on_article_tag_id"
+    t.index ["user_id"], name: "index_user_languages_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -325,5 +334,7 @@ ActiveRecord::Schema.define(version: 2019_01_07_224948) do
   add_foreign_key "pages", "articles"
   add_foreign_key "signal_boosts", "articles", column: "origin_id"
   add_foreign_key "statuses", "users"
+  add_foreign_key "user_languages", "article_tags"
+  add_foreign_key "user_languages", "users"
   add_foreign_key "users", "articles", column: "sticky_id"
 end
