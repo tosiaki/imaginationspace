@@ -1,10 +1,20 @@
 class AddPicturesJob < ApplicationJob
   queue_as :default
 
-  def perform(picture:, page: nil, article: nil, page_number: nil)
-    page ||= article.pages.build(page_number: page_number, content: '')
-    add_picture_to_page(picture, page)
-    page.save
+  def perform(pictures:, page: nil, article: nil, page_number: nil)
+    if page
+      pictures.each do |picture|
+        add_picture_to_page(picture, page)
+      end
+      page.save
+    else
+      pictures.each do |picture|
+        page_number += 1
+        page = article.pages.build(page_number: page_number, content: '')
+        add_picture_to_page(picture, page)
+        page.save
+      end
+    end
   end
 
   def add_picture_to_page(picture, page)

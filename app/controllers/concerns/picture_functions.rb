@@ -9,15 +9,21 @@ module Concerns::PictureFunctions
 
   def add_pictures_to_article(pictures, article, page, new_pages)
     page_number = page.page_number
-    if pictures
-      pictures.each_with_index do |picture, index|
-        if index > 0 && new_pages
+
+    add_picture_to_page(pictures[0], page)
+    @other_pictures = pictures.drop(1)
+
+    if @other_pictures
+      @other_pictures.each do |picture|
+        if new_pages == '1'
           page_number += 1
-          page = article.pages.build(page_number: page_number, content: '')
+          AddPicturesJob.perform_later(picture: picture, article: article, page_number: page_number)
+        else
+          AddPicturesJob.perform_later(picture: picture, page: page)
         end
-        add_picture_to_page(picture, page)
       end
     end
+
     page
   end
 

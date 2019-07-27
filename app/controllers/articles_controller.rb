@@ -48,14 +48,10 @@ class ArticlesController < ApplicationController
       @new_article.reply_to.add_reply if params[:reply]
 
       if @other_pictures
-        page_number=1
-        @other_pictures.each do |picture|
-          if params[:options][:new_pages] == '1'
-            page_number += 1
-            AddPicturesJob.perform_later(picture: picture, article: @new_article, page_number: page_number)
-          else
-            AddPicturesJob.perform_later(picture: picture, page: @new_page)
-          end
+        if params[:options][:new_pages] == '1'
+          AddPicturesJob.perform_later(pictures: @other_pictures, article: @new_article, page_number: 1)
+        else
+          AddPicturesJob.perform_later(pictures: @other_pictures, page: @new_page)
         end
       end
     else
@@ -134,14 +130,18 @@ class ArticlesController < ApplicationController
     end
 
     if params[:page][:picture]
-      params[:page][:picture].each do |picture|
-        add_picture_to_page(picture, @page)
-      end
+      add_picture_to_page(params[:page][:picture][0], @page)
+      @other_pictures = params[:page][:picture].drop(1)
     end
 
     if @article.save && @page.save
       # session.delete(:editing)
       #redirect_to session.delete(:return_to) || show_page_article_path(@article,page_number: @page_number)
+
+      if @other_pictures
+        AddPicturesJob.perform_later(pictures: @other_pictures, page: @page)
+      end
+
       redirect_to show_page_article_path(@article,page_number: @page_number)
     else
       render 'edit'

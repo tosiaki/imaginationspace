@@ -15,10 +15,25 @@ class ArticlePagesController < ApplicationController
     @page.normalize_page_number
     @page.content = process_inline_uploads(@page)
 
-    @page = add_pictures_to_article(params[:page][:picture], @article, @page, params[:options][:new_pages] == '1')
+    page_number = @page.page_number
+
+    if params[:page][:picture]
+      add_picture_to_page(params[:page][:picture][0], @page)
+      @other_pictures = params[:page][:picture].drop(1)
+    end
 
     if @article.save
       session.delete(:editing)
+
+      if @other_pictures
+        if params[:options][:new_pages] == '1'
+          page_number += 1
+          AddPicturesJob.perform_later(pictures: @other_pictures, article: @article, page_number: page_number)
+        else
+          AddPicturesJob.perform_later(pictures: @other_pictures, page: @page)
+        end
+      end
+
       redirect_to show_page_article_path(@article, page_number: @page.page_number)
     else
       render 'new'
