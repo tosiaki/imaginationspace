@@ -60,6 +60,7 @@ class ArticleTag < ApplicationRecord
       { context: 'relationship', name: "Relationships"},
       { context: 'character', name: "Characters"},
       { context: 'other', name: "Other tags"},
+      { context: 'language', name: "Language"}
       { context: 'attribution', name: "Attribution"}
     ]
   end
