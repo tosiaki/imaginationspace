@@ -46,7 +46,7 @@ class Status < ApplicationRecord
       end
     end
 
-    if filter_languages_user
+    if false && filter_languages_user
       arel_language_tagging = Arel::Table.new(:article_taggings, as: "languagetagging")
       arel_language_tag = Arel::Table.new(:article_tags, as: "languagetag")
 
