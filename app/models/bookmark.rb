@@ -2,7 +2,7 @@ class Bookmark < ApplicationRecord
   belongs_to :bookmarkable, polymorphic: true, counter_cache: true
   belongs_to :user, inverse_of: :bookmarks
 
-  after_save :notify_user
+  after_create :notify_user
 
   def notify_user
     if bookmarkable_type == "User"

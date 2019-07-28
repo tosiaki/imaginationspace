@@ -30,7 +30,7 @@ class Article < ApplicationRecord
   attr_accessor :signed_in
   attr_accessor :editing_password
 
-  after_save :notify_user
+  after_create :notify_user
 
   # scope :tagged_with, -> (tags, context=nil) do
   #   if tags.length > 0

@@ -3,7 +3,7 @@ class SignalBoost < ApplicationRecord
   has_many :shrine_pictures, as: :page
   belongs_to :origin, class_name: "Article", inverse_of: :signal_boosts, counter_cache: true, optional: true
   before_save :strip_end_whitespace
-  after_save :notify_user
+  after_create :notify_user
 
   def strip_end_whitespace
     self.comment = comment.strip

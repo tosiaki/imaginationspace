@@ -6,7 +6,7 @@ class Kudo < ApplicationRecord
 
   default_scope -> { order(created_at: :asc) }
 
-  after_save :notify_user
+  after_create :notify_user
 
   def notify_user
     if work.user.notify_kudos
