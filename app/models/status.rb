@@ -65,10 +65,10 @@ class Status < ApplicationRecord
     end
 
     if filter_maps
-      arel_language_tagging1 = Arel::Table.new(:article_taggings, as: "languagetagging")
-      arel_language_tag1 = Arel::Table.new(:article_tags, as: "languagetag")
+      arel_language_tagging1 = Arel::Table.new(:article_taggings, as: "languagetagging1")
+      arel_language_tag1 = Arel::Table.new(:article_tags, as: "languagetag1")
 
-      exclude_articles1 = Arel::Table.new(:articles, as: "excludearticle")
+      exclude_articles1 = Arel::Table.new(:articles, as: "excludearticle1")
 
       exclude_maps_subquery = exclude_articles1.project(exclude_articles1[Arel.sql("*")]).join(arel_language_tagging1).on(exclude_articles1[:id].eq(arel_language_tagging1[:article_id]))
       .join(arel_language_tag1)
@@ -76,6 +76,25 @@ class Status < ApplicationRecord
       .as('subm')
 
       relation = relation.join(exclude_maps_subquery,Arel::Nodes::OuterJoin).on(article[:id].eq(exclude_maps_subquery[:id])).where(exclude_maps_subquery[:id].eq(nil))
+
+
+
+      arel_language_tagging2 = Arel::Table.new(:article_taggings, as: "languagetagging2")
+      arel_language_tag2 = Arel::Table.new(:article_tags, as: "languagetag2")
+
+      exclude_articles2 = Arel::Table.new(:articles, as: "excludearticle2")
+
+      exclude_boosts = Arel::Table.new(:articles, as: "excludeboosts")
+
+      exclude_maps_subquery2 = exclude_boosts.project(exclude_boosts[Arel.sql("*")])
+      .join(exclude_articles2).on(exclude_articles2[:id].eq(exclude_boosts[:origin_id]))
+      .join(arel_language_tagging2).on(exclude_articles2[:id].eq(arel_language_tagging2[:article_id]))
+      .join(arel_language_tag2)
+      .on(arel_language_tagging2[:article_tag_id].eq(arel_language_tag2[:id])).where(arel_language_tag2[:name].eq("map community"))
+      .as('subm2')
+
+      relation = relation.join(exclude_maps_subquery2,Arel::Nodes::OuterJoin).on(status[:post_id].eq(exclude_maps_subquery2[:id]).and(status[:post_type].eq("Signal Boost")))
+      .where(exclude_maps_subquery2[:id]).eq(nil)
     end
 
     if user
