@@ -9,7 +9,7 @@ class Kudo < ApplicationRecord
   after_create :notify_user
 
   def notify_user
-    if work.user.notify_kudos
+    if work.user && work.user.notify_kudos
       NotificationMailer.kudos(work, user).deliver_now
     end
   end

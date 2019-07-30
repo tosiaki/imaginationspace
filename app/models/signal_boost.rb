@@ -14,7 +14,7 @@ class SignalBoost < ApplicationRecord
   end
 
   def notify_user
-    if origin.user.notify_signal_boost
+    if origin.user && origin.user.notify_signal_boost
       NotificationMailer.signal_boost(status.user, origin).deliver_now
     end
   end

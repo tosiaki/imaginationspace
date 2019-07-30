@@ -10,7 +10,7 @@ class Bookmark < ApplicationRecord
         NotificationMailer.follow(user, bookmarkable).deliver_now
       end
     elsif bookmarkable_type == "Article"
-      if bookmarkable.user.notify_bookmark
+      if bookmarkable.user && bookmarkable.user.notify_bookmark
         NotificationMailer.bookmark(user, bookmarkable).deliver_now
       end
     end
