@@ -52,7 +52,7 @@ class ArticleTag < ApplicationRecord
 
       exclude_maps_subquery = exclude_articles1.project(exclude_articles1[Arel.sql("*")]).join(arel_language_tagging1).on(exclude_articles1[:id].eq(arel_language_tagging1[:article_id]))
       .join(arel_language_tag1)
-      .on(arel_language_tagging1[:article_tag_id].eq(arel_language_tag1[:id])).where(arel_language_tag1[:context].eq("fandom").and(arel_language_tag1[:name].eq("map community")))
+      .on(arel_language_tagging1[:article_tag_id].eq(arel_language_tag1[:id])).where(arel_language_tag1[:name].eq("map community"))
       .as('subm')
 
       relation = relation.join(exclude_maps_subquery,Arel::Nodes::OuterJoin).on(article[:id].eq(exclude_maps_subquery[:id])).where(exclude_maps_subquery[:id].eq(nil))

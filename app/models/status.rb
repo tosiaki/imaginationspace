@@ -64,7 +64,7 @@ class Status < ApplicationRecord
       relation = relation.join(exclude_subquery,Arel::Nodes::OuterJoin).on(article[:id].eq(exclude_subquery[:id])).where(exclude_subquery[:id].eq(nil))
     end
 
-    if false && filter_maps
+    if filter_maps
       arel_language_tagging1 = Arel::Table.new(:article_taggings, as: "languagetagging")
       arel_language_tag1 = Arel::Table.new(:article_tags, as: "languagetag")
 
