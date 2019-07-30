@@ -6,7 +6,7 @@ class ArticleTag < ApplicationRecord
 
   validates :name, presence: true
 
-  def self.associate_tags(context: nil, tags: nil, user: nil, bookmarked_by: nil, exclusions: nil)
+  def self.associate_tags(context: nil, tags: nil, user: nil, bookmarked_by: nil, exclusions: nil, include_replies: false, filter_maps: true)
     article_tags = Arel::Table.new(:article_tags)
     relation = article_tags.project(article_tags[Arel.sql("*")],article_tags[:id].count.as('count'))
 
@@ -21,6 +21,9 @@ class ArticleTag < ApplicationRecord
     taggings = Arel::Table.new(:article_taggings)
     relation = relation.join(taggings).on(article_tags[:id].eq(taggings[:article_tag_id])).
     join(article).on(taggings[:article_id].eq(article[:id]))
+    unless include_replies
+      relation = relation.where(article[:reply_to_id].eq(nil))
+    end
     if tags.present?
       tags.each_with_index do |tag,index|
         arel_table_tagging = Arel::Table.new(:article_taggings, as: "tagging#{index}")
@@ -40,6 +43,21 @@ class ArticleTag < ApplicationRecord
       bookmarks = Arel::Table.new(:bookmarks)
       relation = relation.join(bookmarks).on(bookmarks[:bookmarkable_id].eq(article[:id]).and(bookmarks[:bookmarkable_type].eq("Article"))).where(bookmarks[:user_id].eq(bookmarked_by.id))
     end
+
+    if filter_maps
+      arel_language_tagging1 = Arel::Table.new(:article_taggings, as: "languagetagging")
+      arel_language_tag1 = Arel::Table.new(:article_tags, as: "languagetag")
+
+      exclude_articles1 = Arel::Table.new(:articles, as: "excludearticle")
+
+      exclude_maps_subquery = exclude_articles1.project(exclude_articles1[Arel.sql("*")]).join(arel_language_tagging1).on(exclude_articles1[:id].eq(arel_language_tagging1[:article_id]))
+      .join(arel_language_tag1)
+      .on(arel_language_tagging1[:article_tag_id].eq(arel_language_tag1[:id])).where(arel_language_tag1[:context].eq("fandom").and(arel_language_tag1[:name].eq("map community")))
+      .as('subm')
+
+      relation = relation.join(exclude_maps_subquery,Arel::Nodes::OuterJoin).on(article[:id].eq(exclude_maps_subquery[:id])).where(exclude_maps_subquery[:id].eq(nil))
+    end
+
     relation = relation.group(article_tags[:id]).order(article_tags[:id].count.desc)
     self.find_by_sql(relation.to_sql)
   end
@@ -84,7 +102,7 @@ class ArticleTag < ApplicationRecord
   end
 
   scope :get_top_tags, ->(context, number) do
-    where("context=?", context).joins(:articles).select("article_tags.name, COUNT(articles.id) as article_count").group(:name).group(:article_tag_id).order("article_count DESC").limit(number)
+    where("context=?", context).where.not(name: ['map', 'nomap', 'map community', 'map positivity', 'mappositivity', 'Nomap', 'Map', 'Map positivity']).joins(:articles).select("article_tags.name, COUNT(articles.id) as article_count").group(:name).group(:article_tag_id).order("article_count DESC").limit(number)
   end
 
   scope :find_tags, ->(starting_with:, context: nil) do

@@ -127,4 +127,8 @@ class User < ApplicationRecord
       add_tags(new_tags - old_tags)
     end
   end
+
+  def filter_content?
+    !language_array.include?('map community')
+  end
 end

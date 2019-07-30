@@ -7,9 +7,9 @@ module Concerns::TagsFunctionality
 
     @tag_hash = ArticleTag.context_strings.map do |context|
       if action_name == 'show'
-        [context, ArticleTag.associate_tags(context: context, tags: @tag_list.present? ? @tag_list : nil, user: @user, exclusions: @tag_list)]
+        [context, ArticleTag.associate_tags(context: context, tags: @tag_list.present? ? @tag_list : nil, user: @user, exclusions: @tag_list, include_replies: params[:show_replies], filter_maps: !user_signed_in? || current_user.filter_content?)]
       else
-        [context, ArticleTag.associate_tags(context: context, tags: @tag_list.present? ? @tag_list : nil, bookmarked_by: @user, exclusions: @tag_list)]
+        [context, ArticleTag.associate_tags(context: context, tags: @tag_list.present? ? @tag_list : nil, bookmarked_by: @user, exclusions: @tag_list, include_replies: params[:show_replies], filter_maps: !user_signed_in? || current_user.filter_content?)]
       end
     end.to_h
 

@@ -13,7 +13,7 @@ class Status < ApplicationRecord
     super
   end
 
-  def self.select_by(tags: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false, include_replies: false, filter_languages_user: nil)
+  def self.select_by(tags: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false, include_replies: false, filter_languages_user: nil, filter_maps: true)
     status = Arel::Table.new(:statuses)
 
     if count
@@ -64,6 +64,20 @@ class Status < ApplicationRecord
       relation = relation.join(exclude_subquery,Arel::Nodes::OuterJoin).on(article[:id].eq(exclude_subquery[:id])).where(exclude_subquery[:id].eq(nil))
     end
 
+    if false && filter_maps
+      arel_language_tagging1 = Arel::Table.new(:article_taggings, as: "languagetagging")
+      arel_language_tag1 = Arel::Table.new(:article_tags, as: "languagetag")
+
+      exclude_articles1 = Arel::Table.new(:articles, as: "excludearticle")
+
+      exclude_maps_subquery = exclude_articles1.project(exclude_articles1[Arel.sql("*")]).join(arel_language_tagging1).on(exclude_articles1[:id].eq(arel_language_tagging1[:article_id]))
+      .join(arel_language_tag1)
+      .on(arel_language_tagging1[:article_tag_id].eq(arel_language_tag1[:id])).where(arel_language_tag1[:context].eq("fandom").and(arel_language_tag1[:name].eq("map community")))
+      .as('subm')
+
+      relation = relation.join(exclude_maps_subquery,Arel::Nodes::OuterJoin).on(article[:id].eq(exclude_maps_subquery[:id])).where(exclude_maps_subquery[:id].eq(nil))
+    end
+
     if user
       user_table = User.arel_table
       relation = relation.join(user_table).on(status[:user_id].eq(user_table[:id])).where(user_table[:id].eq(user.id))
@@ -105,7 +119,7 @@ class Status < ApplicationRecord
           (total_entries/per_page.to_f).ceil
         end
       end
-      result.total_entries = self.select_by(tags: tags, user: user, order: order, bookmarked_by: bookmarked_by, page_number: page_number, count: true)
+      result.total_entries = self.select_by(tags: tags, user: user, order: order, bookmarked_by: bookmarked_by, page_number: page_number, count: true, include_replies: include_replies, filter_maps: filter_maps)
       result.per_page = self.number_per_page
       result.current_page = page_number
       result
