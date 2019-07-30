@@ -16,7 +16,7 @@ $(document).on('turbolinks:load', function(){
 
 
 function addSeeMore(articleEntry) {
-	if (articleEntry.scrollHeight > articleEntry.clientHeight) {
+	if (articleEntry.scrollHeight > articleEntry.clientHeight && articleEntry.parentNode.getElementsByClassName('see-more-link').length === 0) {
 		var seeMoreText = document.createTextNode("See more");
 		var anchor = document.createElement('a');
 		anchor.appendChild(seeMoreText);
