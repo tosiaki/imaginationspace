@@ -28,10 +28,7 @@
 <% if article.title.present? or article.pages.count>1 or article.fandom_tags.any? %>
 	<div class='article-listing-heading'>
 		<% if article.title.present? %>
-			<b><%= link_to article.title, article_path(article, anchor: article.reply_to ? 'article-page-display' : nil), class: "title-link" %></b>
-		<% end %>
-		<% if article.pages.count>1 %>
-			Page 1/<%= article.pages.count %> <%= link_to "Next page ➡️", show_page_article_path(article,2, anchor: article.reply_to ? 'article-page-display' : nil) %>
+			<h1><%= link_to article.title, article_path(article, anchor: article.reply_to ? 'article-page-display' : nil), class: "title-link" %></h1>
 		<% end %>
 		<% fandoms = article.fandom_tags %>
 		<% if fandoms.any? %>
@@ -41,14 +38,23 @@
 				<% end %>
 			</ul>)
 		<% end %>
+		<% if article.pages.count>1 %>
+			Page 1/<%= article.pages.count %> <%= link_to "Next page ➡️", show_page_article_path(article,2, anchor: article.reply_to ? 'article-page-display' : nil) %>
+		<% end %>
 	</div>
 <% end %>
+<% if article.description.present? %>
+	<span class="article-description"><%= article.description %></span>
+<% end %>
+<div class="article-content-container shortened-article">
+	<%= render "articles/content", content: article.pages.first.content %>
+</div>
 <% relationships = article.relationship_tags %>
 <% characters = article.character_tags %>
 <% other_tags = article.other_tags %>
 <% if relationships.any? || characters.any? || other_tags.any? %>
 	<div class="additional-tag-list">
-		<% if relationships.any? %>
+		Tags: <% if relationships.any? %>
 			<% relationships.each do |tag| %>
 				<%= link_to tag.name, articles_path(tags: tag.name), class: "summary-relationship tag" %>
 			<% end %>
@@ -65,7 +71,3 @@
 		<% end %>
 	</div>
 <% end %>
-<% if article.description.present? %>
-	<div class="article-description"><%= article.description %></div>
-<% end %>
-<%= render "articles/content", content: article.pages.first.content %>
