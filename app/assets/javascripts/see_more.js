@@ -1,4 +1,14 @@
+var hasSeeMore = {};
+
 $(document).on('turbolinks:load', function(){
+	alreadyExistingSeeMoreContainers = document.getElementsByClassName('see-more-link');
+	Array.prototype.forEach.call(alreadyExistingSeeMoreContainers, function(container) {
+		if (!hasSeeMore[container]) {
+			seeMoreText = container.childNodes[0].childnOdes[0];
+			addToggleView(container, seeMoreText);
+		}
+	});
+
 	articleEntries = document.getElementsByClassName('article-content-container');
 	Array.prototype.forEach.call(articleEntries, function(articleEntry){
 		addSeeMore(articleEntry);
@@ -14,7 +24,6 @@ $(document).on('turbolinks:load', function(){
 	});
 });
 
-
 function addSeeMore(articleEntry) {
 	if (articleEntry.scrollHeight > articleEntry.clientHeight && articleEntry.parentNode.getElementsByClassName('see-more-link').length === 0) {
 		var seeMoreText = document.createTextNode("See more");
@@ -26,16 +35,22 @@ function addSeeMore(articleEntry) {
 		seeMoreContainer.appendChild(anchor);
 		articleEntry.parentNode.insertBefore(seeMoreContainer, articleEntry.nextSibling);
 
-		seeMoreContainer.addEventListener('click', function(event) {
-			event.preventDefault();
-			articleContainer = seeMoreContainer.previousSibling;
-			if (articleContainer.classList.contains("shortened-article")) {
-				articleContainer.classList.remove('shortened-article');
-				seeMoreText.nodeValue = "See less";
-			} else {
-				articleContainer.classList.add('shortened-article');
-				seeMoreText.nodeValue = "See more";
-			}
-		});
+		addToggleView(seeMoreContainer, seeMoreText);
+
+		hasSeeMore[seeMoreContainer] = true;
 	}
+}
+
+function addToggleView(seeMoreContainer, seeMoreText) {
+	seeMoreContainer.addEventListener('click', function(event) {
+		event.preventDefault();
+		articleContainer = seeMoreContainer.previousSibling;
+		if (articleContainer.classList.contains("shortened-article")) {
+			articleContainer.classList.remove('shortened-article');
+			seeMoreText.nodeValue = "See less";
+		} else {
+			articleContainer.classList.add('shortened-article');
+			seeMoreText.nodeValue = "See more";
+		}
+	});
 }
