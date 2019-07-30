@@ -288,7 +288,7 @@ class Article < ApplicationRecord
   end
 
   def notify_user
-    if reply_to && reply_to.user.notify_reply
+    if reply_to && reply_to.user && reply_to.user.notify_reply
       NotificationMailer.reply(reply_to, self, user).deliver_now
     end
   end
