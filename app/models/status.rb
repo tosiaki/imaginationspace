@@ -84,7 +84,7 @@ class Status < ApplicationRecord
 
       exclude_articles2 = Arel::Table.new(:articles, as: "excludearticle2")
 
-      exclude_boosts = Arel::Table.new(:articles, as: "excludeboosts")
+      exclude_boosts = Arel::Table.new(:signal_boosts, as: "excludeboosts")
 
       exclude_maps_subquery2 = exclude_boosts.project(exclude_boosts[Arel.sql("*")])
       .join(exclude_articles2).on(exclude_articles2[:id].eq(exclude_boosts[:origin_id]))
@@ -93,8 +93,8 @@ class Status < ApplicationRecord
       .on(arel_language_tagging2[:article_tag_id].eq(arel_language_tag2[:id])).where(arel_language_tag2[:name].eq("map community"))
       .as('subm2')
 
-      relation = relation.join(exclude_maps_subquery2,Arel::Nodes::OuterJoin).on(status[:post_id].eq(exclude_maps_subquery2[:id]).and(status[:post_type].eq("Signal Boost")))
-      .where(exclude_maps_subquery2[:id]).eq(nil)
+      relation = relation.join(exclude_maps_subquery2,Arel::Nodes::OuterJoin).on(status[:post_id].eq(exclude_maps_subquery2[:id]).and(status[:post_type].eq("SignalBoost")))
+      .where(exclude_maps_subquery2[:id].eq(nil))
     end
 
     if user
