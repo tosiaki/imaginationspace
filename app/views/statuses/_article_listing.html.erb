@@ -16,7 +16,7 @@
 <% end %>
 <%= render 'statuses/article', article: article %>
 <% if article.pages.count>1 %>
-	Page 1/<%= article.pages.count %> <%= link_to "Next page ➡️", show_page_article_path(article,2, anchor: article.reply_to ? 'article-page-display' : nil) %>
+	Page 1/<%= article.pages.count %> <%= link_to "Next page ➡️", show_page_article_path(article,2, anchor: article.reply_to ? 'article-page-display' : nil), class: "next-page-link" %>
 <% end %>
 <div class="action-menu">
 	<ul class="actions left-actions">

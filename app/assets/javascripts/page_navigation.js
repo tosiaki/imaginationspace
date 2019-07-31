@@ -268,6 +268,22 @@ $(document).on('turbolinks:load', function(){
 		});
 	}
 
+	$(".status-list .article-context a:has(img)").click(function(e) {
+		eventTarget = $(event.target);
+		statusElement = eventTarget.parents('.status');
+		if (eventTarget.parents('.article-content-container').hasClass('shortened-article')) {
+			e.preventDefault();
+			statusElement.find('.see-more-link').click();
+		} else {
+			nextPageLinkElement = statusElement.find('.next-page-link');
+			if (nextPageLinkElement.length) {
+				e.preventDefault();
+				nextPageLinkElement[0].click();
+			}
+		}
+	});
+
+
 	if($("#comic-identifier").length) {
 		$(".page-navigator").click(function(e){
 			page_url = $(this).attr('href');
