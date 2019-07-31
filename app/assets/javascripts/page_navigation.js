@@ -103,6 +103,12 @@ function setCurrentState(callback) {
 		callback();
 	}
 }
+function turn_images_to_links() {
+	next_page_url = $('#next-page-link').attr('href');
+	$('.article-context a:has(img)').click(function(e) {
+		load_listener(e, next_page_url);
+	});
+}
 
 function load_article_page(data) {
 	$("#article-page-content").html(data.content);
@@ -151,6 +157,7 @@ function load_article_page(data) {
 	$("#add-page-before-link").attr("href", data.add_page_before_url);
 	$("#add-page-after-link").attr("href", data.add_page_after_url);
 	$("#remove-page-link").attr("href", data.remove_page_url);
+	turn_images_to_links();
 }
 
 function load_article_page_from_url(page_url) {
@@ -188,18 +195,24 @@ function setCurrentArticleState(callback) {
 	}
 }
 
+function load_listener(event, url) {
+	event.preventDefault();
+	setCurrentArticleState(function() {
+		load_next_article_page(url);
+		$('#article-page-content')[0].scrollIntoView({ behavior: "smooth", block: "start" });
+	});
+}
+
 $(document).on('turbolinks:load', function(){
 	$('.page-navigation-select input[type="submit"]').remove();
 	if($("#article-identifier").length) {
+		turn_images_to_links();
+
 		$(".page-navigator").click(function(e){
 			page_url = $(this).attr('href');
 
 			if($(this).attr('href') != "#new_comment") {
-				e.preventDefault();
-				setCurrentArticleState(function() {
-					load_next_article_page(page_url);
-					$('#article-page-content')[0].scrollIntoView({ behavior: "smooth", block: "start" });
-				});
+				load_listener(e, page_url);
 			}
 		});
 
