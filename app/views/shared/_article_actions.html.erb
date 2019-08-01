@@ -8,7 +8,7 @@
 <% count = article.kudos_count %>
 <% if article.user && article.user==current_user %>
 	<% if count>0 %>
-		<li><span class="stat-box">💗 <%= count > 0 ? count : '' %></span></li>
+		<li>💗 <%= count > 0 ? count : '' %></li>
 	<% end %>
 <% else %>
 	<li><%= link_to "💗️ #{count > 0 ? count : ''}", kudos_article_path(article), method: :post %></li>
@@ -17,7 +17,7 @@
 <% if user_signed_in? %>
 	<li><%= link_to "📣 #{count > 0 ? count : ''}", new_signal_boost_path(article) %></li>
 <% elsif count > 0 %>
-	<li><span class="stat-box">📣 <%= count %></span></li>
+	<li>📣 <%= count %></li>
 <% end %>
 <% count = article.bookmarks_count %>
 <% if user_signed_in? %>
@@ -28,7 +28,7 @@
 		<li><%= link_to "⭐ #{count > 0 ? count : ''}", bookmark_article_path(article), method: :post %></li>
 	<% end %>
 <% elsif count > 0 %>
-	<li><span class="stat-box">⭐ <%= count %></span></li>
+	<li>⭐ <%= count %></li>
 <% end %>
 <% unless placement==:on_article %>
 	<% if article.impressions_count > 0 %>
