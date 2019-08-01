@@ -19,7 +19,7 @@
 							<div class="info-label"><%= context[:name] %>:</div>
 							<div class="info tag-list">
 								<% @article.get_tags(context[:context]).each_with_index do |tag, index| %>
-									<span class="tag-wrapper"><%= link_to tag, articles_path(tags: tag), class: "tag" %></span>
+									<span class="tag-wrapper"><%= link_to "#" + tag, articles_path(tags: tag), class: "tag" %></span>
 								<% end %>
 							</div>
 						</li>
@@ -66,7 +66,9 @@
 	<% if !@article.anonymous || @article.attribution_tags.any? %>
 		<h3 class="byline">
 			<% unless @article.anonymous %>
-				<span class="tag-wrapper"><%= link_to @article.authored_by, @article.user, class: "username-link user-profile-link" %></span>
+				<div class="user-display">
+					<%= link_to render('shared/user_icon_status', user: @article.user), @article.user, class: 'image-link' %>
+					<%= link_to @article.authored_by, @article.user, class: "username-link user-profile-link" %></div>
 			<% end %>
 			<% if @article.attribution_tags.any? %>
 				<% @article.attribution_tags.each do |tag| %>

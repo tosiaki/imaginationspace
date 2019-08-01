@@ -360,12 +360,22 @@ span.byline {
 }
 .tag-wrapper a.user-profile-link {
 	border-bottom: none;
+	color: rgb(31, 31, 31);
 }
 .status-follow-action + .tag-wrapper {
 	margin-left: 1em;
 }
 .status-follow-action + .tag-wrapper::before {
 	content: "and "
+}
+.user-display {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.user-display a {
+	border-bottom: none;
+	color: rgb(31, 31, 31);
 }
 
 /* Flash messages */
@@ -806,7 +816,7 @@ ul.page-actions {
 	background: #f7f7f7;
 	border: 2px solid #f3efec;
 	padding: .643em;
-	box-shadow: inset 1px 0 5px #999;
+	// box-shadow: inset 1px 0 5px #999;
 }
 .reply-placeholder {
 	display: none;
@@ -1179,6 +1189,7 @@ label.hidden-label {
 /* Normal display */
 div.info-wrapper {
 	box-shadow: 1px 1px 5px #aaa;
+	background-color: #fff;
 	div.info-display {
 		border: 1px solid #ccc;
 		clear: right;
@@ -1322,6 +1333,19 @@ li.status {
 	overflow: auto;
 	background-color: #fff;
 }
+ul.list-actions {
+	li {
+		display: inline;
+		color: rgb(101, 119, 134);;
+		padding-left: 2em;
+		a {
+			border-bottom: none;
+		}
+		a:hover {
+			text-decoration-line: underline;
+		}
+	}
+}
 .status .article-context {
 	padding: .429em 0;
 }
@@ -1352,6 +1376,9 @@ li.status {
 		border: 0;
 	}
 }
+.next-page-info {
+	float: right;
+}
 
 /* Article display */
 .reply-above {
@@ -1367,6 +1394,9 @@ li.status {
 .article-page-display {
 	justify-content: center;
 	display: flex;
+	background-color: #fff;
+	padding: 2em;
+	border-radius: 1em;
 }
 .article-page-content {
 	max-width: 70%;
@@ -1728,12 +1758,12 @@ li.status-media-comic {
 }
 
 .box-area {
-	background: #ddd;
+	background: #fcfcfc;
 	border: 2px solid #f3efec;
 	margin: .643em;
 	margin-right: 0;
 	padding: .643em;
-	box-shadow: inset 1px 0 5px #999;
+	// box-shadow: inset 1px 0 5px #999;
 	.heading-label {
 		width: 100%;
 		min-width: 0;

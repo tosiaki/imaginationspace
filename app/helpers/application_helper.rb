@@ -12,7 +12,7 @@ module ApplicationHelper
   end
 
   def tag_links(context)
-    @work.send("#{context}_list").collect { |tag| link_to tag, send("#{controller_name}_by_tags_path", tag), class: "tag" }.join(", ").html_safe
+    @work.send("#{context}_list").collect { |tag| link_to "#" + tag, send("#{controller_name}_by_tags_path", tag), class: "tag" }.join(", ").html_safe
   end
 
   def summary_display_links(work)
