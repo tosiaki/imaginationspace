@@ -11,7 +11,7 @@ class PagesController < ApplicationController
     @all_statuses = Status.includes(:post, :user,
         article: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags],
         signal_boost: [origin: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags]])
-    .joins(:article).merge(Article.order(timeline_time: :desc)).paginate(page: 1, per_page: 20)
+    .joins(:article).order(timeline_time: :desc).paginate(page: 1, per_page: 20)
     @new_article = Article.new(guest_params)
   end
 
