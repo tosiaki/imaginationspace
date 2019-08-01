@@ -1,5 +1,5 @@
 class Page < ApplicationRecord
-  belongs_to :article, inverse_of: :pages
+  belongs_to :article, inverse_of: :pages, counter_cache: true
   default_scope -> { order(page_number: :asc) }
 
   has_many :shrine_pictures

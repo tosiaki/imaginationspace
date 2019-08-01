@@ -1,11 +1,11 @@
 <li class="status<%= media_type_class status %>">
 	<% if status.post_type == "Article" %>
-		<%= render 'statuses/article_listing', article: status.post %>
+		<%= render 'statuses/article_listing', article: status.article %>
 	<% else %>
 		<% if status.user==current_user %>
 			<ul class="actions">
-				<li><%= link_to "📝 Edit", edit_signal_boost_path(status.post) %></li>
-				<li><%= link_to "❌ Remove", status.post, method: "delete" %></li>
+				<li><%= link_to "📝 Edit", edit_signal_boost_path(status.signal_boost) %></li>
+				<li><%= link_to "❌ Remove", status.signal_boost, method: "delete" %></li>
 			</ul>
 		<% end %>
 		<h4 class="heading byline status-boost">
@@ -16,17 +16,17 @@
 		</h4>
 		<h3 class="landmark page-landmark">Begin quotation</h3>
 		<div class="status-quotation">
-			<% if status.post.origin %>
-				<%= render 'statuses/article_listing', article: status.post.origin %>
+			<% if status.signal_boost.origin %>
+				<%= render 'statuses/article_listing', article: status.signal_boost.origin %>
 			<% else %>
 				(This post has been deleted.)
 			<% end %>
 		</div>
-		<% if status.post.comment.present? %>
-			<p class="signal-boost-comment"><%= render 'articles/content', content: status.post.comment %></p>
+		<% if status.signal_boost.comment.present? %>
+			<p class="signal-boost-comment"><%= render 'articles/content', content: status.signal_boost.comment %></p>
 		<% end %>
 		<div class="status-quotation reply-placeholder">
-			<%= render 'shared/posting_form', reply_to: status.post.origin, placeholder: "Post reply here...", boost: status.id %>
+			<%= render 'shared/posting_form', reply_to: status.signal_boost.origin, placeholder: "Post reply here...", boost: status.id %>
 		</div>
 	<% end %>
 </li>

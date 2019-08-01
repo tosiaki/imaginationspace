@@ -1,7 +1,9 @@
 class Status < ApplicationRecord
   belongs_to :user, optional: true
   belongs_to :post, polymorphic: true, inverse_of: :status
-  belongs_to :article, -> { where(statuses: {post_type: "Article"}) }, foreign_key: 'post_id', optional: true
+  belongs_to :article, foreign_key: 'post_id', optional: true
+  belongs_to :signal_boost, foreign_key: 'post_id', optional: true
+  # belongs_to :article, -> { where(statuses: {post_type: "Article"}) }, foreign_key: 'post_id', optional: true
 
   # default_scope -> { order(timeline_time: :desc) }
 
@@ -131,8 +133,9 @@ class Status < ApplicationRecord
     else
       relation = relation.skip((page_number-1)*self.number_per_page).take(self.number_per_page)
       result = self.find_by_sql(relation.to_sql)
+
       class << result
-        attr_accessor :total_entries, :per_page, :current_page
+        attr_accessor :total_entries, :per_page, :current_page, :preloaded_records
 
         def total_pages
           (total_entries/per_page.to_f).ceil

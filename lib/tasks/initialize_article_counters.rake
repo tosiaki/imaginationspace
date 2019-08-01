@@ -13,4 +13,10 @@ namespace :initialize_article_counters do
     end
   end
 
+  task initialize_page_count: :environment do
+    Article.find_each do |article|
+      Article.reset_counters(article.id,:pages)
+    end
+  end
+
 end

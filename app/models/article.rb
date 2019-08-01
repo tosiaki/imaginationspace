@@ -14,6 +14,12 @@ class Article < ApplicationRecord
 
   has_many :article_taggings, dependent: :destroy
   has_many :article_tags, through: :article_taggings
+  has_many :media_tags, -> { where(context: 'media') }, through: :article_taggings, source: 'article_tag'
+  has_many :fandom_tags, -> { where(context: 'fandom') }, through: :article_taggings, source: 'article_tag'
+  has_many :character_tags, -> { where(context: 'character') }, through: :article_taggings, source: 'article_tag'
+  has_many :relationship_tags, -> { where(context: 'relationship') }, through: :article_taggings, source: 'article_tag'
+  has_many :other_tags, -> { where(context: 'other') }, through: :article_taggings, source: 'article_tag'
+  has_many :attribution_tags, -> { where(context: 'attribution') }, through: :article_taggings, source: 'article_tag'
 
   validates :pages, presence: true
   validate :check_editing_password
@@ -49,11 +55,6 @@ class Article < ApplicationRecord
   # end
   # ['fandom', 'character', 'relationship', 'other'].each { |c| add_tag_context(c) }
 
-  def media
-    @media = article_tags.where(context: 'media').first
-    @media ||= ArticleTag.find_by(name: 'Status', context: "media")
-  end
-
   def fandom
     tag_string('fandom')
   end
@@ -78,24 +79,8 @@ class Article < ApplicationRecord
     tag_string('attribution')
   end
 
-  def fandom_tags
-    article_tags.where(context: 'fandom')
-  end
-
-  def character_tags
-    article_tags.where(context: 'character')
-  end
-
-  def relationship_tags
-    article_tags.where(context: 'relationship')
-  end
-
-  def other_tags
-    article_tags.where(context: 'other')
-  end
-
-  def attribution_tags
-    article_tags.where(context: 'attribution')
+  def media
+    media_tags.to_a.first
   end
 
   def authored_by

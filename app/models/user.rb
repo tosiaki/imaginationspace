@@ -65,7 +65,8 @@ class User < ApplicationRecord
   end
 
   def is_subscribed_to?(user)
-    subscriptions.include?(user)
+    @subscriptions ||= subscriptions.to_a
+    @subscriptions.include?(user)
   end
 
   def subscribe_to_self
