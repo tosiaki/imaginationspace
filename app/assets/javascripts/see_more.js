@@ -1,12 +1,8 @@
-var hasSeeMore = {};
-
 $(document).on('turbolinks:load', function(){
 	alreadyExistingSeeMoreContainers = document.getElementsByClassName('see-more-link');
 	Array.prototype.forEach.call(alreadyExistingSeeMoreContainers, function(container) {
-		if (!hasSeeMore[container]) {
-			seeMoreText = container.childNodes[0].childnOdes[0];
-			addToggleView(container, seeMoreText);
-		}
+		seeMoreText = container.childNodes[0].childNodes[0];
+		addToggleView(container, seeMoreText);
 	});
 
 	articleEntries = document.getElementsByClassName('article-content-container');
@@ -36,8 +32,6 @@ function addSeeMore(articleEntry) {
 		articleEntry.parentNode.insertBefore(seeMoreContainer, articleEntry.nextSibling);
 
 		addToggleView(seeMoreContainer, seeMoreText);
-
-		hasSeeMore[seeMoreContainer] = true;
 	}
 }
 
