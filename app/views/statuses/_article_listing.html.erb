@@ -1,5 +1,5 @@
 <div class="datetime">
-	<ul class="list-actions">
+	<ul class="list-actions right-actions">
 		<% if can_edit(article) %>
 			<% if @show_pin_option %>
 				<li><%= link_to "Pin to top", sticky_article_path(article), method: "post" %></li>

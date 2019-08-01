@@ -3,7 +3,7 @@
 		<%= render 'statuses/article_listing', article: status.article %>
 	<% else %>
 		<% if status.user==current_user %>
-			<ul class="datetime list-actions">
+			<ul class="datetime list-actions right-actions">
 				<li><%= link_to "Edit", edit_signal_boost_path(status.signal_boost) %></li>
 				<li><%= link_to "Remove", status.signal_boost, method: "delete" %></li>
 			</ul>
