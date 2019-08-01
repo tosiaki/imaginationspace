@@ -9,21 +9,23 @@
 	<h3 class="heading">Top tags</h3>
 </div> -->
 <%= render 'shared/posting_form' %>
-<div class="module">
-	<h3 class="heading">Browse by tag:</h3>
-	<ul>
-		<% ArticleTag.front_page_contexts.each do |context| %>
-			<li>
-				<div class="info-label"><%= context[:name] %>:</div>
-				<div class="info tag-list">
-					<% ArticleTag.get_top_tags(context[:context],40).each do |tag| %>
-						<span class="tag-wrapper"><%= link_to "#{tag.name} (#{tag.article_count})", articles_path(tags: tag.name), class: "tag" %></span>
-					<% end %>
-				</div>
-			</li>
-		<% end %>
-	</ul>
-</div>
+<% if false %>
+	<div class="module">
+		<h3 class="heading">Browse by tag:</h3>
+		<ul>
+			<% ArticleTag.front_page_contexts.each do |context| %>
+				<li>
+					<div class="info-label"><%= context[:name] %>:</div>
+					<div class="info tag-list">
+						<% ArticleTag.get_top_tags(context[:context],40).each do |tag| %>
+							<span class="tag-wrapper"><%= link_to "#{tag.name} (#{tag.article_count})", articles_path(tags: tag.name), class: "tag" %></span>
+						<% end %>
+					</div>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>
 <% if false && @feed_statuses.present? %>
 	<div class="module">
 		<h3 class="heading">Latest from your followed users:</h3>
@@ -37,7 +39,7 @@
 		<% if false && @feed_statuses.present? && user_signed_in? %>
 			<h3 class="heading">More from all users:</h3>
 		<% else %>
-			<h3 class="heading">Most bookmarked:</h3>
+			<h3 class="heading">Latest posts:</h3>
 		<% end %>
 		<ol class="status-list">
 			<%= render @all_statuses %>
