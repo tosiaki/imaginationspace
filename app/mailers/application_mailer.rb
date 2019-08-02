@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'notifications@imaginationspace.org'
+  default from: 'Imagination Space <notifications@imaginationspace.org>'
   layout 'mailer'
 end
