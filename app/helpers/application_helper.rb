@@ -1,6 +1,6 @@
 module ApplicationHelper
   def full_title(title)
-    "#{title} | Imagination Space"
+    "#{title} | WindyFall"
   end
   
   def tag_contexts 
