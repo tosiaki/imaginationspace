@@ -1,0 +1,18 @@
+<% if can_edit(article) %>
+	<ul class="page-actions list-actions center-actions">
+		<li>
+			<%= link_to "Edit page", edit_article_path(article, page_number: params[:page_number]), class: "edit-page-link" %>
+		</li>
+		<li>
+			<%= link_to "Add page before", add_page_at_article_path(article,current_page), class: "add-page-before-link" %>
+		</li>
+		<li>
+			<%= link_to "Add page after", add_page_at_article_path(article,current_page+1), class: "add-page-after-link" %>
+		</li>
+		<% if article.current_max_page > 1 %>
+			<li>
+				<%= link_to "Remove this page", remove_page_article_path(article,current_page), method: :delete, class: "deletion-link remove-page-link" %>
+			</li>
+		<% end %>
+	</ul>
+<% end %>

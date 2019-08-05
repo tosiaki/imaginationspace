@@ -1,6 +1,8 @@
 <li class="status<%= media_type_class status %>">
 	<% if status.post_type == "Article" %>
-		<%= render 'statuses/article_listing', article: status.article %>
+		<div class="article-page-display">
+			<%= render 'statuses/article_listing', article: status.article %>
+		</div>
 	<% else %>
 		<% if status.user==current_user %>
 			<ul class="datetime list-actions right-actions">
@@ -34,4 +36,7 @@
 	<li class="reply-placeholder">
 		<%= render 'shared/posting_form', reply_to: status.post, placeholder: "Post reply here..." %>
 	</li>
+	<% if status.article.reply_number > 0 %>
+		<%= render partial: 'articles/reply_entry', collection: status.article.thread_posts.order(:created_at).limit(5) %>
+	<% end %>
 <% end %>

@@ -22,4 +22,10 @@ module ArticlesHelper
     unformatted_html = Nokogiri::XML::Node::SaveOptions.class_eval { |m| m::DEFAULT_HTML ^ m::FORMAT }
     Loofah.fragment(content).scrub!(scrubber).to_html(save_with: unformatted_html).html_safe
   end
+
+  def article_media_type(article)
+    unless article.media.name == "Status"
+      " status-media-" + article.media.name.downcase.split("(")[0]
+    end
+  end
 end

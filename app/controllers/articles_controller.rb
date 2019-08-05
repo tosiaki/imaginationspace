@@ -25,6 +25,7 @@ class ArticlesController < ApplicationController
 
     @new_article.max_pages = 1
     @new_article.reply_to = Article.find(params[:id]) if params[:reply]
+    @new_article.thread = @new_article.reply_to || @new_article
 
     if params[:new_page][:picture]
       add_picture_to_page(params[:new_page][:picture][0], @new_page)
@@ -80,9 +81,6 @@ class ArticlesController < ApplicationController
       @current_page = (params[:page_number] || 1).to_i
 
       @new_article = Article.new(guest_params) unless submitted_new_article
-      if @article.pages.count > 1
-        @page_options = @article.pages.map(&:display_title).zip 1..@article.pages.count
-      end
 
       respond_to do |format|
         format.html
@@ -162,7 +160,8 @@ class ArticlesController < ApplicationController
     @statuses = Status.select_by(tags: @tag_list, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     ActiveRecord::Associations::Preloader.new.preload(@statuses,
       [:post, :user,
-        article: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags],
+        article: [:user, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags, :pages,
+          thread_posts: [:user, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags, :pages]],
         signal_boost: [origin: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags]],
       ])
     @new_article = Article.new(guest_params)

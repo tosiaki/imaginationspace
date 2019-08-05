@@ -4,7 +4,9 @@ class Article < ApplicationRecord
   has_many :pages, inverse_of: :article, dependent: :delete_all
 
   belongs_to :reply_to, class_name: "Article", optional: true
-  has_many :replies, -> { order(kudos_count: :desc) }, class_name: "Article", foreign_key: :reply_to
+  belongs_to :thread, class_name: "Article"
+  has_many :replies, -> { order(kudos_count: :desc) }, class_name: "Article", foreign_key: :reply_to_id
+  has_many :thread_posts, class_name: "Article", foreign_key: :thread_id
 
   has_many :signal_boosts, foreign_key: :origin_id, inverse_of: :origin
   has_many :kudos, as: :work, dependent: :destroy, inverse_of: :work

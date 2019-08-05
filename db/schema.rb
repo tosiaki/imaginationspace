@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_01_030218) do
+ActiveRecord::Schema.define(version: 2019_08_05_174230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,7 +94,9 @@ ActiveRecord::Schema.define(version: 2019_08_01_030218) do
     t.text "display_image"
     t.boolean "anonymous", default: false
     t.integer "pages_count", default: 0
+    t.bigint "thread_id"
     t.index ["reply_to_id"], name: "index_articles_on_reply_to_id"
+    t.index ["thread_id"], name: "index_articles_on_thread_id"
   end
 
   create_table "bookmarks", force: :cascade do |t|
@@ -331,6 +333,7 @@ ActiveRecord::Schema.define(version: 2019_08_01_030218) do
   add_foreign_key "article_taggings", "article_tags"
   add_foreign_key "article_taggings", "articles"
   add_foreign_key "articles", "articles", column: "reply_to_id"
+  add_foreign_key "articles", "articles", column: "thread_id"
   add_foreign_key "bookmarks", "users"
   add_foreign_key "comic_pages", "comics"
   add_foreign_key "comics", "users"

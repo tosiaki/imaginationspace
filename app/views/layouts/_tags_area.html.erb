@@ -10,7 +10,7 @@
 	</div>
 	<% if @tag_present %>
 		<div class="box-area">
-			<h4 class="heading-label">Additional tags</h4>
+			<h4 class="heading-label">Tags</h4>
 			<% ArticleTag.contexts.each do |context| %>
 				<%= render 'shared/tag_listing', path_helper: path_helper, context_label: context[:name], tags: @tag_hash[context[:context]] %>
 			<% end %>

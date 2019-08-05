@@ -6,65 +6,13 @@
 		<%= render 'statuses/reply_above', article: @article.reply_to %>
 	</ul>
 <% end %>
-<%= render 'action_menu' %>
 <div class="landmark" id="article-identifier"><%= @article.id %></div>
 
-<div class="info-wrapper">
-	<div class="info-display">
-		<ul>
-			<% if @article.article_tags.any? %>
-				<% ArticleTag.contexts.each do |context| %>
-					<% if @article.get_tags(context[:context]).count > 0 %>
-						<li>
-							<div class="info-label"><%= context[:name] %>:</div>
-							<div class="info tag-list">
-								<% @article.get_tags(context[:context]).each_with_index do |tag, index| %>
-									<span class="tag-wrapper"><%= link_to "#" + tag, articles_path(tags: tag), class: "tag" %></span>
-								<% end %>
-							</div>
-						</li>
-					<% end %>
-				<% end %>
-			<% end %>
-			<li>
-				<div class="info-label">Stats:</div>
-				<div class="info">
-					<ul class="stats">
-						<li>Published: <%= @article.created_at.strftime(display_time_string) %></li>
-						<% if @article.status.timeline_time > @article.created_at + 1.day %>
-							<li>Updated: <%= @article.status.timeline_time.strftime(display_time_string) %></li>
-						<% end %>
-						<% if @article.planned_pages != 1 %>
-							<li>Number of pages: <%= @article.current_max_page %>/<%= planned_pages_display(@article.planned_pages) %>
-						<% end %>
-						<% if @article.kudos_count > 0 %>
-							<li>Kudos: <%= @article.kudos_count %></li>
-						<% end %>
-						<% if @article.signal_boosts_count > 0 %>
-							<li>Signal boosts: <%= @article.signal_boosts_count %></li>
-						<% end %>
-						<% if @article.bookmarks_count > 0 %>
-							<li>Bookmarks: <%= @article.bookmarks_count %></li>
-						<% end %>
-						<% if @article.reply_number > 0 %>
-							<li>Replies: <%= @article.reply_number %></li>
-						<% end %>
-						<% if @article.impressions_count > 0 %>
-							<li>Hits: <%= @article.impressions_count %></li>
-						<% end %>
-					</ul>
-				</div>
-			</li>
-		</ul>
-	</div>
-</div>
+<div class="article-page-display" id="article-page-display">
+	<%= render 'action_menu', article: @article %>
 
-<div class="preface">
-	<% if @article.title.present? %>
-		<h2 class="heading"><%= @article.title %></h2>
-	<% end %>
 	<% if !@article.anonymous || @article.attribution_tags.any? %>
-		<h3 class="byline">
+		<h3 class="byline status-byline">
 			<% unless @article.anonymous %>
 				<div class="user-display">
 					<%= link_to render('shared/user_icon_status', user: @article.user), @article.user, class: 'image-link' %>
@@ -77,6 +25,11 @@
 			<% end %>
 		</h3>
 	<% end %>
+
+	<% if @article.title.present? %>
+		<h2 class="heading"><%= @article.title %></h2>
+	<% end %>
+
 	<div class="complentary">
 		<% if @article.description.present? %>
 			<h3 class="heading">Description:</h3>
@@ -85,58 +38,43 @@
 			</blockquote>
 		<% end %>
 	</div>
-</div>
 
-<h3 class="landmark page-landmark">Page Management</h3>
-
-<% if can_edit(@article) %>
-	<ul class="actions page-actions">
-		<li>
-			<%= link_to "Edit page", edit_article_path(@article, page_number: params[:page_number]), id: "edit-page-link" %>
-		</li>
-		<li>
-			<%= link_to "Add page before", add_page_at_article_path(@article,@current_page), id: "add-page-before-link" %>
-		</li>
-		<li>
-			<%= link_to "Add page after", add_page_at_article_path(@article,@current_page+1), id: "add-page-after-link" %>
-		</li>
-		<% if @article.current_max_page > 1 %>
-			<li>
-				<%= link_to "Remove this page", remove_page_article_path(@article,@current_page), method: :delete, class: "deletion-link", id: "remove-page-link" %>
-			</li>
-		<% end %>
-	</ul>
-<% end %>
-
-<div class="preface page-preface">
 	<% if @page.title.present? %>
 		<h3 class="page-title" %><%= @page.title %></h3>
 	<% else %>
 		<h3 class="page-title placeholder" %></h3>
 	<% end %>
-</div>
-<% if @article.pages.count > 1 %>
-	<h3 class="page-indicator"><%= render 'page_indicator', article: @article, page: @page %></h3>
-<% end %>
 
-<div class="article-page-display" id="article-page-display">
-	<%= link_to "", (@page.page_number > 1 ? show_page_article_path(@article, @page.page_number-1) : ""), class: "arrow " + (@page.page_number == 1 ? "non-" : "") + "arrow-left page-navigator", id: "previous-page-link" %>
 	<div class="article-page-content" id="article-page-content">
-		<%= render 'content', content: @page.content %>
+		<%= link_to "", (@page.page_number > 1 ? show_page_article_path(@article, @page.page_number-1) : ""), class: "arrow " + (@page.page_number == 1 ? "non-" : "") + "arrow-left page-navigator previous-page-link" %>
+		<div class="article-wrapper" id="article-wrapper"><%= render 'content', content: @page.content %></div>
+		<%= link_to "", (@page.page_number < @article.pages.count ? show_page_article_path(@article, @page.page_number+1) : ""), class: "arrow " + (@page.page_number == @article.pages.count ? "non-" : "") + "arrow-right page-navigator next-page-link" %>
 	</div>
-	<%= link_to "", (@page.page_number < @article.pages.count ? show_page_article_path(@article, @page.page_number+1) : ""), class: "arrow " + (@page.page_number == @article.pages.count ? "non-" : "") + "arrow-right page-navigator", id: "next-page-link" %>
+
+	<% if @article.pages.count > 1 %>
+		<h3 class="page-indicator" %><%= render 'page_indicator', article: @article, page: @page %></h3>
+	<% end %>
+
+	<%= render 'page_options', article: @article, current_page: @current_page %>
+
+	<div class="action-menu">
+		<ul class="list-actions left-actions">
+			<%= render 'shared/article_actions', article: @article, placement: :on_article %>
+		</ul>
+	</div>
+
+	<div class="preloading previous-page-content">
+		<% if @page.page_number > 1 %>
+			<%= render 'content', content: @page.previous_page.content %>
+		<% end %>
+	</div>
+	<div class="preloading next-page-content">
+		<% if @page.page_number < @article.pages.count %>
+			<%= render 'content', content: @page.next_page.content %>
+		<% end %>
+	</div>
 </div>
-<% if @article.pages.count > 1 %>
-	<h3 class="page-indicator" %><%= render 'page_indicator', article: @article, page: @page %></h3>
-<% end %>
-<% if @article.kudos.any? %>
-	<div id="kudos"><p class="kudos"><%= kudos_display(@article).html_safe %></p></div>
-<% end %>
-<div class="action-menu">
-	<ul class="actions">
-		<%= render 'shared/article_actions', article: @article, placement: :on_article %>
-	</ul>
-</div>
+
 <%= render 'shared/posting_form', reply_to: @article, placeholder: "Post reply here..." %>
 <% if @article.replies %>
 	<ul class="reply-thread">
@@ -145,13 +83,3 @@
 		<% end %>
 	</ul>
 <% end %>
-<div class="preloading" id="previous-page-content">
-	<% if @page.page_number > 1 %>
-		<%= render 'content', content: @page.previous_page.content %>
-	<% end %>
-</div>
-<div class="preloading" id="next-page-content">
-	<% if @page.page_number < @article.pages.count %>
-		<%= render 'content', content: @page.next_page.content %>
-	<% end %>
-</div>

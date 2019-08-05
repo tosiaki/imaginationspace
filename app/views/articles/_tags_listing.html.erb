@@ -1,0 +1,22 @@
+<% relationships = article.relationship_tags.to_a %>
+<% characters = article.character_tags.to_a %>
+<% other_tags = article.other_tags.to_a %>
+<% if relationships.any? || characters.any? || other_tags.any? %>
+	<div class="additional-tag-list">
+		<% if relationships.any? %>
+			<% relationships.each do |tag| %>
+				<%= link_to '#' + tag.name, articles_path(tags: tag.name), class: "summary-relationship tag" %>
+			<% end %>
+		<% end %>
+		<% if characters.any? %>
+			<% characters.each do |tag| %>
+				<%= link_to '#' + tag.name, articles_path(tags: tag.name), class: "tag" %>
+			<% end %>
+		<% end %>
+		<% if other_tags.any? %>
+			<% other_tags.each do |tag| %>
+				<%= link_to '#' + tag.name, articles_path(tags: tag.name), class: "tag" %>
+			<% end %>
+		<% end %>
+	</div>
+<% end %>

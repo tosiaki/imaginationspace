@@ -828,7 +828,10 @@ ul.right-actions li {
 	padding-left: 2em;
 }
 ul.page-actions {
-	float: right;
+	justify-content: center;
+	li {
+		padding: 1em;
+	}
 }
 
 #authorship-inputs {
@@ -839,6 +842,7 @@ ul.page-actions {
 	background: #f7f7f7;
 	border: 2px solid #f3efec;
 	padding: .643em;
+	margin-top: 1em;
 	// box-shadow: inset 1px 0 5px #999;
 }
 .reply-placeholder {
@@ -865,7 +869,6 @@ ul.page-actions {
 	border-radius: .429em;
 }
 .article-context {
-	word-break: break-all;
 	white-space: pre-wrap;
 	h2 {
 		display: block;
@@ -1356,6 +1359,9 @@ li.status {
 	overflow: auto;
 	background-color: #fff;
 }
+.reply-post {
+	margin-left: 5em;
+}
 ul.list-actions {
 	display: flex;
 	li {
@@ -1466,15 +1472,18 @@ ul.list-actions a.bookmark:hover:before {
 	}
 }
 .article-page-display {
-	justify-content: center;
-	display: flex;
 	background-color: #fff;
-	padding: 2em;
+	padding: 1em;
 	border-radius: 1em;
 }
 .article-page-content {
-	max-width: 70%;
+	justify-content: center;
+	display: flex;
 	overflow: hidden;
+	width: 100%;
+}
+.article-wrapper {
+	max-width: 70%;
 }
 .reply-thread li.reply {
 	border: 1px solid #ddd;
@@ -1780,6 +1789,7 @@ a.remove-tag {
 }
 .statuspage-content {
 	display: flex;
+	flex-direction: column;
 }
 .tags-area {
 	min-width: 25em;
@@ -1815,6 +1825,10 @@ li.status-media-comic {
 }
 .tags-list + .heading-label {
 	margin-top: 1.5em;
+}
+.tags-list li {
+	display: inline-block;
+	margin: .2em;
 }
 .article-description {
 	font-style: italic;

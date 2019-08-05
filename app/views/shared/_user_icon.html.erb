@@ -1,7 +1,9 @@
-<div class="icon-container">
-	<% if user && user.icon && user.icon.url %>
-		<%= image_tag user.icon.url, class: "user-icon" %>
-	<% else %>
-		<%= image_tag image_url('default_icon.png'), class: "user-icon" %>
-	<% end %>
-</div>
+<% if user %>
+	<div class="icon-container">
+		<% if user.icon && user.icon.url %>
+			<%= image_tag user.icon.url, class: "user-icon" %>
+		<% else %>
+			<%= image_tag image_url('default_icon.png'), class: "user-icon" %>
+		<% end %>
+	</div>
+<% end %>

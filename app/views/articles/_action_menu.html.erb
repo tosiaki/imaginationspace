@@ -1,31 +1,21 @@
-<div class="action-menu">
-	<ul class="actions">
-		<% if @article.pages.count > 1 %>
+<div class="datetime">
+	<ul class="list-actions right-actions">
+		<% if article.pages_count > 1 %>
 			<li>
 				Go to page: <%= form_tag request.path, method: :get, class: "page-navigation-select" do %>
-					<%= select_tag 'go_to_page', options_for_select(@page_options, params[:page_number]) %>
+					<%= select_tag 'go_to_page', options_for_select(article.pages.map(&:display_title).zip(1..article.pages_count), params[:page_number]), class: 'go-to-page', id: "go-to-page-#{article.id}" %>
 					<%= submit_tag 'Go' %>
 				<% end %>
 			</li>
 		<% end %>
-		<% count = @article.bookmarks.count %>
-		<% if user_signed_in? %>
-			<% if current_user.bookmarked_articles.include? @article %>
-				<li><%= link_to "Unbookmark ⭐ #{count > 0 ? count : ''}", unbookmark_article_path(@article), method: :delete %></li>
-			<% else %>
-				<li><%= link_to "Bookmark ⭐ #{count > 0 ? count : ''}", bookmark_article_path(@article), method: :post %></li>
+		<% if can_edit(article) %>
+			<% if @show_pin_option %>
+				<li><%= link_to "Pin to top", sticky_article_path(article), method: "post" %></li>
 			<% end %>
+			<li><%= link_to "Edit", edit_article_path(article, page_number: params[:page_number]), class: "edit-article-link" %></li>
+			<li><%= link_to "Add page", add_page_at_article_path(article,article.next_page) %></li>
+			<li><%= link_to "Remove", article, method: :delete, class: "deletion-link" %></li>
 		<% end %>
-		<% if can_edit(@article) %>
-			<li>
-				<%= link_to "Edit article", edit_article_path(@article, page_number: params[:page_number]), id: "edit-article-link" %>
-			</li>
-			<li>
-				<%= link_to "Add page", add_page_at_article_path(@article,@article.next_page) %>
-			</li>
-			<li>
-				<%= link_to "Delete article", @article, method: :delete, class: "deletion-link" %>
-			</li>
-		<% end %>
+		<li><%= link_to "#{article.status.timeline_time.strftime("%d %b %Y")}", article_path(article, anchor: article.reply_to ? "article-page-display" : nil), class: 'link-to-page' %></li>
 	</ul>
 </div>

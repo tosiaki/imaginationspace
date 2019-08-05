@@ -1,23 +1,10 @@
-<div class="datetime">
-	<ul class="list-actions right-actions">
-		<% if can_edit(article) %>
-			<% if @show_pin_option %>
-				<li><%= link_to "Pin to top", sticky_article_path(article), method: "post" %></li>
-			<% end %>
-			<li><%= link_to "Edit", edit_article_path(article) %></li>
-			<li><%= link_to "Remove", article, method: "delete", class: "deletion-link" %></li>
-		<% end %>
-		<li><%= link_to "#{article.status.timeline_time.strftime("%d %b %Y")}", article_path(article, anchor: article.reply_to ? "article-page-display" : nil) %></li>
-	</ul>
-</div>
+<div class="landmark article-identifier"><%= article.id %></div>
+<%= render 'articles/action_menu', article: article %>
 <%= yield :pinned %>
-<% if article.reply_to %>
+<% if false && article.reply_to %>
 	<div>↩️ Reply to <%= link_to article.reply_to.authored_by, (article.reply_to.anonymous ? nil : article.reply_to.user) %></div>
 <% end %>
 <%= render 'statuses/article', article: article %>
-<% if article.pages_count>1 %>
-	<div class="next-page-info"><%= article.pages_count %> pages <%= link_to "Next page", show_page_article_path(article,2, anchor: article.reply_to ? 'article-page-display' : nil), class: "next-page-link" %></div>
-<% end %>
 <div class="action-menu">
 	<ul class="list-actions left-actions">
 		<%= render 'shared/article_actions', article: article, placement: :on_status %>

@@ -40,31 +40,31 @@
 		<% end %>
 	</div>
 <% end %>
+
 <% if article.description.present? %>
 	<span class="article-description"><%= article.description %></span>
 <% end %>
-<div class="article-content-container shortened-article">
-	<%= render "articles/content", content: article.pages.first.content %>
-</div>
-<% relationships = article.relationship_tags.to_a %>
-<% characters = article.character_tags.to_a %>
-<% other_tags = article.other_tags.to_a %>
-<% if relationships.any? || characters.any? || other_tags.any? %>
-	<div class="additional-tag-list">
-		<% if relationships.any? %>
-			<% relationships.each do |tag| %>
-				<%= link_to '#' + tag.name, articles_path(tags: tag.name), class: "summary-relationship tag" %>
-			<% end %>
-		<% end %>
-		<% if characters.any? %>
-			<% characters.each do |tag| %>
-				<%= link_to '#' + tag.name, articles_path(tags: tag.name), class: "tag" %>
-			<% end %>
-		<% end %>
-		<% if other_tags.any? %>
-			<% other_tags.each do |tag| %>
-				<%= link_to '#' + tag.name, articles_path(tags: tag.name), class: "tag" %>
-			<% end %>
-		<% end %>
+
+<div class="article-content-container shortened-article article-page-content">
+	<%= link_to "", "", class: "arrow non-arrow-left page-navigator previous-page-link" %>
+	<div class="article-wrapper">
+		<%= render "articles/content", content: article.pages.first.content %>
 	</div>
+	<%= link_to "", (1 < article.pages_count ? show_page_article_path(article, 2) : ""), class: "arrow " + (1 == article.pages_count ? "non-" : "") + "arrow-right page-navigator next-page-link" %>
+</div>
+
+<% if article.pages_count > 1 %>
+	<h3 class="page-indicator" %><%= render 'articles/page_indicator', article: article, page: article.pages.first %></h3>
 <% end %>
+
+<%= render 'articles/tags_listing', article: article %>
+
+<%= render 'articles/page_options', article: article, current_page: 1 %>
+
+<div class="preloading previous-page-content">
+</div>
+<div class="preloading next-page-content">
+	<% if 1 < article.pages_count %>
+		<%= render 'articles/content', content: article.pages.first.next_page.content %>
+	<% end %>
+</div>

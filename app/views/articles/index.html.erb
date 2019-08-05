@@ -6,7 +6,6 @@
 		<% if @tag_list.present? %>
 			<div class="results-count"><h2 class="heading"><%= @statuses.total_entries %> posts in <%= tags_heading(@tag_list) %></h2></div>
 		<% end %>
-		<%= will_paginate @statuses, class: "pagination actions", param_name: :page %>
 		<ol class="status-list">
 			<%= render @statuses %>
 		</ol>

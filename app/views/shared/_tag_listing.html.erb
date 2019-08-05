@@ -2,7 +2,7 @@
 	<div class="heading-label"><%= context_label %></div>
 	<ol class="tags-list"%>
 		<% tags.each do |tag| %>
-			<li><%= link_to "##{tag.name} (#{tag.count})", send(path_helper, tags: ([tag.name]+@tag_list).compact.join(",")), class: 'tag' %></li>
+			<li><%= link_to "##{tag.name}", send(path_helper, tags: ([tag.name]+@tag_list).compact.join(",")), class: 'tag' %></li>
 		<% end %>
 	</ol>
 <% end %>
