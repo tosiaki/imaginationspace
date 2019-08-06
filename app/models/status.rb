@@ -15,7 +15,7 @@ class Status < ApplicationRecord
     super
   end
 
-  def self.select_by(tags: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false, include_replies: false, filter_languages_user: nil, filter_maps: true)
+  def self.select_by(tags: nil, board: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false, thread: nil, include_replies: false, filter_languages_user: nil, filter_maps: true)
     status = Arel::Table.new(:statuses)
 
     if count
@@ -46,6 +46,17 @@ class Status < ApplicationRecord
         relation = relation.join(arel_table_tagging).on(article[:id].eq(arel_table_tagging[:article_id])).
         join(arel_table_tag).on(arel_table_tagging[:article_tag_id].eq(arel_table_tag[:id])).where(arel_table_tag[:name].eq(tag))
       end
+    end
+
+    if thread
+      relation = relation.where(article[:thread_id].eq(thread))
+    end
+
+    if board
+      arel_board_tagging = Arel::Table.new(:article_taggings, as: "boardtagging")
+      arel_board_tag = Arel::Table.new(:article_tags, as: "boardtag")
+      relation = relation.join(arel_board_tagging).on(article[:id].eq(arel_board_tagging[:article_id])).
+      join(arel_board_tag).on(arel_board_tagging[:article_tag_id].eq(arel_board_tag[:id])).where(arel_board_tag[:name].eq(board).and(arel_board_tag[:context].eq('fandom')))
     end
 
     if false && filter_languages_user
@@ -141,7 +152,7 @@ class Status < ApplicationRecord
           (total_entries/per_page.to_f).ceil
         end
       end
-      result.total_entries = self.select_by(tags: tags, user: user, order: order, bookmarked_by: bookmarked_by, page_number: page_number, count: true, include_replies: include_replies, filter_maps: filter_maps)
+      result.total_entries = self.select_by(tags: tags, board: board, user: user, order: order, bookmarked_by: bookmarked_by, page_number: page_number, count: true, thread: thread, include_replies: include_replies, filter_maps: filter_maps)
       result.per_page = self.number_per_page
       result.current_page = page_number
       result

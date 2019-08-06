@@ -67,6 +67,8 @@ Rails.application.routes.draw do
       post 'reply', to: 'articles#create', defaults: { reply: true }
     end
   end
+
+  get 'threads/:thread_id', to: 'articles#index', as: :thread
   
   resources :signal_boosts, only: [:edit, :update, :destroy]
 
@@ -118,4 +120,6 @@ Rails.application.routes.draw do
 
   get 'users/:id/bookmarked_drawings', to: 'users#bookmarked_drawings', as: :user_bookmarked_drawings
   get 'users/:id/bookmarked_comics', to: 'users#bookmarked_comics', as: :user_bookmarked_comics
+
+  get ':board', to: 'articles#index', as: :board
 end

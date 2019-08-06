@@ -1,4 +1,4 @@
-<div class="landmark article-identifier"><%= article.id %></div>
+<div class="landmark article-identifier" id="<%= article.id %>"><%= article.id %></div>
 <%= render 'articles/action_menu', article: article %>
 <%= yield :pinned %>
 <% if false && article.reply_to %>

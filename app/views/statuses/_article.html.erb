@@ -32,11 +32,11 @@
 		<% end %>
 		<% fandoms = article.fandom_tags %>
 		<% if fandoms.any? %>
-			(<ul class="outer-fandom-list">
+			<ul class="outer-fandom-list">
 				<% fandoms.each do |fandom| %>
-					<%= link_to fandom.name, articles_path(tags: fandom.name), class: "tag" %>
+					<%= link_to "/#{fandom.name}/", board_path(fandom.name), class: "tag" %>
 				<% end %>
-			</ul>)
+			</ul>
 		<% end %>
 	</div>
 <% end %>

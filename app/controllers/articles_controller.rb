@@ -59,7 +59,7 @@ class ArticlesController < ApplicationController
       flash[:danger] = 'New post requires content.'
     end
     if request.referer == root_url
-      redirect_to @new_article
+      redirect_to thread_path(@new_article.thread, anchor: @new_article.id)
     else
       redirect_back fallback_location: @new_article
     end
@@ -157,7 +157,15 @@ class ArticlesController < ApplicationController
 
   def index
     get_associated_tags
-    @statuses = Status.select_by(tags: @tag_list, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
+    if params[:thread_id]
+      @thread = Article.find(params[:thread_id])
+      @board = @thread.fandom_tags.first && @thread.fandom_tags.first.name
+      @statuses = Status.select_by(thread: params[:thread_id], order: params[:order], filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
+    elsif params[:board]
+      @statuses = Status.select_by(board: params[:board], order: params[:order], filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
+    else
+      @statuses = Status.select_by(tags: @tag_list, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
+    end
     ActiveRecord::Associations::Preloader.new.preload(@statuses,
       [:post, :user,
         article: [:user, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags, :pages,

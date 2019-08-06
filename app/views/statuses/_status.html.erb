@@ -37,6 +37,6 @@
 		<%= render 'shared/posting_form', reply_to: status.post, placeholder: "Post reply here..." %>
 	</li>
 	<% if status.article.reply_number > 0 %>
-		<%= render partial: 'articles/reply_entry', collection: status.article.thread_posts.order(:created_at).limit(5) %>
+		<%= render partial: 'articles/reply_entry', collection: status.article.thread_posts.order(:created_at).limit(params[:thread_id] ? nil : 5) %>
 	<% end %>
 <% end %>

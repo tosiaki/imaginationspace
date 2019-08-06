@@ -1,6 +1,9 @@
 <% provide(:title, "Posts tagged with #{@tag_list.join(', ')}") %>
 <%= render 'shared/flash_messages' %>
-<%= render 'shared/posting_form' %>
+<% if @board %>
+	<%= link_to "Return to /#{@board}/", board_path(@board) %>
+<% end %>
+<%= render 'shared/posting_form', reply_to: @thread ? @thread : nil, default_fandom: params[:board] %>
 <div class="statuspage-content">
 	<div class="status-area">
 		<% if @tag_list.present? %>
@@ -9,7 +12,11 @@
 		<ol class="status-list">
 			<%= render @statuses %>
 		</ol>
-		<%= will_paginate @statuses, class: "pagination actions", param_name: :page %>
+		<% unless params[:thread_id] %>
+			<%= will_paginate @statuses, class: "pagination actions", param_name: :page %>
+		<% end %>
 	</div>
-	<%= render 'layouts/tags_area', path_helper: :articles_path %>
+	<% unless params[:thread_id] || params[:board] %>
+		<%= render 'layouts/tags_area', path_helper: :articles_path %>
+	<% end %>
 </div>
