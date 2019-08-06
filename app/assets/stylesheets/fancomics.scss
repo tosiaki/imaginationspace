@@ -869,7 +869,6 @@ ul.page-actions {
 	border-radius: .429em;
 }
 .article-context {
-	white-space: pre-wrap;
 	h2 {
 		display: block;
 	}
@@ -1428,6 +1427,22 @@ ul.list-actions a.bookmark:hover:before {
 }
 .article-content-container {
 	position: relative;
+}
+.status-media-status .article-page-content img {
+	float: left;
+	max-width: 20em;
+	max-height: 20em;
+	margin-right: 1em;
+	margin-bottom: 1em;
+}
+.status-media-status .page-note {
+	text-align: left;
+}
+.status-media-status .article-page-content {
+	display: block;
+}
+.status-media-status .article-wrapper {
+	max-width: 100%;
 }
 .shortened-article {
 	max-height: 45vh;

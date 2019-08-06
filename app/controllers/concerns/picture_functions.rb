@@ -29,12 +29,12 @@ module Concerns::PictureFunctions
 
   def add_picture_to_page(picture, page)
     new_picture = add_picture_object(picture, page)
-    page.content = page.content + picture_content(new_picture)
+    page.content = picture_content(new_picture) + page.content
   end
 
   def add_picture_to_signal_boost(picture, signal_boost)
     new_picture = add_picture_object(picture, signal_boost)
-    signal_boost.comment = signal_boost.comment + picture_content(new_picture)
+    signal_boost.comment = picture_content(new_picture) + signal_boost.comment
   end
 
   def picture_content(picture_object)

@@ -19,7 +19,7 @@ class AddPicturesJob < ApplicationJob
 
   def add_picture_to_page(picture, page)
     new_picture = add_picture_object(picture, page)
-    page.content = page.content + picture_content(new_picture)
+    page.content = picture_content(new_picture) + page.content
   end
 
   def add_picture_object(picture, page)

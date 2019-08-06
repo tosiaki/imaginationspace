@@ -9,9 +9,7 @@ module StatusesHelper
 
   def media_type_class(status)
     if status.post_type == "Article" && status.article.media
-      unless status.article.media.name == "Status"
-        " status-media-" + status.article.media.name.downcase.split("(")[0]
-      end
+      " status-media-" + status.article.media.name.downcase.split("(")[0]
     end
   end
 end
