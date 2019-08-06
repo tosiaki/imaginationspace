@@ -560,6 +560,18 @@ ul.primary-navigation {
 #search {
 	display: none;
 }
+.board-list {
+	background-color: #fcfcfc;
+	li {
+		margin: 0;
+		margin-right: 1.1em;
+		display: inline-block;
+	}
+}
+.secondary-navigation {
+	max-width: 1224px;
+	margin: 0 auto;
+}
 
 /* Main */
 #main-container {
