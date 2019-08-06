@@ -22,6 +22,8 @@ $(document).on('turbolinks:load', function(){
 
 function addSeeMore(articleEntry) {
 	if (articleEntry.scrollHeight > articleEntry.clientHeight && articleEntry.parentNode.getElementsByClassName('see-more-link').length === 0) {
+		console.log(1);
+		console.log(articleEntry);
 		var seeMoreText = document.createTextNode("See more");
 		var anchor = document.createElement('a');
 		anchor.appendChild(seeMoreText);
@@ -32,6 +34,9 @@ function addSeeMore(articleEntry) {
 		articleEntry.parentNode.insertBefore(seeMoreContainer, articleEntry.nextSibling);
 
 		addToggleView(seeMoreContainer, seeMoreText);
+	} else if (articleEntry.nextSibling.classList && articleEntry.nextSibling.classList.contains('see-more-link')) {
+		console.log(articleEntry);
+		articleEntry.parentNode.removeChild(articleEntry.nextSibling);
 	}
 }
 

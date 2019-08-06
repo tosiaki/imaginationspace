@@ -31,7 +31,7 @@
 			<h2><%= link_to article.title, article_path(article, anchor: article.reply_to ? 'article-page-display' : nil), class: "title-link" %></h2>
 		<% end %>
 		<% fandoms = article.fandom_tags %>
-		<% if fandoms.any? %>
+		<% if fandoms.any? && !params[:board] && !params[:thread_id] %>
 			<ul class="outer-fandom-list">
 				<% fandoms.each do |fandom| %>
 					<%= link_to "/#{fandom.name}/", board_path(fandom.name), class: "tag" %>
@@ -59,7 +59,9 @@
 
 <%= render 'articles/tags_listing', article: article %>
 
-<%= render 'articles/page_options', article: article, current_page: 1 %>
+<% if article.pages_count > 1 %>
+	<%= render 'articles/page_options', article: article, current_page: 1 %>
+<% end %>
 
 <div class="preloading previous-page-content">
 </div>

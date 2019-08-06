@@ -58,11 +58,8 @@ class ArticlesController < ApplicationController
     else
       flash[:danger] = 'New post requires content.'
     end
-    if request.referer == root_url
-      redirect_to thread_path(@new_article.thread, anchor: @new_article.id)
-    else
-      redirect_back fallback_location: @new_article
-    end
+
+    redirect_to thread_path(@new_article.thread, anchor: @new_article.id)
   end
 
 
@@ -140,7 +137,7 @@ class ArticlesController < ApplicationController
         AddPicturesJob.perform_later(pictures: @other_pictures, page: @page)
       end
 
-      redirect_to show_page_article_path(@article,page_number: @page_number)
+      redirect_to thread_path(@article.thread, anchor: @article.id)
     else
       render 'edit'
     end

@@ -44,7 +44,7 @@
 									<span><%= t.radio_button :media, 'Comic', class: "tags-media-comic", id: "media_comic_#{namespace}" %> <%= t.label :media_comic, "Comic", for: "media_comic_#{namespace}" %></span>
 								</li>
 								<% ArticleTag.tag_box_contexts.each do |context| %>
-									<li><%= t.label context[:name] %> <%= t.text_field context[:context], value: context[:context]=='fandom' ? params[:board] : nil, class: "tags-input-field", id: "tags_input_field_#{namespace}", data: { tagify: true, context: context[:context] } %></li>
+									<li><%= t.label context[:name] %> <%= t.text_field context[:context], value: context[:context]=='fandom' && local_assigns[:reply_to].nil? ? params[:board] : nil, class: "tags-input-field", id: "tags_input_field_#{namespace}", data: { tagify: true, context: context[:context] } %></li>
 								<% end %>
 							</ol>
 						</li>

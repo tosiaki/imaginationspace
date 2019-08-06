@@ -34,7 +34,7 @@ class ArticlePagesController < ApplicationController
         end
       end
 
-      redirect_to show_page_article_path(@article, page_number: @page.page_number)
+      redirect_to thread_path(@article.thread, anchor: @article.id)
     else
       render 'new'
     end

@@ -117,9 +117,24 @@ function isElementInViewport(el) {
     );
 }
 
-function turn_images_to_links(target_article, link) {
-	$(target_article).find('.article-context a:has(img)').click(function(e) {
-		load_listener(e, link);
+function clickNextPage(targetArticle) {
+	nextPageLinkElement = $(targetArticle).find('.next-page-link');
+	if (nextPageLinkElement.length) {
+		e.preventDefault();
+		nextPageLinkElement[0].click();
+	}
+}
+
+function turn_images_to_links(targetArticle, link) {
+	articleElement = $(targetArticle).find('.article-page-content');
+	addSeeMore(articleElement[0]);
+	$(targetArticle).find('.article-context a:has(img)').click(function(e) {
+		if (articleElement.hasClass('shortened-article') && $(targetArticle).find('.see-more-link').length) {
+			e.preventDefault();
+			$(targetArticle).find('.see-more-link').click();
+		} else {
+			clickNextPage(targetArticle);
+		}
 	});
 }
 
@@ -246,7 +261,7 @@ $(document).on('turbolinks:load', function(){
 		$(".go-to-page").on('change', function(e) {
 			var selectedPage = $("option:selected", this).val();
 			displayTarget = e.target.closest('.article-page-display');
-			page_url = $(displayTarget).find('.link-to-page').attr('href');
+			page_url = $(displayTarget).find('.article-page-link').attr('href');
 			setCurrentArticleState(function() {
 				$.ajax({
 					type: "GET",
