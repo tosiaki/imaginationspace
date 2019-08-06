@@ -24,6 +24,10 @@ module ArticlesHelper
   end
 
   def article_media_type(article)
-    " status-media-" + article.media.name.downcase.split("(")[0]
+    " status-media-" + if article.media
+       article.media.name.downcase.split("(")[0]
+    else
+      "status"
+    end
   end
 end
