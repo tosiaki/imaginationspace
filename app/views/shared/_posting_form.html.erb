@@ -4,7 +4,7 @@
 	<div class="main-form-body">
 		<%= fields_for :new_page do |ff| %>
 			<div class="main-posting-area posting-form-unit">
-				<%= ff.text_area :content, placeholder: local_assigns[:placeholder].nil? ? "New post here..." : placeholder, class: "new-page-content page-content-input", id: "content_#{namespace}" %>
+				<%= ff.text_area :content, placeholder: local_assigns[:placeholder].present? ? placeholder : local_assigns[:reply_to].present? ? "New reply here..." : params[:board] ? "New thread here..." : "New post here..." , class: "new-page-content page-content-input", id: "content_#{namespace}" %>
 				<div class="posting-bottom-area file-input-area">
 					<div class="preview-area"></div>
 					<div class="posting-bottom-line">
