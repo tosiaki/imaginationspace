@@ -1,4 +1,10 @@
-<% provide(:title, "Posts tagged with #{@tag_list.join(', ')}") %>
+<% if params[:board] %>
+	<% provide(:title, "/#{params[:board]}/") %>
+<% elsif params[:thread_id] %>
+	<% provide(:title, @thread.title.present? ? @thread.title : "/#{@board}/") %>
+<% else %>
+	<% provide(:title, "Posts tagged with #{@tag_list.join(', ')}") %>
+<% end %>
 <%= render 'shared/flash_messages' %>
 <% if @board %>
 	<%= link_to "Return to /#{@board}/", board_path(@board) %>
