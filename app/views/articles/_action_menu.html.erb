@@ -16,6 +16,6 @@
 			<li><%= link_to "Add page", add_page_at_article_path(article,article.next_page) %></li>
 			<li><%= link_to "Remove", article, method: :delete, class: "deletion-link" %></li>
 		<% end %>
-		<li><%= link_to "#{article.status.timeline_time.strftime("%d %b %Y")}", thread_path(article.thread, anchor: article.id), class: 'link-to-page' %></li>
+		<li><%= link_to "#{article.status.timeline_time.strftime("%d %b %Y")}, No.#{article.id}", thread_path(article.thread, anchor: article.id), class: 'link-to-page' %></li>
 	</ul>
 </div>

@@ -1448,6 +1448,10 @@ ul.list-actions a.bookmark:hover:before {
 	margin-right: 1em;
 	margin-bottom: 1em;
 }
+.status-media-status .article-page-content img.full-size {
+	max-width: 100%;
+	max-height: 100%;
+}
 .status-media-status .page-note {
 	text-align: left;
 }
@@ -1523,8 +1527,8 @@ ul.list-actions a.bookmark:hover:before {
 	margin-left: 3%;
 }
 .status-quotation {
-	border: 1px solid #ddd;
-	padding: .429em .75em;
+	border-top: 1px solid #ddd;
+	padding: 0 .3em;
 	overflow: auto;
 }
 .status-quotation + .status-quotation {
