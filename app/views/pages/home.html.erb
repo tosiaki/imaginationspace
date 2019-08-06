@@ -29,9 +29,7 @@
 <% if false && @feed_statuses.present? %>
 	<div class="module">
 		<h3 class="heading">Latest from your followed users:</h3>
-		<ol class="status-list">
-			<%= render @feed_statuses %>
-		</ol>
+		<%= render @feed_statuses %>
 	</div>
 <% end %>
 <% if @all_statuses.present? %>

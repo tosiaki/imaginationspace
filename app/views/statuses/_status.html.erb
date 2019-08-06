@@ -32,7 +32,7 @@
 		</div>
 	<% end %>
 </li>
-<% if status.post_type == "Article" %>
+<% if false && status.post_type == "Article" %>
 	<li class="reply-placeholder">
 		<%= render 'shared/posting_form', reply_to: status.post, placeholder: "Post reply here..." %>
 	</li>
