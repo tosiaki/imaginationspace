@@ -28,6 +28,9 @@ class ArticlesController < ApplicationController
     @new_article.thread = @new_article.reply_to || @new_article
 
     if params[:new_page][:picture]
+      if params[:options][:new_pages] != '1'
+        params[:new_page][:picture].reverse!
+      end
       add_picture_to_page(params[:new_page][:picture][0], @new_page)
       @other_pictures = params[:new_page][:picture].drop(1)
     end

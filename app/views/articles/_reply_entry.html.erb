@@ -1,5 +1,5 @@
 <% if reply_entry != reply_entry.thread %>
-	<li class="status<%= article_media_type reply_entry %> reply-post">
+	<li class="status<%= article_media_type reply_entry %><%= ' reply-post' unless params[:thread_id] %>">
 		<div class="article-page-display">
 			<%= render 'statuses/article_listing', article: reply_entry %>
 		</div>

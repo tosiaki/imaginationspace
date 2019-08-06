@@ -411,7 +411,7 @@ div.alert-success {
 
 /* Header */
 .fancomics-header {
-	margin: 0 0 1em;
+	margin: 0 0 0.1em;
 	overflow: hidden;
 	border-width: 0 0 1px;
 	font-size: .875em;
@@ -834,6 +834,8 @@ ul.left-actions{
 	padding-left: 1em;
 	li {
 		padding-right: 5em;
+		margin: 0;
+		margin-bottom: .1em;
 	}
 }
 ul.right-actions li {
@@ -855,7 +857,7 @@ ul.page-actions {
 	background: #f7f7f7;
 	border: 2px solid #f3efec;
 	padding: .643em;
-	margin-top: 1em;
+	margin-top: .2em;
 	// box-shadow: inset 1px 0 5px #999;
 }
 .reply-placeholder {
@@ -1366,12 +1368,12 @@ a.arrow {
 }
 li.status {
 	border: 1px solid #ddd;
-	border-radius: 1em;
 	padding: .1em;
 	overflow: auto;
 	background-color: #fff;
+	margin: .05em 0;
 }
-.reply-post {
+li.reply-post {
 	margin-left: 5em;
 }
 ul.list-actions {
@@ -1443,8 +1445,8 @@ ul.list-actions a.bookmark:hover:before {
 }
 .status-media-status .article-page-content img {
 	float: left;
-	max-width: 20em;
-	max-height: 20em;
+	max-width: 15em;
+	max-height: 15em;
 	margin-right: 1em;
 	margin-bottom: 1em;
 }
