@@ -1,7 +1,8 @@
 class AddPicturesJob < ApplicationJob
   queue_as :default
 
-  def perform(pictures:, page: nil, article: nil, page_number: nil)
+  def perform(pictures:, page: nil, article: nil, page_number: nil, editing_password: nil)
+    article.editing_password = editing_password
     if page
       pictures.each do |picture|
         add_picture_to_page(picture, page)

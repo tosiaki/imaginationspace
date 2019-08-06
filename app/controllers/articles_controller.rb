@@ -25,7 +25,11 @@ class ArticlesController < ApplicationController
 
     @new_article.max_pages = 1
     @new_article.reply_to = Article.find(params[:id]) if params[:reply]
-    @new_article.thread = @new_article.reply_to || @new_article
+    @new_article.thread = if @new_article.reply_to
+      @new_article.reply_to.thread
+    else
+      @new_article
+    end
     @new_article.reply_time = Time.now
 
     if params[:new_page][:picture]
@@ -57,9 +61,9 @@ class ArticlesController < ApplicationController
 
       if @other_pictures
         if params[:options][:new_pages] == '1'
-          AddPicturesJob.perform_later(pictures: @other_pictures, article: @new_article, page_number: 1)
+          AddPicturesJob.perform_later(pictures: @other_pictures, article: @new_article, page_number: 1, editing_password: params[:article][:editing_password])
         else
-          AddPicturesJob.perform_later(pictures: @other_pictures, page: @new_page)
+          AddPicturesJob.perform_later(pictures: @other_pictures, page: @new_page, editing_password: params[:article][:editing_password])
         end
       end
     else
@@ -141,7 +145,7 @@ class ArticlesController < ApplicationController
       #redirect_to session.delete(:return_to) || show_page_article_path(@article,page_number: @page_number)
 
       if @other_pictures
-        AddPicturesJob.perform_later(pictures: @other_pictures, page: @page)
+        AddPicturesJob.perform_later(pictures: @other_pictures, page: @page, editing_password: params[:article][:editing_password])
       end
 
       redirect_to thread_path(@article.thread, anchor: @article.id)

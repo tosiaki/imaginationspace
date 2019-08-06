@@ -28,9 +28,9 @@ class ArticlePagesController < ApplicationController
       if @other_pictures
         if params[:options][:new_pages] == '1'
           page_number += 1
-          AddPicturesJob.perform_later(pictures: @other_pictures, article: @article, page_number: page_number)
+          AddPicturesJob.perform_later(pictures: @other_pictures, article: @article, page_number: page_number, editing_password: params[:article][:editing_password])
         else
-          AddPicturesJob.perform_later(pictures: @other_pictures, page: @page)
+          AddPicturesJob.perform_later(pictures: @other_pictures, page: @page, editing_password: params[:article][:editing_password])
         end
       end
 

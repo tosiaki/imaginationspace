@@ -32,9 +32,9 @@
 		</div>
 	<% end %>
 </li>
-<% if false && status.post_type == "Article" %>
+<% if status.post_type == "Article" %>
 	<li class="reply-placeholder">
-		<%= render 'shared/posting_form', reply_to: status.post, placeholder: "Post reply here..." %>
+		<%= render 'shared/posting_form', reply_to: status.article, placeholder: "Post reply here..." %>
 	</li>
 	<% if status.article.reply_number > 0 %>
 		<%= render partial: 'articles/reply_entry', collection: params[:thread_id] ? status.article.thread_posts.order(:created_at) : status.article.thread_posts.order(:created_at).last(5) %>
