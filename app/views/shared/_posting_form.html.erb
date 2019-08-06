@@ -13,8 +13,8 @@
 							<%= ff.label :picture, "Add picture(s)", class: "file-upload-label posting-form-file-upload-label hidden-label", for: "new_post_pictures_#{namespace}" %>
 							<div class="file-input-option">
 								<%= fields_for :options do |o| %>
-							       <%= o.check_box :new_pages, class: "new-page-option", id: "new_pages_#{namespace}", checked: true %>
-							       <%= o.label :new_pages, "Put these images in separate pages", for: "new_pages_#{namespace}", class: "in-posting-box new-pages-option-label" %>
+							       <%= o.check_box :new_pages, class: "new-page-option", id: "new_pages_#{namespace}" %>
+							       <%= o.label :new_pages, "Additional images in separate pages", for: "new_pages_#{namespace}", class: "in-posting-box new-pages-option-label" %>
 							    <% end %>
 							</div>
 						</div>

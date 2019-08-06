@@ -19,4 +19,13 @@ function toggleOptionalInfo(element){
 
 $(document).on('turbolinks:load', function() {
 	toggleOptionalInfo(document);
+
+	$('input[type=radio][name="tags[media]"]').change(function() {
+		checkbox = $(this.closest('form.new_article')).find('input.new-page-option');
+		if (this.value == 'Drawing(s)' || this.value == 'Comic') {
+			checkbox.prop("checked", true);
+		} else {
+			checkbox.prop("checked", false);
+		}
+	});
 });

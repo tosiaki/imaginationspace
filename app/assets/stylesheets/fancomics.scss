@@ -1410,6 +1410,9 @@ ul.list-actions a.reply:hover {
 ul.list-actions a.reply:hover:before {
 	background-color: rgba(29, 161, 242, 0.1);
 }
+ul.list-actions a.omitted-note {
+	margin-left: 1em;
+}
 ul.list-actions a.boost:hover {
 	color: rgb(23, 191, 99);
 	svg {
