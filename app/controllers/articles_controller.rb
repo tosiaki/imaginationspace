@@ -26,6 +26,7 @@ class ArticlesController < ApplicationController
     @new_article.max_pages = 1
     @new_article.reply_to = Article.find(params[:id]) if params[:reply]
     @new_article.thread = @new_article.reply_to || @new_article
+    @new_article.reply_time = Time.now
 
     if params[:new_page][:picture]
       if params[:options][:new_pages] != '1'
@@ -49,7 +50,10 @@ class ArticlesController < ApplicationController
         end
       end
 
-      @new_article.reply_to.add_reply if params[:reply]
+      if params[:reply]
+        @new_article.reply_to.add_reply
+        @new_article.thread.update_attribute(:reply_time, Time.now)
+      end
 
       if @other_pictures
         if params[:options][:new_pages] == '1'
@@ -162,7 +166,7 @@ class ArticlesController < ApplicationController
       @board = @thread.fandom_tags.first && @thread.fandom_tags.first.name
       @statuses = Status.select_by(thread: params[:thread_id], order: params[:order], filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     elsif params[:board]
-      @statuses = Status.select_by(board: params[:board], order: params[:order], filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
+      @statuses = Status.select_by(board: params[:board], order: params[:order] || 'reply_time', filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     else
       @statuses = Status.select_by(tags: @tag_list, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     end

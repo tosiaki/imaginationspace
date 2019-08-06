@@ -125,6 +125,8 @@ class Status < ApplicationRecord
     case order
     when 'published'
       relation = relation.group(status[:created_at]).order(status[:created_at].desc)
+    when 'reply_time'
+      relation = relation.group(article[:reply_time]).order(article[:reply_time].desc)
     when 'bookmarks'
       relation = relation.group(article[:bookmarks_count]).order(article[:bookmarks_count].desc)
     when 'kudos'
