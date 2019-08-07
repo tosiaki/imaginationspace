@@ -110,4 +110,11 @@ class ArticleTag < ApplicationRecord
     result_scope = result_scope.where(context: context) if context
     result_scope.select("article_tags.name, COUNT(articles.id) as article_count").group(:name).group(:article_tag_id).order("article_count DESC").limit(20)
   end
+
+  def merge_into(tag)
+    articles.find_each do |a|
+      a.article_taggings.create(article_tag: tag)
+      a.article_taggings.where(article_tag: self).map(&:destroy)
+    end
+  end
 end
