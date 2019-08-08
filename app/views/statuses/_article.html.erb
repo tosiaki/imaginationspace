@@ -28,7 +28,7 @@
 <% if article.title.present? or article.fandom_tags.any? %>
 	<div class='article-listing-heading'>
 		<% if article.title.present? %>
-			<h2><%= link_to article.title, article_path(article, anchor: article.reply_to ? 'article-page-display' : nil), class: "title-link" %></h2>
+			<h3><%= link_to article.title, thread_path(article.thread, anchor: article.id), class: "title-link" %></h3>
 		<% end %>
 		<% fandoms = article.fandom_tags %>
 		<% if fandoms.any? && !params[:board] && !params[:thread_id] %>

@@ -167,7 +167,7 @@ class ArticlesController < ApplicationController
     get_associated_tags
     if params[:thread_id]
       @thread = Article.find(params[:thread_id])
-      @board = @thread.fandom_tags.first && @thread.fandom_tags.first.name
+      @boards = @thread.fandom_tags
       @statuses = Status.select_by(thread: params[:thread_id], order: params[:order], filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     elsif params[:board]
       @statuses = Status.select_by(board: params[:board], order: params[:order] || 'reply_time', filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)

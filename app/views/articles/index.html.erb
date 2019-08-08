@@ -1,13 +1,15 @@
 <% if params[:board] %>
 	<% provide(:title, "/#{params[:board]}/") %>
 <% elsif params[:thread_id] %>
-	<% provide(:title, @thread.title.present? ? @thread.title : "/#{@board}/") %>
+	<% provide(:title, @thread.title.present? ? @thread.title : @boards.present? ? "/#{@boards.first.name}/" : "Thread") %>
 <% else %>
 	<% provide(:title, "Posts tagged with #{@tag_list.join(', ')}") %>
 <% end %>
 <%= render 'shared/flash_messages' %>
-<% if @board %>
-	<%= link_to "Return to /#{@board}/", board_path(@board) %>
+<% if @boards.present? %>
+	<% @boards.each do |b| %>
+		<%= link_to "Return to /#{b.name}/", board_path(b) %>
+	<% end %>
 <% end %>
 <%= render 'shared/posting_form', reply_to: @thread ? @thread : nil, default_fandom: params[:board] %>
 <div class="statuspage-content">
