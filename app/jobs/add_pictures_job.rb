@@ -32,7 +32,6 @@ class AddPicturesJob < ApplicationJob
 
   def picture_content(picture_object)
     result = "\n\n" + ApplicationController.new.render_to_body(partial: 'article_pages/image_tag', locals: {picture: picture_object})
-    # result += "\n\n" + ApplicationController.new.render_to_body(partial: 'article_pages/image_note', locals: {picture: picture_object}) if picture_object.picture[:original].width > 1200 || picture_object.picture[:original].height > 2000
     result.html_safe
   end
 
