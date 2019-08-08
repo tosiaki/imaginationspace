@@ -113,7 +113,7 @@ class ArticleTag < ApplicationRecord
 
   def merge_into(tag)
     articles.find_each do |a|
-      a.article_taggings.create(article_tag: tag)
+      a.article_taggings.find_or_create_by(article_tag: tag)
       a.article_taggings.where(article_tag: self).map(&:destroy)
     end
   end
