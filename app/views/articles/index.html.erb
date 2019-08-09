@@ -2,6 +2,7 @@
 	<% provide(:title, "/#{params[:board]}/") %>
 <% elsif params[:thread_id] %>
 	<% provide(:title, @thread.title.present? ? @thread.title : @boards.present? ? "/#{@boards.first.name}/" : "Thread") %>
+	<% render 'itemprop', article: @thread, page: @thread.pages.first %>
 <% else %>
 	<% provide(:title, "Posts tagged with #{@tag_list.join(', ')}") %>
 <% end %>
