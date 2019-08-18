@@ -27,10 +27,9 @@ class ArticlePagesController < ApplicationController
 
       if @other_pictures
         if params[:options][:new_pages] == '1'
-          page_number += 1
-          AddPicturesJob.perform_later(pictures: @other_pictures, article: @article, page_number: page_number, editing_password: params[:article][:editing_password])
+          AddPicturesJob.perform_later(pictures: @other_pictures, article: @article, page_number: page_number, editing_password: params[:article] && params[:article][:editing_password])
         else
-          AddPicturesJob.perform_later(pictures: @other_pictures, page: @page, editing_password: params[:article][:editing_password])
+          AddPicturesJob.perform_later(pictures: @other_pictures, page: @page, editing_password: params[:article] && params[:article][:editing_password])
         end
       end
 
@@ -61,6 +60,8 @@ class ArticlePagesController < ApplicationController
     end
     if @article.remove_page(@current_page)
       redirect_to show_page_article_path(@article, [@current_page, @article.current_max_page].min)
+    else
+      byebug
     end
   end
 

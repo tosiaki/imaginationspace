@@ -25,7 +25,33 @@ class Page < ApplicationRecord
   end
 
   def next_page
-    article.pages.find_by(page_number: page_number+1)
+    article.pages.find_by(page_number: page_number+1) || fix_next_page
+  end
+
+  def fix_next_page
+    next_page = article.pages.where("page_number > ?", page_number).order(page_number: :asc).limit(1).first
+    if next_page
+      set_page_to_next(next_page)
+      next_page.fix_next_page
+    end
+  end
+
+  def set_page_to_next(page)
+    page.update_attribute(:page_number, page_number+1)
+  end
+
+  def set_page_to_current(page)
+    page.update_attribute(:page_number, page_number)
+    page.fix_next_page
+  end
+
+  def self.fix_page(article,page_number)
+    page = article.pages.where("page_number > ?", page_number).order(page_number: :asc).limit(1).first
+    if page
+      page.update_attribute(:page_number, page_number)
+      page.fix_next_page
+    end
+    page
   end
 
   def move_up
@@ -33,11 +59,12 @@ class Page < ApplicationRecord
     increment!(:page_number)
   end
 
+  # Unused
   def move_down
+    decrement!(:page_number)
     if next_page
       next_page.move_down
     end
-    decrement!(:page_number)
   end
 
   def make_room
@@ -63,10 +90,11 @@ class Page < ApplicationRecord
   end
 
   def remove_page
-    if next_page
-      next_page.move_down
+    result = destroy
+    if (following_page = next_page)
+      set_page_to_current(following_page)
     end
-    destroy
+    result
   end
 
   def normalize_page_number
