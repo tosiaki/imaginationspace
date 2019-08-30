@@ -9,7 +9,7 @@
 <%= render 'shared/flash_messages' %>
 <% if @boards.present? %>
 	<% @boards.each do |b| %>
-		<%= link_to "Return to /#{b.name}/", board_path(b) %>
+		<%= link_to "Return to /#{b.name}/", board_path(b.name) %>
 	<% end %>
 <% end %>
 <%= render 'shared/posting_form', reply_to: @thread ? @thread : nil, default_fandom: params[:board] %>
