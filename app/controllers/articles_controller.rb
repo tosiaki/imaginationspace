@@ -1,6 +1,5 @@
 class ArticlesController < ApplicationController
   before_action :check_user, only: [:edit, :update, :destroy]
-  before_action :authenticate_user!, only: :create
 
   include Concerns::TagsFunctionality
   include Concerns::PictureFunctions
