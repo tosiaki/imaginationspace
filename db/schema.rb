@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_06_192927) do
+ActiveRecord::Schema.define(version: 2020_02_05_212401) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,14 @@ ActiveRecord::Schema.define(version: 2019_08_06_192927) do
     t.index ["user_id"], name: "index_drawings_on_user_id"
   end
 
+  create_table "gatherings", force: :cascade do |t|
+    t.bigint "item_id"
+    t.float "delay"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_gatherings_on_item_id"
+  end
+
   create_table "impressions", force: :cascade do |t|
     t.string "impressionable_type"
     t.integer "impressionable_id"
@@ -195,6 +203,22 @@ ActiveRecord::Schema.define(version: 2019_08_06_192927) do
     t.index ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index"
     t.index ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index"
     t.index ["user_id"], name: "index_impressions_on_user_id"
+  end
+
+  create_table "inventory_entries", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "item_id"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_id"], name: "index_inventory_entries_on_item_id"
+    t.index ["user_id"], name: "index_inventory_entries_on_user_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "kudos", force: :cascade do |t|
@@ -325,6 +349,7 @@ ActiveRecord::Schema.define(version: 2019_08_06_192927) do
     t.boolean "notify_bookmark", default: true
     t.boolean "notify_reply", default: true
     t.boolean "notify_signal_boost", default: true
+    t.boolean "guest", default: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -340,6 +365,9 @@ ActiveRecord::Schema.define(version: 2019_08_06_192927) do
   add_foreign_key "comics", "users"
   add_foreign_key "comments", "users"
   add_foreign_key "drawings", "users"
+  add_foreign_key "gatherings", "items"
+  add_foreign_key "inventory_entries", "items"
+  add_foreign_key "inventory_entries", "users"
   add_foreign_key "legacy_users", "users"
   add_foreign_key "pages", "articles"
   add_foreign_key "signal_boosts", "articles", column: "origin_id"

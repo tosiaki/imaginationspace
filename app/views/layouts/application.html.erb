@@ -3,6 +3,7 @@
   <head>
     <title><%= full_title yield(:title) %></title>
     <link rel="manifest" href="/manifest.json">
+		<%= action_cable_meta_tag %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield(:itemprop) %>

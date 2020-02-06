@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'rails','~> 5.2.0'
 gem 'puma', '~> 3.7'
 gem 'pg', '~> 1.1.0'
-gem 'sass-rails', '~> 5.0'
+gem 'sassc'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'jquery-rails', '~> 4.3.1'
@@ -15,7 +15,7 @@ gem 'carrierwave', '~> 1.2.2'
 gem 'mini_magick', '~> 4.8.0'
 gem 'will_paginate',           '~> 3.1.6'
 gem 'bootstrap-will_paginate', '~> 1.0.0'
-gem 'bootstrap-sass',          '~> 3.3.7'
+gem 'bootstrap-sass'
 gem 'devise'
 gem 'impressionist'
 gem 'nokogiri'
@@ -25,6 +25,8 @@ gem 'fastimage'
 gem 'aws-sdk-s3', '~> 1.2'
 gem 'sucker_punch'
 gem 'content_disposition', '~> 1.0'
+gem 'redis', '~> 3.2'
+gem 'redis-namespace'
 
 # Not being used on currently active features
 gem 'acts-as-taggable-on', '~> 5.0'
@@ -41,7 +43,6 @@ group :development, :transfer do
 end
 
 group :development, :test do
-  gem 'sqlite3', '~> 1.3.13'
   gem 'byebug',  '~> 10.0.2', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.7'
   # Adds support for Capybara system testing and selenium driver
@@ -49,7 +50,7 @@ group :development, :test do
   gem 'database_cleaner', '~> 1.7.0'
   gem 'cucumber-rails', '~> 1.6.0', require: false
   gem 'factory_bot_rails', "~> 4.0"
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', "~> 3.142.7"
   gem 'geckodriver-helper'
 end
 
@@ -63,7 +64,7 @@ end
 group :test do
   gem 'rails-controller-testing', '~> 1.0.2'
   gem 'minitest-reporters',       '~> 1.3.0'
-  gem 'guard',                    '~> 2.14.2'
+  gem 'guard',                    '~> 2.16.1'
   gem 'guard-minitest',           '~> 2.4.6'
 end
 

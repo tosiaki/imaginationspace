@@ -6,6 +6,10 @@
 	src: font-url('GenEiAntique_v4.ttc');
 }
 @font-face {
+	font-family: "GenEi AntiqueTTF";
+	src: font-url('GenEiAntiqueNv4-M-01.ttf');
+}
+@font-face {
 	font-family: "Ameiro";
 	src: font-url('ameiro.ttf');
 }
@@ -188,7 +192,7 @@
 /* universal */
 
 body {
-	font-family: 'GenEi Antique','Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
+	font-family: 'GenEi Antique', 'GenEi AntiqueTTF','Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
 	line-height: 1.286;
 	font-size: 16px;
 	background-color: #e4e7ee;
@@ -213,7 +217,7 @@ textarea {
 	min-height: 12em;
 }
 input, textarea {
-	font: 100% 'GenEi Antique', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
+	font: 100% 'GenEi Antique', 'GenEi AntiqueTTF', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
 	width: 100%;
 	border: 1px solid #bbb;
 	box-shadow: inset 0 1px 2px #ccc;
@@ -225,7 +229,7 @@ input[type="radio"] {
 	box-shadow: none;
 }
 .blockquote {
-	font: 1em 'GenEi Antique', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
+	font: 1em 'GenEi Antique', 'GenEi AntiqueTTF', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
 	margin: .643em;
 }
 
@@ -509,7 +513,7 @@ ul.primary-navigation {
 	}
     li {
     	color: #2a2a2a;
-    	font: 100%/1.125 'GenEi Antique', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
+    	font: 100%/1.125 'GenEi Antique', 'GenEi AntiqueTTF', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
     	margin: 0;
     	padding: 0;
     	border-radius: 0;
@@ -574,9 +578,22 @@ ul.primary-navigation {
 }
 
 /* Main */
-#main-container {
+#main-container, #resources-pane, #windyfall-pane {
 	max-width: 1224px;
 	margin: 0 auto;
+}
+#windyfall-area {
+	padding: 0em 2.5em 0em;
+}
+#resources-pane div {
+	margin-top: 0.231em;
+	display: inline-block;
+	margin-right: 1em;
+}
+#windyfall-pane button {
+	margin-top: 0.231em;
+	background-color: #eff;
+	border-color: #eff;
 }
 
 /* Navigation modules */
@@ -1558,7 +1575,7 @@ ul.list-actions a.bookmark:hover:before {
 	box-shadow: none;
 }
 .page-navigator {
-	font-family: 'GenEi Antique', serif;
+	font-family: 'GenEi Antique', 'GenEi AntiqueTTF', serif;
 }
 
 /* Summary displays */
@@ -1955,7 +1972,7 @@ li.status-media-comic {
 	float: left;
 	width: 100%;
 	blockquote {
-		font: 1em 'GenEi Antique', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif;
+		font: 1em 'GenEi Antique', 'GenEi AntiqueTTF', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', Verdana, Helvetica, sans-serif;
 		margin: .643em;
 		word-wrap: break-wrod;
 	}
@@ -2025,7 +2042,7 @@ li.status-media-comic {
 			background-image: linear-gradient(#fff 2%, #ddd 95%, #bbb 100%);
 			border-radius: .25em;
 			box-shadow: none;
-			font: 100% 'GenEi Antique', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
+			font: 100% 'GenEi Antique', 'GenEi AntiqueTTF', 'Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
 		}
 	}
 }

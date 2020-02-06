@@ -12,7 +12,7 @@ default: &default
 
 development:
   <<: *default
-  database: db/fancomics_development
+  database: windyfall_development
   username: postgres
   password: <%= ENV['PG_DEVELOPMENT_PASSWORD'] %>
 

@@ -122,4 +122,6 @@ Rails.application.routes.draw do
   get 'users/:id/bookmarked_comics', to: 'users#bookmarked_comics', as: :user_bookmarked_comics
 
   get ':board', to: 'articles#index', as: :board
+
+  mount ActionCable.server => '/cable'
 end

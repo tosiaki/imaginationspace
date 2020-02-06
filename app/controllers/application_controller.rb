@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+	before_action :create_guest_user, unless: :has_user?
+
   protected
 
     def configure_permitted_parameters
@@ -25,4 +27,30 @@ class ApplicationController < ActionController::Base
       stored_location_for(resource_or_scope) || request.referrer || super
     end
 
+		def has_user?
+			if user_signed_in?
+				current_user
+			else
+				user = User.find_by(id: cookies.signed[:guest_user_id], guest: true)
+				if user && user.valid_password?(cookies.signed[:guest_password])
+					@guest_user = user
+				else
+					nil
+				end
+			end
+		end
+
+		def create_guest_user
+			guest_name = "guest_#{Time.now.to_i}#{rand(100)}"
+			guest_password = rand(100)
+			guest_email = "#{guest_name}@example.com"
+			guest_user = User.new(name: guest_name, email: guest_email, password: 
+														guest_password, password_confirmation:
+														guest_password, guest: true)
+			guest_user.skip_confirmation_notification!
+			guest_user.save!(validate: false)
+			cookies.permanent.signed[:guest_user_id] = guest_user.id
+			cookies.permanent.signed[:guest_password] = guest_password
+			guest_user
+		end
 end

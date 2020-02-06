@@ -1,6 +1,18 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :gathering do
+    item { nil }
+    delay { 1.5 }
+  end
+  factory :inventory_entry do
+    user { nil }
+    item { nil }
+    amount { 1 }
+  end
+  factory :item do
+    name { "MyString" }
+  end
   factory :user_language do
     user { nil }
     article_tag { nil }
