@@ -23,10 +23,10 @@ gem 'shrine', "~> 2.0"
 gem 'image_processing', "~> 1.0"
 gem 'fastimage'
 gem 'aws-sdk-s3', '~> 1.2'
-gem 'sucker_punch'
 gem 'content_disposition', '~> 1.0'
 gem 'redis', '~> 3.2'
 gem 'redis-namespace'
+gem 'sidekiq'
 
 # Not being used on currently active features
 gem 'acts-as-taggable-on', '~> 5.0'
