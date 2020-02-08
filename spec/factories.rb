@@ -1,6 +1,15 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :ingredient do
+    preparation { nil }
+    item { nil }
+  end
+  factory :preparation do
+    name { "MyText" }
+    product { nil }
+    time_required { 1.5 }
+  end
   factory :gathering do
     item { nil }
     delay { 1.5 }

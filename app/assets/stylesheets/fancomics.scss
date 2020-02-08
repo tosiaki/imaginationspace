@@ -578,7 +578,7 @@ ul.primary-navigation {
 }
 
 /* Main */
-#main-container, #resources-pane, #windyfall-pane {
+#main-container, #resources-pane, #windyfall-pane, #preparations-pane {
 	max-width: 1224px;
 	margin: 0 auto;
 }
@@ -593,6 +593,11 @@ ul.primary-navigation {
 #windyfall-pane button {
 	margin-top: 0.231em;
 	background-color: #eff;
+	border-color: #eff;
+}
+#preparations-pane button {
+	margin-top: 0.231em;
+	background-color: #fef;
 	border-color: #eff;
 }
 

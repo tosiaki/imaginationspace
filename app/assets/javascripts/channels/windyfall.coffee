@@ -1,6 +1,8 @@
 jQuery(document).on 'turbolinks:load', ->
 	windyfallPane = $("#windyfall-pane")
 	resourcesPane = undefined
+	preparationsPane = undefined
+	things = {}
 	createResourcesPane = ->
 		if $('#resources-pane').length == 0
 			$('<div/>', id: 'resources-pane').
@@ -16,6 +18,21 @@ jQuery(document).on 'turbolinks:load', ->
 		identifier = resource.replace(/\s+/g, '-').toLowerCase()
 		$('#resource-display-' + identifier).text(resource + " " +
 			amount)
+		things[resource] = amount
+	addPreparation = (display, identifier, preparation) ->
+		if $('#preparations-pane').length == 0
+			$('<div/>', id: 'preparations-pane').
+				insertBefore(windyfallPane)
+			preparationsPane = $("#preparations-pane")
+		if $('button#preparation-display-' + identifier).length == 0
+			button =  $('<button/>', id: 'preparation-display-' + identifier).appendTo(preparationsPane)
+			button.text(display)
+			button.on 'click', (event) ->
+				App.windyfall.prepare preparation
+	checkPreparations = ->
+		if things['Green onion'] > 0 && things['Tuna'] > 0
+			addPreparation("Make negitoro", "negitoro", "Negitoro")
+
 
 	App.windyfall = App.cable.subscriptions.create {
 		channel: "UserChannel"
@@ -25,12 +42,27 @@ jQuery(document).on 'turbolinks:load', ->
 	disconnected: ->
 
 	received: (data) ->
-		createResourcesPane()
-		addResource(data['thing'])
-		setResource(data['thing'], data['amount'])
+		if data['action'] == 'gather' || data['action'] == 'setup'
+			createResourcesPane()
+			addResource(data['thing'])
+			setResource(data['thing'], data['amount'])
+			checkPreparations()
 
-	gather: (gathering, identifier) ->
+		if data['action'] == 'prepare'
+			addResource(data['thing'])
+			setResource(data['thing'], data['amount'])
+
+		if data['action'] == 'expend'
+			setResource(data['thing'], data['amount'])
+
+		if data['action'] == 'show_preparation'
+			addPreparation(data['preparation'])
+
+	gather: (gathering) ->
 		@perform 'gather', gathering: gathering
+	
+	prepare: (preparation) ->
+		@perform 'prepare', prepare: preparation
 	
 	$('.gather-button').on 'click', (event) ->
 		App.windyfall.gather jQuery(this).data('gathering')
