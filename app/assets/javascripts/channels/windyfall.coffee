@@ -32,7 +32,17 @@ jQuery(document).on 'turbolinks:load', ->
 	checkPreparations = ->
 		if things['Green onion'] > 0 && things['Tuna'] > 0
 			addPreparation("Make negitoro", "negitoro", "Negitoro")
-
+	addExploring = ->
+		if $('#exploring-pane').length == 0
+			$('<div/>', id: 'exploring-pane').insertBefore(windyfallPane)
+			exploringPane = $("#exploring-pane")
+			button = $('<button/>', id: 'exploring-display').appendTo(exploringPane)
+			button.text("Explore")
+			button.on 'click', (event) ->
+				App.windyfall.explore()
+	checkExploring = ->
+		if things['Negitoro'] > 0
+			addExploring()
 
 	App.windyfall = App.cable.subscriptions.create {
 		channel: "UserChannel"
@@ -47,10 +57,12 @@ jQuery(document).on 'turbolinks:load', ->
 			addResource(data['thing'])
 			setResource(data['thing'], data['amount'])
 			checkPreparations()
+			checkExploring()
 
 		if data['action'] == 'prepare'
 			addResource(data['thing'])
 			setResource(data['thing'], data['amount'])
+			addExploring()
 
 		if data['action'] == 'expend'
 			setResource(data['thing'], data['amount'])
@@ -63,6 +75,9 @@ jQuery(document).on 'turbolinks:load', ->
 	
 	prepare: (preparation) ->
 		@perform 'prepare', prepare: preparation
+	
+	explore: ->
+		@perform 'explore'
 	
 	$('.gather-button').on 'click', (event) ->
 		App.windyfall.gather jQuery(this).data('gathering')

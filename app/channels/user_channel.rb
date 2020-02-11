@@ -37,10 +37,7 @@ class UserChannel < ApplicationCable::Channel
 
 	def prepare(data)
 		preparation = Preparation.find_by(name: data['prepare'])
-		puts preparation
-		puts 'here'
 		return unless preparation
-		puts 'there'
 		item = preparation.product
 		action.setnx(current_user.id, 0)
 		action.incr(current_user.id)
@@ -58,6 +55,66 @@ class UserChannel < ApplicationCable::Channel
 				end
 			end
 		end
+	end
+
+	def explore(data)
+		action.setnx(current_user.id, 0)
+		action.incr(current_user.id)
+		action_id = action.get(current_user.id)
+		exploring.setnx(current_user.id, 0)
+		Finding.all.each do |finding|
+			find_thing(finding, action_id)
+		end
+		next_finding_exp = get_next_finding_exp
+		Thread.new do
+			while action_id == action.get(current_user.id) && negitoro_amount > 0
+				sleep 1.5
+				if action_id == action.get(current_user.id)
+					exploring.incr(current_user.id)
+					things.decr(negitoro_key)
+					self.class.broadcast_to current_user, action: 'expend', thing: "Negitoro", amount: negitoro_amount
+					if exploring.get(current_user.id) == next_finding_exp
+						findings = Finding.find_by(required_experience: next_finding_experience)
+						findings.each do |finding|
+							find_thing(finding, action_id)
+						end
+						next_finding_exp = get_next_finding_exp
+					end
+				end
+			end
+		end
+	end
+
+	def find_thing(finding, action_id)
+		if finding.required_experience <= exploring.get(current_user.id).to_i
+			Thread.new do
+				while action_id == action.get(current_user.id) && negitoro_amount > 0
+					sleep poisson(finding.scarcity)
+					if action_id == action.get(current_user.id) && negitoro_amount > 0
+						thing_key = "#{current_user.id}:#{finding.thing_name}"
+						things.incr(thing_key)
+						self.class.broadcast_to current_user, action: 'gather', thing: finding.thing_name, amount: things.get(thing_key)
+					end
+				end
+			end
+		end
+	end
+
+	def get_next_finding_exp
+		finding = Finding.where("required_experience > ?", exploring.get(current_user.id)).order(:required_experience).first
+		if finding
+			finding.required_experience
+		else
+			Float::INFINITY
+		end
+	end
+
+	def negitoro_key
+		"#{current_user.id}:Negitoro"
+	end
+
+	def negitoro_amount
+		things.get(negitoro_key).to_i
 	end
 
 	def has_ingredients(preparation)
@@ -107,5 +164,9 @@ class UserChannel < ApplicationCable::Channel
 
 	def things
 		REDIS_THINGS
+	end
+
+	def exploring
+		REDIS_EXPLORING
 	end
 end

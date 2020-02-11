@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_07_225319) do
+ActiveRecord::Schema.define(version: 2020_02_11_193752) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -169,6 +169,14 @@ ActiveRecord::Schema.define(version: 2020_02_07_225319) do
     t.integer "kudos_count", default: 0
     t.integer "bookmarks_count", default: 0
     t.index ["user_id"], name: "index_drawings_on_user_id"
+  end
+
+  create_table "findings", force: :cascade do |t|
+    t.text "thing_name"
+    t.integer "required_experience"
+    t.float "scarcity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "gatherings", force: :cascade do |t|

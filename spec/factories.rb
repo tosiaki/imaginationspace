@@ -1,6 +1,10 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :finding do
+    thing_name { "MyText" }
+    required_experience { 1 }
+  end
   factory :ingredient do
     preparation { nil }
     item { nil }
