@@ -73,7 +73,7 @@ class UserChannel < ApplicationCable::Channel
 					exploring.incr(current_user.id)
 					things.decr(negitoro_key)
 					self.class.broadcast_to current_user, action: 'expend', thing: "Negitoro", amount: negitoro_amount
-					if exploring.get(current_user.id) == next_finding_exp
+					if exploring.get(current_user.id).to_i >= next_finding_exp
 						findings = Finding.find_by(required_experience: next_finding_experience)
 						findings.each do |finding|
 							find_thing(finding, action_id)
