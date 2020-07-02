@@ -10,9 +10,8 @@
       <ul class="primary-navigation">
         <li><%= link_to "original", board_path('original') %></li>
         <li><%= link_to "lovelive", board_path('lovelive') %></li>
-        <li><%= link_to "vocaloid", board_path('vocaloid') %></li>
-        <li><%= link_to "fategrandorder", board_path('fategrandorder') %></li>
         <li><%= link_to "About", about_path %></li>
+        <li><%= link_to "Discord", 'https://discord.gg/e97QGEA' %></li>
       </ul>
       <%= form_tag articles_path, method: :get, id: 'search-works-form' do %>
         <label class="landmark" for="site_search">Article Search:</label>
