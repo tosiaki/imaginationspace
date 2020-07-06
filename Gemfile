@@ -17,7 +17,7 @@ gem 'will_paginate',           '~> 3.1.6'
 gem 'bootstrap-will_paginate', '~> 1.0.0'
 gem 'bootstrap-sass'
 gem 'devise'
-gem 'impressionist'
+gem 'impressionist', '~>1.6.1'
 gem 'nokogiri'
 gem 'shrine', "~> 2.0"
 gem 'image_processing', "~> 1.0"
