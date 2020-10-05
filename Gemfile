@@ -19,7 +19,7 @@ gem 'bootstrap-sass'
 gem 'devise'
 gem 'impressionist', '~>1.6.1'
 gem 'nokogiri'
-gem 'shrine', "~> 2.0"
+gem 'shrine', "~> 3.3"
 gem 'image_processing', "~> 1.0"
 gem 'fastimage'
 gem 'aws-sdk-s3', '~> 1.2'
