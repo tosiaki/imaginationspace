@@ -1,31 +1,31 @@
 source 'https://rubygems.org'
 
-gem 'rails','~> 5.2.0'
-gem 'puma', '~> 3.7'
-gem 'pg', '~> 1.1.0'
-gem 'sass-rails', '~> 5.0'
-gem 'uglifier', '>= 1.3.0'
-gem 'coffee-rails', '~> 4.2'
-gem 'jquery-rails', '~> 4.3.1'
-gem 'turbolinks',   '~> 5.1.1'
-gem 'jbuilder','~> 2.7'
-gem 'bcrypt', '~> 3.1.11'
-gem 'faker', '~> 1.8.3'
-gem 'carrierwave', '~> 1.2.2'
-gem 'mini_magick', '~> 4.8.0'
-gem 'will_paginate',           '~> 3.1.6'
-gem 'bootstrap-will_paginate', '~> 1.0.0'
+gem 'rails'
+gem 'puma'
+gem 'pg'
+gem 'sass-rails'
+gem 'uglifier'
+gem 'coffee-rails'
+gem 'jquery-rails'
+gem 'turbolinks'
+gem 'jbuilder'
+gem 'bcrypt'
+gem 'faker'
+gem 'carrierwave'
+gem 'mini_magick'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 gem 'bootstrap-sass'
 gem 'devise'
-gem 'impressionist', '~>1.6.1'
+gem 'impressionist'
 gem 'nokogiri'
-gem 'shrine', "~> 2.0"
-gem 'image_processing', "~> 1.0"
+gem 'shrine'
+gem 'image_processing'
 gem 'fastimage'
-gem 'aws-sdk-s3', '~> 1.2'
+gem 'aws-sdk-s3'
 gem 'sucker_punch'
-gem 'content_disposition', '~> 1.0'
-gem 'redis', '~> 3.2'
+gem 'content_disposition'
+gem 'redis'
 gem 'redis-namespace'
 
 # Not being used on currently active features
@@ -38,9 +38,9 @@ group :development, :test, :transfer do
   gem 'dotenv-rails'
 end
 
-group :development, :transfer do
-  gem 'mysql2'
-end
+# group :development, :transfer do
+  # gem 'mysql2'
+# end
 
 group :development, :test do
   gem 'byebug',  '~> 10.0.2', platforms: [:mri, :mingw, :x64_mingw]
