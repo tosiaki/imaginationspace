@@ -6,6 +6,10 @@ class ApplicationController < ActionController::Base
 
 	before_action :create_guest_user, unless: :has_user?
 
+  def record_activity(activity_type, details)
+    UserActivity.create(user: current_user, activity_type: activity_type, details: details)
+  end
+
   protected
 
     def configure_permitted_parameters

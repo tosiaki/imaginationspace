@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_17_182914) do
+ActiveRecord::Schema.define(version: 2021_04_18_230016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -286,6 +286,7 @@ ActiveRecord::Schema.define(version: 2021_04_17_182914) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "url"
+    t.index ["url"], name: "index_series_on_url", unique: true
     t.index ["user_id"], name: "index_series_on_user_id"
   end
 
@@ -294,6 +295,7 @@ ActiveRecord::Schema.define(version: 2021_04_17_182914) do
     t.bigint "article_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "position"
     t.index ["article_id"], name: "index_series_articles_on_article_id"
     t.index ["series_id"], name: "index_series_articles_on_series_id"
   end
@@ -348,6 +350,15 @@ ActiveRecord::Schema.define(version: 2021_04_17_182914) do
     t.string "name"
     t.integer "taggings_count", default: 0
     t.index ["name"], name: "index_tags_on_name", unique: true
+  end
+
+  create_table "user_activities", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.text "activity_type"
+    t.text "details"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_user_activities_on_user_id"
   end
 
   create_table "user_languages", force: :cascade do |t|
@@ -422,6 +433,7 @@ ActiveRecord::Schema.define(version: 2021_04_17_182914) do
   add_foreign_key "series_articles", "series"
   add_foreign_key "signal_boosts", "articles", column: "origin_id"
   add_foreign_key "statuses", "users"
+  add_foreign_key "user_activities", "users"
   add_foreign_key "user_languages", "article_tags"
   add_foreign_key "user_languages", "users"
   add_foreign_key "users", "articles", column: "sticky_id"

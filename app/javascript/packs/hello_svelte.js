@@ -10,12 +10,15 @@ import App from '../app.svelte'
 let i = 1;
 
 document.addEventListener('turbolinks:load', () => {
-  const app = new App({
-    target: document.body,
-    props: {
-      name: `Sveltesteediiest${i}`
-    }
-  });
-  i++;
+  if(!document.body.dataset.helloLoaded) {
+    const app = new App({
+      target: document.body,
+      props: {
+        name: `Sveltesteediiest${i}`
+      }
+    });
+    i++;
+    document.body.dataset.helloLoaded = true;
+  }
 })
 

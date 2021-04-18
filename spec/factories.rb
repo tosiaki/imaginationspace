@@ -1,6 +1,11 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :user_activity do
+    user { nil }
+    type { "MyText" }
+    details { "MyText" }
+  end
   factory :series_article do
     series { nil }
     article { nil }

@@ -39,6 +39,14 @@
 		<% end %>
 	</div>
 
+        <% if @article.series.present? %>
+               Part of series: <ul class="article-series-list">
+               <% @article.series.each do |series| %>
+                 <%= link_to series.title, series_path(series.url) %>
+               <% end %>
+               </ul>
+             <% end %>
+
 	<% if @page.title.present? %>
 		<h3 class="page-title" %><%= @page.title %></h3>
 	<% else %>

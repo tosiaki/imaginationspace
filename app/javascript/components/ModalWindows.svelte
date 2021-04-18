@@ -1,9 +1,11 @@
 <script>
   import {modalWindowStore} from '../stores';
-  import CreateSeries from './CreateSeries.svelte'
+  import CreateSeries from './CreateSeries.svelte';
+  import AddToSeries from './AddToSeries.svelte';
 
   const modalWindows = {
-    CreateSeries
+    CreateSeries,
+    AddToSeries
   };
   const close = modalWindow => modalWindowStore.update(modalWindows => {
     modalWindows.splice(modalWindows.indexOf(modalWindow), 1);
@@ -21,8 +23,11 @@
   }
 
   .modal-window {
-    background-color: rgb(220, 220, 220);
-    margin: 15% auto;
+    border-radius: 0.7em;
+    background-color: rgb(240, 240, 255);
+    margin: 2em auto;
+    max-height: 90vh;
+    overflow: auto;
     padding: 3em;
     border: 1px solid rgb(110, 110, 110);
     width: 80%;
@@ -40,7 +45,7 @@
           <button class="close" on:click={close}>close</button>
         </header>
         <section class="body">
-          <svelte:component this={modalWindows[componentName]} />
+          <svelte:component this={modalWindows[componentName]} on:done={close} />
         </section>
       </div>
     {/each}

@@ -1,0 +1,19 @@
+<% provide(:title, @series.url) %>
+<div class="chapter-list">
+  <h2><%= @series.title %></h2>
+  <ul>
+    <% @series.articles.each_with_index do |article, index| %>
+      <li class="series-chapter">
+        <%= link_to series_chapter_title(article, index), article %>
+        <% if user_signed_in? %>
+          <span>
+            <%= link_to 'move up', series_move_up_path(@series.url, article.id) if index > 0 %>
+            <%= link_to 'move down', series_move_down_path(@series.url, article.id) if index < @series.articles.length - 1 %>
+            <%= link_to 'remove', series_remove_path(@series.url, article.id) %>
+          </span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
+

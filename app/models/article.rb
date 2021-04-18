@@ -13,6 +13,8 @@ class Article < ApplicationRecord
   has_many :kudos_giver_users, through: :kudos, source: :user
   has_many :bookmarks, as: :bookmarkable, dependent: :destroy
   has_many :bookmarked_users, through: :bookmarks, source: :user
+  has_many :series_articles
+  has_many :series, through: :series_articles
 
   has_many :article_taggings, dependent: :destroy
   has_many :article_tags, through: :article_taggings

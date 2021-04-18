@@ -1,5 +1,8 @@
 <div class="datetime">
 	<ul class="list-actions right-actions">
+                <% if user_signed_in? %>
+                  <li class="add-to-series" data-article-id="<%= article.id %>"></li>
+                <% end %>
 		<% if article.pages_count > 1 %>
 			<li>
 				Go to page: <%= form_tag request.path, method: :get, class: "page-navigation-select" do %>

@@ -10,4 +10,4 @@
   }
 </script>
 
-<a href="#" on:click|preventDefault={openCreateSeriesWindow}>Create Series</a>
+<a href="/createSeries" on:click|preventDefault={openCreateSeriesWindow}>Create series</a>

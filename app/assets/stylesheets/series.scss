@@ -1,0 +1,11 @@
+.chapter-list {
+        border: gray;
+        background: rgb(245, 245, 255);
+        padding: 1em;
+        border-radius: 0.7em;
+}
+
+.series-chapter {
+        display: flex;
+        justify-content: space-between;
+}
