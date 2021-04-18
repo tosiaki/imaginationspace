@@ -1,6 +1,6 @@
 class PagesController < ApplicationController
 
-  include Concerns::GuestFunctions
+  include GuestFunctions
 
   def home
     if false && user_signed_in?

@@ -1,4 +1,4 @@
-module Concerns::WorksFunctionality
+module WorksFunctionality
   extend ActiveSupport::Concern
 
   def show_work(class_var)

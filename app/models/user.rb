@@ -43,9 +43,11 @@ class User < ApplicationRecord
   has_many :user_languages
   has_many :language_tags, through: :user_languages, source: :article_tag
 
-	def after_confirmation
-		update_attribute(:guest, false)
-	end
+  has_many :series
+
+  def after_confirmation
+    update_attribute(:guest, false)
+  end
 
   def valid_password?(password)
     if legacy_password == 1

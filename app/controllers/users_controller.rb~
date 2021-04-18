@@ -2,14 +2,20 @@ class UsersController < ApplicationController
   before_action :get_user, only: [:show, :old_show, :profile, :edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password, :drawings, :comics, :bookmarked_drawings, :bookmarked_comics, :bookmarks, :subscribe, :unsubscribe, :subscriptions, :subscribers]
   before_action :is_current_user, only: [:edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password]
 
-  include Concerns::TagsFunctionality
-  include Concerns::GuestFunctions
+  include TagsFunctionality
+  include GuestFunctions
 
   def show
     @new_article = Article.new(guest_params)
     
     get_associated_tags
-    @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order], page_number: params[:page].present? ? params[:page].to_i : 1)
+    @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_maps: !user_signed_in? || current_user.filter_content?)
+
+    ActiveRecord::Associations::Preloader.new.preload(@statuses,
+      [:post, :user,
+        article: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags],
+        signal_boost: [origin: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags]],
+      ])
   end
 
   def old_show
@@ -34,7 +40,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update_attributes(edit_user_params)
+    if @user.update(edit_user_params)
       flash[:success] = "Profile updated!"
       redirect_to @user
     else
@@ -46,6 +52,10 @@ class UsersController < ApplicationController
   end
 
   def update_preferences
+    if params[:user][:languages]
+      @user.set_languages(params[:user][:languages])
+    end
+
     if @user.update_attributes(preferences_params)
       flash[:success] = "Preferences updated!"
       redirect_to preferences_user_path(@user)
@@ -187,7 +197,7 @@ class UsersController < ApplicationController
     end
 
     def preferences_params
-      params.require(:user).permit(:show_adult,:site_updates)
+      params.require(:user).permit(:show_adult, :notify_follow, :notify_kudos, :notify_bookmark, :notify_reply, :notify_signal_boost, :site_updates)
     end
 
     def change_icon_params

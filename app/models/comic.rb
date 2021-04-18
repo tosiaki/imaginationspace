@@ -1,6 +1,6 @@
 class Comic < ApplicationRecord
-  include Concerns::Validatable
-  include Concerns::WorkFunctions
+  include Validatable
+  include WorkFunctions
 
   enum rating: { not_rated: 0, general_audiences: 1, teen_and_up_audiences: 2, mature: 3, explicit: 4 }
   enum front_page_rating: { front_not_rated: 0, front_general_audiences: 1, front_teen_and_up_audiences: 2, front_mature: 3, front_explicit: 4 }
@@ -43,7 +43,7 @@ class Comic < ApplicationRecord
   def replace_page(drawing:, page_number: next_page)
     page = comic_pages.find_by( page: page_number )
     if page
-      page.update_attributes(drawing: drawing)
+      page.update(drawing: drawing)
     else
       add_page(drawing: drawing, page_number: page_number)
     end

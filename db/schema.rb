@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_11_193752) do
+ActiveRecord::Schema.define(version: 2021_04_17_182914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -280,6 +280,24 @@ ActiveRecord::Schema.define(version: 2020_02_11_193752) do
     t.index ["product_id"], name: "index_preparations_on_product_id"
   end
 
+  create_table "series", force: :cascade do |t|
+    t.string "title"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "url"
+    t.index ["user_id"], name: "index_series_on_user_id"
+  end
+
+  create_table "series_articles", force: :cascade do |t|
+    t.bigint "series_id"
+    t.bigint "article_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_series_articles_on_article_id"
+    t.index ["series_id"], name: "index_series_articles_on_series_id"
+  end
+
   create_table "shrine_pictures", force: :cascade do |t|
     t.text "picture_data"
     t.string "page_type"
@@ -399,6 +417,9 @@ ActiveRecord::Schema.define(version: 2020_02_11_193752) do
   add_foreign_key "legacy_users", "users"
   add_foreign_key "pages", "articles"
   add_foreign_key "preparations", "items", column: "product_id"
+  add_foreign_key "series", "users"
+  add_foreign_key "series_articles", "articles"
+  add_foreign_key "series_articles", "series"
   add_foreign_key "signal_boosts", "articles", column: "origin_id"
   add_foreign_key "statuses", "users"
   add_foreign_key "user_languages", "article_tags"

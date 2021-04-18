@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get 'pages/home'
   root 'pages#home'
   get 'old_home', to: 'pages#old_home'
   get 'about', to: 'pages#about'
@@ -102,6 +101,8 @@ Rails.application.routes.draw do
   resources :works, only: :index
   get 'works/search', to: 'works#search', as: :works_search
   get 'works/new_search', to: 'works#parse_search', as: :parse_search
+
+  resources :series, only: [:create, :show, :update, :destroy]
 
   get 'comics/:id/new_page', to: 'comic_pages#new', as: :new_comic_page
   get 'comics/:id/new_page/:page', to: 'comic_pages#new', as: :new_comic_page_at

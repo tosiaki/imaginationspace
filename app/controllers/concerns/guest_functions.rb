@@ -1,4 +1,4 @@
-module Concerns::GuestFunctions
+module GuestFunctions
   extend ActiveSupport::Concern
 
   def guest_params

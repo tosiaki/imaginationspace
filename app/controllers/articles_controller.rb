@@ -2,9 +2,9 @@ class ArticlesController < ApplicationController
   before_action :check_user, only: [:edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create]
 
-  include Concerns::TagsFunctionality
-  include Concerns::PictureFunctions
-  include Concerns::GuestFunctions
+  include TagsFunctionality
+  include PictureFunctions
+  include GuestFunctions
 
   impressionist actions: [:show]
 

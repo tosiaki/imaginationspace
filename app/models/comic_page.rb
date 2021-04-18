@@ -1,5 +1,5 @@
 class ComicPage < ApplicationRecord
-  include Concerns::DrawingImage
+  include DrawingImage
   belongs_to :comic, inverse_of: :comic_pages
   default_scope -> { order(page: :asc) }
   validates :comic, presence: true

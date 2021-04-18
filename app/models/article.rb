@@ -114,7 +114,7 @@ class Article < ApplicationRecord
   def update_page(content:, page_number:, title: "")
     touch
     page = pages.find_by( page_number: page_number )
-    page.update_attributes(content: content, title: title)
+    page.update(content: content, title: title)
   end
 
   def remove_page(page_number)

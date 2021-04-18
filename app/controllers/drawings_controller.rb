@@ -1,5 +1,5 @@
 class DrawingsController < ApplicationController
-  include Concerns::WorksFunctionality
+  include WorksFunctionality
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update, :destroy]
 

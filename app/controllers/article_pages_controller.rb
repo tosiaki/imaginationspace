@@ -2,7 +2,7 @@ class ArticlePagesController < ApplicationController
   before_action :check_user
   before_action :check_pages, only: :destroy
 
-  include Concerns::PictureFunctions
+  include PictureFunctions
 
   def new
     session[:editing] = true

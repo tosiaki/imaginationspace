@@ -1,4 +1,4 @@
-module Concerns::Validatable
+module Validatable
   extend ActiveSupport::Concern
 
   def has_fandoms

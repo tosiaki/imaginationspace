@@ -1,4 +1,4 @@
-module Concerns::TagsFunctionality
+module TagsFunctionality
   extend ActiveSupport::Concern
 
   def get_associated_tags

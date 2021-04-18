@@ -13,7 +13,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create
 		if @guest_user
 			self.resource = @guest_user
-			if resource.update_attributes(user_params)
+			if resource.update(user_params)
 				Devise::Mailer.confirmation_instructions(resource).deliver_later
 				set_flash_message! :notice,
 					:"signed_up_but_#{resource.inactive_message}"

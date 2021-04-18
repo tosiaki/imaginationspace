@@ -1,4 +1,4 @@
-module Concerns::DrawingImage
+module DrawingImage
   extend ActiveSupport::Concern
 
   included do

@@ -1,4 +1,4 @@
-module Concerns::PictureFunctions
+module PictureFunctions
   extend ActiveSupport::Concern
 
   def add_picture_object(picture, page, inline_picture = false)

@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
+ruby '2.7.2'
 
-gem 'rails'
+gem 'rails', '~> 6.1'
 gem 'puma'
 gem 'pg'
 gem 'sass-rails'
@@ -27,6 +28,8 @@ gem 'sucker_punch'
 gem 'content_disposition'
 gem 'redis'
 gem 'redis-namespace'
+gem 'webpacker'
+gem 'bootsnap'
 
 # Not being used on currently active features
 gem 'acts-as-taggable-on', '~> 5.0'
@@ -48,7 +51,7 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.2.1'
   gem 'database_cleaner', '~> 1.7.0'
-  gem 'cucumber-rails', '~> 1.6.0', require: false
+  gem 'cucumber-rails', '~> 2.3.0', require: false
   gem 'factory_bot_rails', "~> 4.0"
   gem 'selenium-webdriver', "~> 3.142.7"
   gem 'geckodriver-helper'

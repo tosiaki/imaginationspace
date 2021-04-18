@@ -2,8 +2,8 @@ class UsersController < ApplicationController
   before_action :get_user, only: [:show, :old_show, :profile, :edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password, :drawings, :comics, :bookmarked_drawings, :bookmarked_comics, :bookmarks, :subscribe, :unsubscribe, :subscriptions, :subscribers]
   before_action :is_current_user, only: [:edit, :update, :preferences, :update_preferences, :change_icon, :update_icon, :change_password, :update_password]
 
-  include Concerns::TagsFunctionality
-  include Concerns::GuestFunctions
+  include TagsFunctionality
+  include GuestFunctions
 
   def show
     @new_article = Article.new(guest_params)
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    if @user.update_attributes(edit_user_params)
+    if @user.update(edit_user_params)
       flash[:success] = "Profile updated!"
       redirect_to @user
     else
@@ -56,7 +56,7 @@ class UsersController < ApplicationController
       @user.set_languages(params[:user][:languages])
     end
 
-    if @user.update_attributes(preferences_params)
+    if @user.update(preferences_params)
       flash[:success] = "Preferences updated!"
       redirect_to preferences_user_path(@user)
     else

@@ -266,7 +266,7 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
-  require "#{Rails.root}/app/lib/customfailure.rb"
+  require "#{Rails.root}/app/lib/custom_failure.rb"
   config.warden do |manager|
     manager.failure_app = CustomFailure
   end

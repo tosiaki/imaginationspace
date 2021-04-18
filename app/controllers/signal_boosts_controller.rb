@@ -2,7 +2,7 @@ class SignalBoostsController < ApplicationController
   before_action :get_article, only: [:new, :create]
   before_action :get_signal_boost, only: [:edit, :update, :destroy]
 
-  include Concerns::PictureFunctions
+  include PictureFunctions
 
   def new
     session[:return_to] ||= request.referer
