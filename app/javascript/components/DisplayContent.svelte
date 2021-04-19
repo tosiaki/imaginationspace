@@ -48,7 +48,7 @@
   };
 </script>
 
-<style>
+<style lang="scss">
   .top-options {
     top: 0;
     left: 0;
@@ -79,10 +79,9 @@
     display: flex;
     justify-content: center;
 
-  }
-
-  .display-content-area-container img {
-    max-height: 100vh;
+    :global(img) {
+      max-height: 100vh;
+    }
   }
 
   .display-content-area-box {
