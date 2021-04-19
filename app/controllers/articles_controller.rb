@@ -76,6 +76,9 @@ class ArticlesController < ApplicationController
 
 
   def show(submitted_new_article=false)
+    if request.content_type == 'application/json'
+      return render json: Article.find(params[:id]).pages
+    end
     @article = Article.find(params[:id])
     @page = @article.pages.find_by(page_number: current_page) || Page.fix_page(@article, current_page)
 

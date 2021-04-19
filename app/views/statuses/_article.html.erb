@@ -1,80 +1,43 @@
-<% if article.user %>
-	<% if article.attribution_tags.present? || @user!=article.user %>
-		<h4 class="heading byline status-byline">
-			<% unless @user==article.user || article.anonymous %>
-				<%= link_to render('shared/user_icon_status', user: article.user), article.user, class: 'image-link' %>
-				<span class="tag-wrapper"><%= link_to article.user.name, article.user, class: 'user-name-listing user-profile-link' %></span>
-				<% if user_signed_in? && !current_user.is_subscribed_to?(article.user) %>
-					<span class="actions status-follow-action" data-user-id="<%= article.user.id %>"><%= link_to "Follow", subscribe_to_user_path(article.user), method: :post, class: "status-listing-follow-button", data: { 'link-user-id': article.user.id } %></span>
-				<% end %>
-			<% end %>
-			<% if article.attribution_tags.any? %>
-				<% article.attribution_tags.each do |tag| %>
-					<span class="tag-wrapper"><%= link_to tag.name, articles_path(tags: tag.name), class: 'user-name-listing' %></span>
-				<% end %>
-			<% end %>
-		</h4>
-	<% end %>
-<% else %>
-	<h4 class="heading byline status-byline">
-		<span class='user-name-listing tag-wrapper'><%= article.authored_by %></span>
-		<% if article.attribution_tags.any? %>
-			<% article.attribution_tags.each do |tag| %>
-				<span class="tag-wrapper"><%= link_to tag.name, articles_path(tags: tag.name), class: 'user-name-listing' %></span>
-			<% end %>
-		<% end %>
-	</h4>
-<% end %>
-<% if article.title.present? or article.fandom_tags.any? %>
-	<div class='article-listing-heading'>
-		<% if article.title.present? %>
-			<h3><%= link_to article.title, thread_path(article.thread, anchor: article.id), class: "title-link" %></h3>
-		<% end %>
-		<% fandoms = article.fandom_tags %>
-		<% if fandoms.any? && !params[:board] && !params[:thread_id] %>
-			<ul class="outer-fandom-list">
-				<% fandoms.each do |fandom| %>
-					<%= link_to "/#{fandom.name}/", board_path(fandom.name), class: "tag" %>
-				<% end %>
-			</ul>
-		<% end %>
-	</div>
-<% end %>
+<div class="status-content" data-article-id="<%= article.id %>" data-pages="<%= article.pages.count %>">
+  <% if article.pages.first.display_image %>
+    <%= image_tag article.pages.first.display_image %>
+  <% end %>
 
-<% if article.description.present? %>
-	<span class="article-description"><%= article.description %></span>
-<% end %>
+  <div class="status-details">
+    <h3><%= link_to article.title.present? ? article.title : 'Untitled', thread_path(article.thread, anchor: article.id) %></h3>
 
-<% if article.series.present? %>
-  Part of series: <ul class="article-series-list">
-    <% article.series.each do |series| %>
-      <%= link_to series.title, series_path(series.url) %>
+    <% if article.pages.count > 1 %>
+      <%= article.pages.count %> pages
     <% end %>
-  </ul>
-<% end %>
 
-<div class="article-content-container shortened-article article-page-content">
-	<%= link_to "", "", class: "arrow non-arrow-left page-navigator previous-page-link" %>
-	<div class="article-wrapper">
-		<%= render "articles/content", content: article.pages.first.content %>
-	</div>
-	<%= link_to "", (1 < article.pages_count ? show_page_article_path(article, 2) : ""), class: "arrow " + (1 == article.pages_count ? "non-" : "") + "arrow-right page-navigator next-page-link" %>
-</div>
+    <% relationships = article.relationship_tags.to_a %>
+    <% characters = article.character_tags.to_a %>
+    <% other_tags = article.other_tags.to_a %>
+    <% fandoms = article.fandom_tags %>
 
-<% if article.pages_count > 1 %>
-	<h3 class="page-indicator" %><%= render 'articles/page_indicator', article: article, page: article.pages.first %></h3>
-<% end %>
-
-<%= render 'articles/tags_listing', article: article %>
-
-<% if article.pages_count > 1 %>
-	<%= render 'articles/page_options', article: article, current_page: 1 %>
-<% end %>
-
-<div class="preloading previous-page-content">
-</div>
-<div class="preloading next-page-content">
-	<% if 1 < article.pages_count %>
-		<%= render 'articles/content', content: article.pages.first.next_page.content %>
-	<% end %>
+    <% if relationships.any? || characters.any? || other_tags.any? || fandoms.any? %>
+      <div class="additional-tag-list">
+        <% if fandoms.any? %>
+          <% fandoms.each do |tag| %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag" %>
+          <% end %>
+        <% end %>
+        <% if relationships.any? %>
+          <% relationships.each do |tag| %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "summary-relationship tag" %>
+          <% end %>
+        <% end %>
+        <% if characters.any? %>
+          <% characters.each do |tag| %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag" %>
+          <% end %>
+        <% end %>
+        <% if other_tags.any? %>
+          <% other_tags.each do |tag| %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag" %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>
