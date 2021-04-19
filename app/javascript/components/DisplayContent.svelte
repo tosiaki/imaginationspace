@@ -86,6 +86,7 @@
 
   .display-content-area-box {
     background-color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
   }
 </style>
 
