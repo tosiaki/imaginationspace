@@ -172,7 +172,7 @@ class ArticlesController < ApplicationController
       @boards = @thread.fandom_tags
       @statuses = Status.select_by(thread: params[:thread_id], order: params[:order], filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     elsif params[:board]
-      @statuses = Status.select_by(board: params[:board], order: params[:order] || 'reply_time', filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
+      @statuses = Status.select_by(board: params[:board], order: params[:order] || 'reply_time', page_number: params[:page].present? ? params[:page].to_i : 1, filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     else
       @statuses = Status.select_by(tags: @tag_list, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     end
