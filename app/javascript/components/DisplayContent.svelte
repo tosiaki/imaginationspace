@@ -54,7 +54,7 @@
     left: 0;
     position: fixed;
     width: 100%;
-    z-index: 2;
+    z-index: 3;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 0 1em;
   }
@@ -68,7 +68,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
