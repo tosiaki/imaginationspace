@@ -1,6 +1,6 @@
 <div class="status-content" data-article-id="<%= article.id %>" data-pages="<%= article.pages.count %>">
   <% if article.pages.first.display_image %>
-    <%= image_tag article.pages.first.display_image %>
+    <%= image_tag article.pages.first.display_image, class: 'front-picture' %>
   <% end %>
 
   <div class="status-details">

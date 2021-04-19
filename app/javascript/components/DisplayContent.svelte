@@ -78,6 +78,11 @@
   .display-content-area-container {
     display: flex;
     justify-content: center;
+
+  }
+
+  .display-content-area-container img {
+    max-height: 100vh;
   }
 
   .display-content-area-box {
