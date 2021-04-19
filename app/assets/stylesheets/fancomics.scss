@@ -191,6 +191,10 @@
 
 /* universal */
 
+html {
+        min-height: 100%;
+}
+
 body {
 	font-family: 'GenEi Antique', 'GenEi AntiqueTTF','Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
 	line-height: 1.286;

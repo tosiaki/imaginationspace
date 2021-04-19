@@ -1,6 +1,6 @@
 
 .background-bubbles {
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
@@ -100,6 +100,6 @@
                 transform: translateY(0);
         }
         100% {
-                transform: translateY(-90vh) rotate(600deg);
+                transform: translateY(-120vh) rotate(600deg);
         }
 }
