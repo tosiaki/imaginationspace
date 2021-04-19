@@ -195,7 +195,7 @@ body {
 	font-family: 'GenEi Antique', 'GenEi AntiqueTTF','Gotham Medium', 'Helvetica', 'Computer Modern', 'Lucida Grande', 'Lucida Sans Unicode', 'GNU Unifont', Verdana, Helvetica, sans-serif;
 	line-height: 1.286;
 	font-size: 16px;
-	background-color: #e4e7ee;
+	background: linear-gradient(to bottom right, #80d3c2 0%, #93f9d6);
 }
 
 p {
@@ -259,6 +259,7 @@ div#main {
 	margin: auto;
 	position: relative;
 	min-height: 450px;
+        overflow: hidden;
 }
 
 label {

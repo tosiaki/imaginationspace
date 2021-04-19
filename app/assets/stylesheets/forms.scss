@@ -1,0 +1,18 @@
+.breezy-form {
+        background: rgba(255, 255, 255, 0.1);
+        border: rgba(255, 255, 255, 0.3);
+        border-radius: 3em;
+        padding: 2em;
+        max-width: 600px;
+        margin: 0 auto;
+        input:not([type='checkbox']) {
+                width: 100%;
+                outline: 0;
+                appearance: none;
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                background-color: rgba(255, 255, 255, 0.2);
+                border-radius: 0.3em;
+                padding: 1em 1.2em;
+                text-align: center;
+        }
+}

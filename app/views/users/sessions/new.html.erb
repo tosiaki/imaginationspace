@@ -5,31 +5,25 @@
 <% if alert %>
   <p class="notice"><%= alert %></p>
 <% end %>
-<div class="submission-form" id="signin-form">
+<div class="breezy-form" id="signin-form">
 
   <%= form_for(resource, as: resource_name, url: login_path) do |f| %>
-    <h2 class="heading">Log in</h2>
+    <h2 class="heading">Welcome back</h2>
 
-    <div class="form-input-box">
+    <div class="form-inputs-contianer">
       <ul class="form-inputs">
         <li class="form-element">
           <div class="field">
-            <div class="form-label">
-              <%= f.label :email %>
-            </div>
             <div class="form-input">
-              <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+              <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'Email' %>
             </div>
           </div>
         </li>
 
         <li class="form-element">
           <div class="field">
-            <div class="form-label">
-              <%= f.label :password %>
-            </div>
             <div class="form-input">
-              <%= f.password_field :password, autocomplete: "off" %>
+              <%= f.password_field :password, autocomplete: "off", placeholder: 'Password' %>
             </div>
           </div>
         </li>
