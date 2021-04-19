@@ -12,6 +12,8 @@
       headers: { 'Content-Type': 'application/json' }
     })).json())();
 
+  $: $displayContentStore && (currentPage = 1);
+
   const close = () => $displayContentStore = {};
   const setUserActive = () => {
     userActive = true;
