@@ -3,9 +3,16 @@
 
   let currentPage = 1;
   let userActive = false;
+  let displayMode = 'single';
+
   let setUserInactive;
 
   let contentArea;
+
+  const displayModeLabels = {
+    single: 'Single',
+    double: 'Double'
+  };
 
   $: contentPromise = (async () => 
     $displayContentStore.article && await (await fetch(`/articles/${$displayContentStore.article}`, {
@@ -14,6 +21,36 @@
 
   $: $displayContentStore && (currentPage = 1);
 
+  const goBack = () => {
+    if (displayMode === 'single') {
+      if (currentPage > 1) {
+        currentPage--;
+      } else {
+        setUserActive();
+      }
+    } else {
+      if (currentPage > 1) {
+        currentPage = Math.max(1, currentPage-2);
+      } else {
+        setUserActive();
+      }
+    }
+  };
+  const goForward = () => {
+    if (displayMode === 'single') {
+      if (currentPage < $displayContentStore.pages) {
+        currentPage++;
+      } else {
+        setUserActive();
+      }
+    } else {
+      if (currentPage  + 1 < $displayContentStore.pages) {
+        currentPage = Math.min($displayContentStore.pages - 1, currentPage+2);
+      } else {
+        setUserActive();
+      }
+    }
+  };
   const close = () => $displayContentStore = {};
   const setUserActive = () => {
     userActive = true;
@@ -24,28 +61,46 @@
   };
   const handleKeydown = ({ key }) => {
     if (key === 'ArrowLeft' && currentPage > 1) {
-      currentPage--;
+      goBack();
     } else if (key === 'ArrowRight' && currentPage < $displayContentStore.pages) {
-      currentPage++;
+      goForward();
     } else if (key === 'Escape') {
       close();
     }
   };
   const handleClick = ({ offsetX }) => {
     if (offsetX > contentArea.offsetWidth/2) {
-      if (currentPage < $displayContentStore.pages) {
-        currentPage++;
-      } else {
-        setUserActive();
-      }
+      goForward();
     } else {
-      if (currentPage > 1) {
-        currentPage--;
-      } else {
-        setUserActive();
-      }
+      goBack();
     }
   };
+  const toggleDisplay = () => {
+    if (displayMode === 'single') {
+      if (currentPage === Number($displayContentStore.pages)) {
+        currentPage--;
+      }
+      displayMode = 'double';
+    } else {
+      displayMode = 'single';
+    }
+  }
+
+  const showNextPage = (currentPage, displayMode) => {
+    if (displayMode === 'single') {
+      if (currentPage < $displayContentStore.pages) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (currentPage + 1 < $displayContentStore.pages) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -59,7 +114,21 @@
     padding: 0 1em;
   }
 
-  .top-options-list {
+  .bottom-options {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 0 1em;
+  }
+
+  .toggle-display {
+    cursor: pointer;
+  }
+
+  .options-list {
     display: flex;
     justify-content: space-between;
   }
@@ -87,6 +156,7 @@
   .display-content-area-box {
     background-color: rgba(255, 255, 255, 0.7);
     pointer-events: none;
+    display: flex;
   }
 </style>
 
@@ -95,10 +165,17 @@
 {#if $displayContentStore.article}
   {#if userActive}
     <div class="top-options">
-      <ul class="top-options-list">
+      <ul class="options-list">
         <li><a href="/threads/{$displayContentStore.article}">Link</a></li>
-        <li>{#if currentPage > 1}<a href="/back" on:click|preventDefault={() => currentPage--}>←</a> {/if}Page {currentPage} of {$displayContentStore.pages}{#if currentPage < $displayContentStore.pages} <a href="/forward" on:click|preventDefault={() => currentPage++}>→</a>{/if}</li>
+        <li>{#if currentPage > 1}<a href="/back" on:click|preventDefault={goBack}>←</a> {/if}Page {currentPage} of {$displayContentStore.pages}{#if showNextPage(currentPage, displayMode)} <a href="/forward" on:click|preventDefault={goForward}>→</a>{/if}</li>
         <li><a href="/close" on:click|preventDefault={close}>Close</a></li>
+      </ul>
+    </div>
+    <div class="bottom-options">
+      <ul class="options-list">
+        <li></li>
+        <li class="toggle-display" on:click={toggleDisplay}>Display: {displayModeLabels[displayMode]}</li>
+        <li></li>
       </ul>
     </div>
   {/if}
@@ -109,7 +186,14 @@
     {:then contentData}
       <div class="display-content-area-container">
         <div class="display-content-area-box">
-          {@html contentData.find(page => page.page_number === currentPage).content}
+          <div class="display-content-area-page">
+            {@html contentData.find(page => page.page_number === currentPage).content}
+          </div>
+          {#if displayMode === 'double' && currentPage + 1 <= $displayContentStore.pages}
+            <div class="display-content-area-page">
+              {@html contentData.find(page => page.page_number === currentPage + 1).content}
+            </div>
+          {/if}
         </div>
       </div>
     {:catch error}
