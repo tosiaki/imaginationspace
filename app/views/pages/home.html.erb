@@ -42,6 +42,7 @@
 		<ol class="status-list">
 			<%= render @all_statuses %>
 		</ol>
+                <%= will_paginate @all_statuses, class: "pagination actions", param_name: :page %>
 	</div>
 <% end %>
 
