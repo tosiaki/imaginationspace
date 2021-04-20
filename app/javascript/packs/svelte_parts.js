@@ -7,7 +7,7 @@ import { displayContentStore } from '../stores';
 
 document.addEventListener('turbolinks:load', event => {
   const createSeriesButton = document.getElementById('create-series-button');
-  createSeriesButton.innerHTML = '';
+  createSeriesButton && (createSeriesButton.innerHTML = '');
   new CreateSeriesButton({
     target: createSeriesButton
   });
