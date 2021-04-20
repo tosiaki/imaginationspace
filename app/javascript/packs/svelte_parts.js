@@ -6,6 +6,7 @@ import DisplayContent from '../components/DisplayContent.svelte';
 import { displayContentStore } from '../stores';
 
 document.addEventListener('turbolinks:load', event => {
+  displayContentStore.set({});
   const createSeriesButton = document.getElementById('create-series-button');
   createSeriesButton && (createSeriesButton.innerHTML = '');
   new CreateSeriesButton({
@@ -45,7 +46,9 @@ document.addEventListener('turbolinks:load', event => {
       event.preventDefault();
       displayContentStore.set({
         article: statusArea.dataset.articleId,
-        pages: statusArea.dataset.pages
+        title: statusArea.getElementsByTagName('h3')[0].getElementsByTagName('a')[0].innerText,
+        pages: statusArea.dataset.pages,
+        tags: Array.prototype.map.call(statusArea.getElementsByClassName('tag'), element => element.innerText)
       });
     });
   }

@@ -77,9 +77,6 @@
   };
   const toggleDisplay = () => {
     if (displayMode === 'single') {
-      if (currentPage === Number($displayContentStore.pages)) {
-        currentPage--;
-      }
       displayMode = 'double';
     } else {
       displayMode = 'single';
@@ -158,6 +155,24 @@
     pointer-events: none;
     display: flex;
   }
+
+  .tags-area {
+    display: inline-block;
+    margin-left: 0.4em;
+  }
+
+  .tag-list {
+    display: inline;
+
+    .tag-list-item {
+      display: inline-block;
+      margin: 0;
+
+      :not(first-child) {
+        margin-left: 0.4em;
+      }
+    }
+  }
 </style>
 
 <svelte:window on:mousemove={setUserActive} on:keydown={handleKeydown} />
@@ -166,16 +181,16 @@
   {#if userActive}
     <div class="top-options">
       <ul class="options-list">
-        <li><a href="/threads/{$displayContentStore.article}">Link</a></li>
-        <li>{#if currentPage > 1}<a href="/back" on:click|preventDefault={goBack}>←</a> {/if}Page {currentPage} of {$displayContentStore.pages}{#if showNextPage(currentPage, displayMode)} <a href="/forward" on:click|preventDefault={goForward}>→</a>{/if}</li>
+        <li>{#if $displayContentStore.tags.length}<div class="tags-area">Tags: <ul class="tag-list">{#each $displayContentStore.tags as tag}<li class="tag-list-item"><a href="/articles?tags={tag}" class="tag">{tag}</a></li>{/each}</ul></div>{/if}</li>
+        <li><a href="/threads/{$displayContentStore.article}">{$displayContentStore.title}</a></li>
         <li><a href="/close" on:click|preventDefault={close}>Close</a></li>
       </ul>
     </div>
     <div class="bottom-options">
       <ul class="options-list">
         <li></li>
+        <li>{#if currentPage > 1}<a href="/back" on:click|preventDefault={goBack}>←</a> {/if}Page {currentPage} of {$displayContentStore.pages}{#if showNextPage(currentPage, displayMode)} <a href="/forward" on:click|preventDefault={goForward}>→</a>{/if}</li>
         <li class="toggle-display" on:click={toggleDisplay}>Display: {displayModeLabels[displayMode]}</li>
-        <li></li>
       </ul>
     </div>
   {/if}
