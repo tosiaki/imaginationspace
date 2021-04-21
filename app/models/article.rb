@@ -23,6 +23,7 @@ class Article < ApplicationRecord
   has_many :character_tags, -> { where(context: 'character') }, through: :article_taggings, source: 'article_tag'
   has_many :relationship_tags, -> { where(context: 'relationship') }, through: :article_taggings, source: 'article_tag'
   has_many :other_tags, -> { where(context: 'other') }, through: :article_taggings, source: 'article_tag'
+  has_many :language_tags, -> { where(context: 'language') }, through: :article_taggings, source: 'article_tag'
   has_many :attribution_tags, -> { where(context: 'attribution') }, through: :article_taggings, source: 'article_tag'
 
   validates :pages, presence: true

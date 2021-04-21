@@ -2,10 +2,12 @@
   import {modalWindowStore} from '../stores';
   import CreateSeries from './CreateSeries.svelte';
   import AddToSeries from './AddToSeries.svelte';
+  import EditTags from './EditTags.svelte';
 
   const modalWindows = {
     CreateSeries,
-    AddToSeries
+    AddToSeries,
+    EditTags
   };
   const close = modalWindow => modalWindowStore.update(modalWindows => {
     modalWindows.splice(modalWindows.indexOf(modalWindow), 1);
@@ -16,7 +18,7 @@
 <style>
   .modal-area {
     position: fixed;
-    z-index: 1;
+    z-index: 3;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);

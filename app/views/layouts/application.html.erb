@@ -18,7 +18,7 @@
     <%= javascript_pack_tag 'svelte_parts' %>
   </head>
 
-  <body>
+  <body data-tag-editor="<%= current_user.tag_editor? %>">
     <div id="modal-windows"></div>
     <div id="display-content"></div>
     <div id="flash-messages"></div>

@@ -5,6 +5,12 @@ import FlashMessages from '../components/FlashMessages.svelte';
 import DisplayContent from '../components/DisplayContent.svelte';
 import { displayContentStore } from '../stores';
 
+const tagsOfCategory = (element, category) => 
+  Array.prototype.map.call(
+    element.querySelectorAll(`.tag[data-category='${category}']`),
+    tagElement => tagElement.innerText
+  );
+
 document.addEventListener('turbolinks:load', event => {
   displayContentStore.set({});
   const createSeriesButton = document.getElementById('create-series-button');
@@ -38,7 +44,10 @@ document.addEventListener('turbolinks:load', event => {
   const displayContent = document.getElementById('display-content');
   displayContent.innerHTML = '';
   new DisplayContent({
-    target: displayContent
+    target: displayContent,
+    props: {
+      tagEditor: JSON.parse(document.body.dataset.tagEditor)
+    }
   });
 
   for (let statusArea of document.getElementsByClassName('status-content')) {
@@ -48,7 +57,16 @@ document.addEventListener('turbolinks:load', event => {
         article: statusArea.dataset.articleId,
         title: statusArea.getElementsByTagName('h3')[0].getElementsByTagName('a')[0].innerText,
         pages: statusArea.dataset.pages,
-        tags: Array.prototype.map.call(statusArea.getElementsByClassName('tag'), element => element.innerText)
+        tags: Object.assign({}, ...[
+          'derivative',
+          'relationship',
+          'character',
+          'other',
+          'language',
+          'author'
+        ].map(category => ({
+          [category]: tagsOfCategory(statusArea, category)
+        })))
       });
     });
   }

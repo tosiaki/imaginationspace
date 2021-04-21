@@ -1,6 +1,8 @@
 class ArticlesController < ApplicationController
+  protect_from_forgery except: [:edit_tags]
   before_action :check_user, only: [:edit, :update, :destroy]
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :check_tag_editor, only: [:edit_tags]
+  before_action :authenticate_user!, only: [:new, :create, :edit_tags]
 
   include TagsFunctionality
   include PictureFunctions
@@ -188,6 +190,22 @@ class ArticlesController < ApplicationController
     @new_article = Article.new(guest_params)
   end
 
+  def edit_tags
+    article = Article.find(params[:id])
+    [
+      { in: :derivative, context: 'fandom' },
+      { in: :relationship, context: 'relationship' },
+      { in: :character, context: 'character' },
+      { in: :other, context: 'other' },
+      { in: :language, context: 'language' },
+      { in: :author, context: 'attribution' }
+    ].each do |association|
+      article.set_tags(params[association[:in]].join(','), association[:context])
+    end
+
+    render json: 'Done.'
+  end
+
   private
     def check_user
       if user_signed_in?
@@ -196,6 +214,10 @@ class ArticlesController < ApplicationController
         @article = Article.joins(:status).where(statuses: {user_id: nil}).find(params[:id])
       end
       redirect_to Article.find(params[:id]) unless @article
+    end
+
+    def check_tag_editor
+      redirect_to Article.find(params[:id]) unless current_user.tag_editor?
     end
 
     def current_page

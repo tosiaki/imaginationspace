@@ -14,27 +14,39 @@
     <% characters = article.character_tags.to_a %>
     <% other_tags = article.other_tags.to_a %>
     <% fandoms = article.fandom_tags %>
+    <% languages = article.language_tags %>
+    <% attributions = article.attribution_tags %>
 
     <% if relationships.any? || characters.any? || other_tags.any? || fandoms.any? %>
       <div class="additional-tag-list">
         <% if fandoms.any? %>
           <% fandoms.each do |tag| %>
-            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag" %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag", data: { category: 'derivative' } %>
           <% end %>
         <% end %>
         <% if relationships.any? %>
           <% relationships.each do |tag| %>
-            <%= link_to tag.name, articles_path(tags: tag.name), class: "summary-relationship tag" %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "summary-relationship tag", data: { category: 'relationship' } %>
           <% end %>
         <% end %>
         <% if characters.any? %>
           <% characters.each do |tag| %>
-            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag" %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag", data: { category: 'character' } %>
           <% end %>
         <% end %>
         <% if other_tags.any? %>
           <% other_tags.each do |tag| %>
-            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag" %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag", data: { category: 'other' } %>
+          <% end %>
+        <% end %>
+        <% if languages.any? %>
+          <% languages.each do |tag| %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag", data: { category: 'language' } %>
+          <% end %>
+        <% end %>
+        <% if attributions.any? %>
+          <% attributions.each do |tag| %>
+            <%= link_to tag.name, articles_path(tags: tag.name), class: "tag", data: { category: 'author' } %>
           <% end %>
         <% end %>
       </div>

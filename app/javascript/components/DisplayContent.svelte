@@ -1,5 +1,7 @@
 <script>
-  import { displayContentStore } from '../stores';
+  import { displayContentStore, modalWindowStore, tagEditStore } from '../stores';
+
+  export let tagEditor = false;
 
   let currentPage = 1;
   let userActive = false;
@@ -20,6 +22,14 @@
     })).json())();
 
   $: $displayContentStore && (currentPage = 1);
+  $: allTags = $displayContentStore.tags && [
+    'derivative',
+    'relationship',
+    'character',
+    'other',
+    'language',
+    'author'
+  ].map(context => $displayContentStore.tags[context]).flat();
 
   const goBack = () => {
     if (displayMode === 'single') {
@@ -98,6 +108,19 @@
       }
     }
   }
+
+  const openTagEditor = () => {
+    tagEditStore.set({
+      tags: $displayContentStore.tags,
+      articleId: $displayContentStore.article
+    });
+    modalWindowStore.update(modalWindows => {
+      modalWindows.push(
+        { title: 'Edit tags', componentName: 'EditTags' }
+      );
+      return modalWindows;
+    });
+  };
 </script>
 
 <style lang="scss">
@@ -168,7 +191,7 @@
       display: inline-block;
       margin: 0;
 
-      :not(first-child) {
+      &:not(:first-child) {
         margin-left: 0.4em;
       }
     }
@@ -181,7 +204,7 @@
   {#if userActive}
     <div class="top-options">
       <ul class="options-list">
-        <li>{#if $displayContentStore.tags.length}<div class="tags-area">Tags: <ul class="tag-list">{#each $displayContentStore.tags as tag}<li class="tag-list-item"><a href="/articles?tags={tag}" class="tag">{tag}</a></li>{/each}</ul></div>{/if}</li>
+        <li>{#if allTags.length}<div class="tags-area">Tags: <ul class="tag-list">{#each allTags as tag}<li class="tag-list-item"><a href="/articles?tags={tag}" class="tag">{tag}</a></li>{/each}</ul></div>{/if}{#if tagEditor}<a href="editTags" on:click|preventDefault={openTagEditor}>Edit tags</a>{/if}</li>
         <li><a href="/threads/{$displayContentStore.article}">{$displayContentStore.title}</a></li>
         <li><a href="/close" on:click|preventDefault={close}>Close</a></li>
       </ul>

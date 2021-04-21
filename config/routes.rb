@@ -64,6 +64,8 @@ Rails.application.routes.draw do
       post 'kudos', to: 'kudos#create'
 
       post 'reply', to: 'articles#create', defaults: { reply: true }
+
+      patch 'tags', to: 'articles#edit_tags'
     end
   end
 
