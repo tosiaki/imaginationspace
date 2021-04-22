@@ -5,7 +5,7 @@
 
   let currentPage = 1;
   let userActive = false;
-  let displayMode = 'single';
+  let displayMode = 'double';
 
   let setUserInactive;
 
