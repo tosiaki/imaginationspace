@@ -1,0 +1,2 @@
+class DiscordReaction < ApplicationRecord
+end

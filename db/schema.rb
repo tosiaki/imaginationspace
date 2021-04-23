@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_21_170132) do
+ActiveRecord::Schema.define(version: 2021_04_23_140420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,6 +153,61 @@ ActiveRecord::Schema.define(version: 2021_04_21_170132) do
     t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
     t.index ["work_type", "work_id"], name: "index_comments_on_work_type_and_work_id"
+  end
+
+  create_table "discord_attachments", force: :cascade do |t|
+    t.bigint "discord_message_id"
+    t.text "content_type"
+    t.text "filename"
+    t.text "proxy_url"
+    t.text "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "discord_embeds", force: :cascade do |t|
+    t.bigint "discord_message_id"
+    t.text "description"
+    t.text "url"
+    t.text "footer_text"
+    t.text "footer_icon_url"
+    t.text "image_url"
+    t.text "image_proxy_url"
+    t.text "video_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "discord_messages", force: :cascade do |t|
+    t.bigint "guild_id"
+    t.bigint "message_id"
+    t.text "user_name"
+    t.bigint "discord_user_id"
+    t.text "avatar_url"
+    t.datetime "message_created_at"
+    t.datetime "message_edited_at"
+    t.text "content"
+    t.bigint "reference"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "discord_reactions", force: :cascade do |t|
+    t.bigint "discord_message_id"
+    t.integer "count"
+    t.text "emoji_name"
+    t.bigint "emoji_id"
+    t.text "emoji_url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "discord_users", force: :cascade do |t|
+    t.bigint "user_id"
+    t.text "user_name"
+    t.text "user_display_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "drawings", force: :cascade do |t|
@@ -314,6 +369,14 @@ ActiveRecord::Schema.define(version: 2021_04_21_170132) do
     t.datetime "updated_at", null: false
     t.text "comment"
     t.index ["origin_id"], name: "index_signal_boosts_on_origin_id"
+  end
+
+  create_table "startup_states", force: :cascade do |t|
+    t.text "environment"
+    t.bigint "guild_id"
+    t.datetime "last_checked"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "statuses", force: :cascade do |t|

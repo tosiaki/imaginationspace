@@ -1,6 +1,49 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :discord_user do
+    user_id { "" }
+    user_name { "MyText" }
+    user_display_name { "MyText" }
+  end
+  factory :discord_reaction do
+    discord_message_id { 1 }
+    count { 1 }
+    emoji_name { "MyText" }
+    emoji_id { 1 }
+    emoji_url { "MyText" }
+  end
+  factory :discord_attachment do
+    discord_message_id { 1 }
+    content_type { "MyText" }
+    filename_text { "MyString" }
+    proxy_url_text { "MyString" }
+    url { "MyText" }
+  end
+  factory :discord_embed do
+    discord_message_id { 1 }
+    description { "MyText" }
+    url { "MyText" }
+    footer { "MyText" }
+    image_url { "MyText" }
+    image_proxy_url { "MyText" }
+    video_url { "MyText" }
+  end
+  factory :discord_message do
+    guild_id { 1 }
+    message_id { 1 }
+    user_name { "MyText" }
+    discord_user_id { 1 }
+    avatar_url { "MyText" }
+    message_created_at { "2021-04-22 18:04:29" }
+    message_edited_at { "2021-04-22 18:04:29" }
+    content { "MyText" }
+    reference { 1 }
+  end
+  factory :startup_state do
+    environment { "MyText" }
+    guild_id { 1 }
+  end
   factory :user_activity do
     user { nil }
     type { "MyText" }

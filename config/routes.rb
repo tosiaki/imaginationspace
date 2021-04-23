@@ -110,6 +110,8 @@ Rails.application.routes.draw do
   get 'series/:series/move_down/:article', to: 'series#move_down', as: :series_move_down
   get 'series/:series/remove/:article', to: 'series#remove', as: :series_remove
 
+  get 'leaderboard', to: 'leaderboard#weekly'
+
   get 'comics/:id/new_page', to: 'comic_pages#new', as: :new_comic_page
   get 'comics/:id/new_page/:page', to: 'comic_pages#new', as: :new_comic_page_at
   post 'comics/:id/new_page', to: 'comic_pages#create'

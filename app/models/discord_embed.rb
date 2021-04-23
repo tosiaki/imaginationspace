@@ -1,0 +1,2 @@
+class DiscordEmbed < ApplicationRecord
+end

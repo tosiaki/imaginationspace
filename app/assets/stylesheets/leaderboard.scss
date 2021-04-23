@@ -1,0 +1,47 @@
+.message-list {
+        display: grid;
+        grid-template-columns: 3em auto;
+        grid-row-gap: 1em;
+        row-gap: 1em;
+}
+
+.message-item {
+        min-width: 0;
+        border: 1px solid rgba(130, 170, 240, 0.7);
+        border-radius: 0.7em;
+        padding: 0.7em;
+        background-color: rgba(110, 170, 160, 0.8);
+}
+
+.message-avatar {
+        width: 60px;
+        height: 60px;
+        margin-right: 0.7em;
+}
+
+.message-emoji {
+        height: 1.2em;
+        vertical-align: bottom;
+}
+
+.message-embeds {
+        margin-top: 2em;
+}
+
+.message-image {
+        max-height: 600px;
+        max-width: 100%;
+}
+
+.message-video {
+        max-width: 100%;
+}
+
+.message-reactions {
+        margin-top: 0.2em;
+}
+
+.reaction-emoji-image {
+        height: 1.2em;
+        vertical-align: bottom;
+}

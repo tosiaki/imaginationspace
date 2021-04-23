@@ -1,0 +1,2 @@
+class StartupState < ApplicationRecord
+end
