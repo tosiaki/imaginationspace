@@ -13,6 +13,16 @@ class PagesController < ApplicationController
         signal_boost: [origin: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags]])
       .joins(:article).merge(Article.where(reply_to: nil)).order(timeline_time: :desc).paginate(page: params[:page] . present? ? params[:page].to_i : 1, per_page: 20)
     @new_article = Article.new(guest_params)
+    @messages = DiscordMessage.select(
+      'discord_messages.*, SUM(discord_reactions.count) as reaction_count'
+    ).
+    joins(:reactions).
+    includes(:embeds).
+    includes(:attachments).
+    group('discord_messages.id').
+    where('message_created_at > ?', 30.days.ago).
+    order('reaction_count DESC').
+    limit(15)
   end
 
   def old_home

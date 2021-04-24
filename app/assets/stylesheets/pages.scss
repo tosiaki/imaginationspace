@@ -1,3 +1,27 @@
 // Place all the styles related to the Pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.main-page {
+        display: flex;
+
+        .module {
+                flex-basis: 0;
+                flex-grow: 3;
+        }
+
+        .message-list {
+                display: block;
+                margin-left: 0.7em;
+                flex-basis: 0;
+                flex-grow: 1;
+        }
+
+        .message-item:not(:first-child) {
+                margin-top: 0.7em;
+        }
+        .message-content {
+                overflow: auto;
+
+        }
+}
