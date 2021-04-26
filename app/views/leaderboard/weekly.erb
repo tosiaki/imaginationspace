@@ -2,50 +2,6 @@
 <div class="message-list">
   <% @messages.each_with_index do |message, index| %>
     <div><b><%= index + 1 %></b></div>
-    <div class="message-item">
-      <div class="message-user-display"><b><%= image_tag message.avatar_url, class: 'message-avatar' %><%= message.user_name %></b></div>
-      <div class="message-content">
-        <%= insert_references message.content %>
-      </div>
-      <div class="message-embeds">
-        <% if message.embeds.any? %>
-          <% message.embeds.each do |embed| %>
-            <div class="embed-description"><%= embed.description %></div>
-            <% if embed.image_url? %>
-              <%= image_tag embed.image_url, class: 'message-image' %>
-            <% elsif embed.image_proxy_url? %>
-              <%= image_tag embed.image_proxy_url, class: 'message-image' %>
-            <% elsif embed.url.include?('www.facebook.com') %>
-              <iframe src="<%= "https://www.facebook.com/plugins/video.php?href=#{URI.escape(embed.url)}&show_text=false" %>" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
-            <% elsif embed.video_url? %>
-              <% if URI.parse(embed.video_url).host == 'www.youtube.com' %>
-                <iframe width="560" height="315" src="<%= embed.video_url %>" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              <% else %>
-                <video class="message-video" controls loop><source src="<%= embed.video_url %>" /></video>
-              <% end %>
-            <% else %>
-              <%= image_tag image_from_url(embed.url), class: 'message-image' %>
-            <% end %>
-          <% end %>
-        <% end %>
-      </div>
-      <% if message.attachments.any? %>
-        <% message.attachments.each do |attachment| %>
-          <% if attachment.url? %>
-            <%= image_tag attachment.url, class: 'message-image' %>
-          <% end %>
-        <% end %>
-      <% end %>
-      <div class="message-reactions">
-        <% message.reactions.each do |reaction| %>
-          <% if reaction.emoji_url %>
-            <%= image_tag reaction.emoji_url, class: 'reaction-emoji-image' %>
-          <% else %>
-            <%= reaction.emoji_name %>
-          <% end %>
-          <%= reaction.count %>
-        <% end %>
-      </div>
-    </div>
+    <%= render 'message_item', message: message %>
   <% end %>
 </div>
