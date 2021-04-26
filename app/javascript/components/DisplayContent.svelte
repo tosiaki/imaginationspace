@@ -179,7 +179,7 @@
     display: flex;
   }
 
-  .tags-area {
+  .tags-display {
     display: inline-block;
     margin-left: 0.4em;
   }
@@ -196,6 +196,10 @@
       }
     }
   }
+
+  .edit-tags-link {
+    margin-left: 0.4em;
+  }
 </style>
 
 <svelte:window on:mousemove={setUserActive} on:keydown={handleKeydown} />
@@ -204,7 +208,7 @@
   {#if userActive}
     <div class="top-options">
       <ul class="options-list">
-        <li>{#if allTags.length}<div class="tags-area">Tags: <ul class="tag-list">{#each allTags as tag}<li class="tag-list-item"><a href="/articles?tags={tag}" class="tag">{tag}</a></li>{/each}</ul></div>{/if}{#if tagEditor}<a href="editTags" on:click|preventDefault={openTagEditor}>Edit tags</a>{/if}</li>
+        <li>{#if allTags.length}<div class="tags-display">Tags: <ul class="tag-list">{#each allTags as tag}<li class="tag-list-item"><a href="/articles?tags={tag}" class="tag">{tag}</a></li>{/each}</ul></div>{/if}{#if tagEditor}<a href="editTags" class="edit-tags-link" on:click|preventDefault={openTagEditor}>Edit tags</a>{/if}</li>
         <li><a href="/threads/{$displayContentStore.article}">{$displayContentStore.title}</a></li>
         <li><a href="/close" on:click|preventDefault={close}>Close</a></li>
       </ul>
