@@ -1,7 +1,7 @@
 <script>
   import { displayImageStore } from '../stores';
 
-  let fit = false;
+  let fit = true;
   let imageElement;
 
   const toggleDisplay = () => {
