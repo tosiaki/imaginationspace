@@ -15,6 +15,7 @@
                 margin-left: 0.7em;
                 flex-basis: 0;
                 flex-grow: 1;
+                min-width: 0;
         }
 
         .message-item:not(:first-child) {
