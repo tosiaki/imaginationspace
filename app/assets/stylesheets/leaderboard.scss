@@ -37,6 +37,10 @@
         max-width: 100%;
 }
 
+.embed-description:not(:first-child) {
+        margin-top: 0.4em;
+}
+
 .message-reactions {
         margin-top: 0.2em;
 }

@@ -9,4 +9,16 @@ module LeaderboardHelper
       .gsub(/<@!(\d+)>/) { self.get_author $1 }
       .html_safe
   end
+
+  def image_from_url(url)
+    begin
+      if Nokogiri::HTML(open(url)).css("meta[property='og:image']").present?
+        Nokogiri::HTML(open(url)).css("meta[property='og:image']").first.attributes['content'].value
+      else
+        url
+      end
+    rescue
+      url
+    end
+  end
 end
