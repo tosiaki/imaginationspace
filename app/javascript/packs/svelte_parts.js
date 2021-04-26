@@ -3,7 +3,8 @@ import AddToSeriesButton from '../components/AddToSeriesButton.svelte';
 import ModalWindows from '../components/ModalWindows.svelte';
 import FlashMessages from '../components/FlashMessages.svelte';
 import DisplayContent from '../components/DisplayContent.svelte';
-import { displayContentStore } from '../stores';
+import DisplayImage from '../components/DisplayImage.svelte';
+import { displayContentStore, displayImageStore } from '../stores';
 
 const tagsOfCategory = (element, category) => 
   Array.prototype.map.call(
@@ -67,6 +68,21 @@ document.addEventListener('turbolinks:load', event => {
         ].map(category => ({
           [category]: tagsOfCategory(statusArea, category)
         })))
+      });
+    });
+  }
+
+  const displayImage = document.getElementById('display-image');
+  displayImage.innerHTML = '';
+  new DisplayImage({
+    target: displayImage
+  });
+
+  for (let messageImage of document.getElementsByClassName('message-image')) {
+    messageImage.addEventListener('click', event => {
+      event.preventDefault();
+      displayImageStore.set({
+        image: messageImage.getAttribute('src')
       });
     });
   }

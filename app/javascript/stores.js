@@ -18,5 +18,6 @@ export const flashMessageStore = writable(flashMessages, set => {
 export const currentArticleStore = writable('');
 
 export const displayContentStore = writable({});
+export const displayImageStore = writable({});
 
 export const tagEditStore = writable({});
