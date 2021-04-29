@@ -7,7 +7,7 @@ class ShrineUploader < Shrine
   plugin :store_dimensions
 
   plugin :upload_options, store: -> (io, context) do
-    { metadata_directive: "REPLACE" } if io.is_a?(Shrine::UploadedFile)
+    io.is_a?(Shrine::UploadedFile) ? { metadata_directive: "REPLACE" } : {}
   end
 
   process(:store) do |io, context|
@@ -26,6 +26,7 @@ class ShrineUploader < Shrine
   end
 
   def generate_location(io, context)
+    debugger
     original_filename = context[:record]&.picture&.original_filename || context[:metadata]["filename"]
     version_suffix    = "_#{context[:version]}" if context[:version] && context[:version] != :original
     basename          = File.basename(original_filename, ".*")
