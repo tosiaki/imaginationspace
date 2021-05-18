@@ -1,0 +1,40 @@
+#waterfall-container {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  top: 0;
+  margin: 0;
+  will-change: transform;
+  transform: translateZ(0);
+  display: flex;
+  opacity: 0.06;
+  justify-content: center;
+  pointer-events: none;
+}
+
+canvas#waterfall {
+  position: absolute;
+  width: 70%;
+  height: 55%;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+canvas#surface {
+  animation: fade-in 3000ms forwards;
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

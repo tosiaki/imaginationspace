@@ -11,7 +11,7 @@
           <%= image_tag embed.image_url, class: 'message-image' %>
         <% elsif embed.image_proxy_url? %>
           <%= image_tag embed.image_proxy_url, class: 'message-image' %>
-        <% elsif embed.url.include?('www.facebook.com') %>
+        <% elsif embed.url && embed.url.include?('www.facebook.com') %>
           <iframe src="<%= "https://www.facebook.com/plugins/video.php?href=#{URI.escape(embed.url)}&show_text=false" %>" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
         <% elsif embed.video_url? %>
           <% if URI.parse(embed.video_url).host == 'www.youtube.com' %>
