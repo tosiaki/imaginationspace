@@ -19,7 +19,7 @@
           <% else %>
             <video class="message-video" controls loop><source src="<%= embed.video_url %>" /></video>
           <% end %>
-        <% else %>
+        <% elsif embed.url %>
           <%= image_tag image_from_url(embed.url), class: 'message-image' %>
         <% end %>
       <% end %>
