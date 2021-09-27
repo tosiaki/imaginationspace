@@ -21,7 +21,7 @@ class User < ApplicationRecord
   has_many :drawing_translations, -> { where authorship: :scanlation }, class_name: "Drawing"
   has_many :scanlations, -> { where authorship: :scanlation }, class_name: "Comic"
 
-  has_many :bookmarks, inverse_of: :user
+  has_many :bookmarks, inverse_of: :user, dependent: :destroy
   has_many :bookmarked_drawings, through: :bookmarks, source: :bookmarkable, source_type: 'Drawing'
   has_many :bookmarked_comics, through: :bookmarks, source: :bookmarkable, source_type: 'Comic'
   has_many :bookmarked_articles, through: :bookmarks, source: :bookmarkable, source_type: 'Article'
