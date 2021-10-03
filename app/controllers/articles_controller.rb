@@ -36,7 +36,7 @@ class ArticlesController < ApplicationController
     @new_article.reply_time = Time.now
 
     if params[:new_page][:picture]
-      if params[:options][:new_pages] != '1'
+      if false params[:options][:new_pages] != '1'
         params[:new_page][:picture].reverse!
       end
       add_picture_to_page(params[:new_page][:picture][0], @new_page)
