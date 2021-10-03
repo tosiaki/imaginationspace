@@ -1,13 +1,13 @@
 class UserChannel < ApplicationCable::Channel
   def subscribed
-    stream_for current_user
-		@gathering_id = 0
-		@things = {}
-		@current_user = current_user
-		things.scan_each(match: "#{current_user.id}:*") do |key|
-			self.class.broadcast_to current_user, action: 'setup', thing: key.split(':')[1],
-				amount: things.get(key) 
-		end
+#     stream_for current_user
+# 		@gathering_id = 0
+# 		@things = {}
+# 		@current_user = current_user
+# 		things.scan_each(match: "#{current_user.id}:*") do |key|
+# 			self.class.broadcast_to current_user, action: 'setup', thing: key.split(':')[1],
+# 				amount: things.get(key) 
+# 		end
   end
 
   def unsubscribed
