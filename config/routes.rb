@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   get 'about', to: 'pages#about'
   get 'support_this_site', to: 'pages#support'
 
-  get 'discord', to: redirect('https://discord.gg/e97QGEA')
+  get 'discord', to: redirect('https://discord.gg/e97QGEA'), as: :discord
+  get 'DISCORD', to: redirect('https://discord.gg/e97QGEA')
+  get 'Discord', to: redirect('https://discord.gg/e97QGEA')
 
   devise_scope :user do
     get 'signup', to: 'users/registrations#new', as: :registration
