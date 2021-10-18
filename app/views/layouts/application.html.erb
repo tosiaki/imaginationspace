@@ -18,7 +18,6 @@
     <%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/tinycolor/1.1.2/tinycolor.min.js' %>
     <%= javascript_include_tag "https://transloadit.edgly.net/releases/uppy/v0.28.0/dist/uppy.min.js" %>
     <%= javascript_pack_tag 'svelte_parts' %>
-    <%= javascript_pack_tag 'waterfall' %>
   </head>
 
   <body data-tag-editor="<%= user_signed_in? && current_user.tag_editor? %>">
