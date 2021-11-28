@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_23_140420) do
+ActiveRecord::Schema.define(version: 2021_11_28_232003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -473,6 +473,15 @@ ActiveRecord::Schema.define(version: 2021_04_23_140420) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["sticky_id"], name: "index_users_on_sticky_id"
+  end
+
+  create_table "youtube_videos", force: :cascade do |t|
+    t.text "url"
+    t.text "title"
+    t.boolean "watched", default: false
+    t.datetime "date_watched"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "article_taggings", "article_tags"

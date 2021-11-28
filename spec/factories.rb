@@ -1,6 +1,12 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :youtube_video do
+    url { "MyText" }
+    title { "MyText" }
+    watched { false }
+    date_watched { "2021-11-28 18:20:03" }
+  end
   factory :discord_user do
     user_id { "" }
     user_name { "MyText" }

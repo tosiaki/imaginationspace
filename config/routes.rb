@@ -137,4 +137,6 @@ Rails.application.routes.draw do
   get ':board', to: 'articles#index', as: :board
 
   mount ActionCable.server => '/cable'
+
+  resources :youtube_video, only: [:create, :show, :update, :index]
 end
