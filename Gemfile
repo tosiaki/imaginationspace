@@ -31,6 +31,7 @@ gem 'redis'
 gem 'redis-namespace'
 gem 'webpacker'
 gem 'bootsnap'
+gem 'rack-cors'
 
 # Not being used on currently active features
 gem 'acts-as-taggable-on', '~> 5.0'
