@@ -11,7 +11,7 @@ class YoutubeVideoController < ApplicationController
   end
 
   def set_watched
-    render json: video_by_url(params[:url]).update_attributes(watched: true, date_watched: Time.now)
+    render json: video_by_url(params[:url]).update(watched: true, date_watched: Time.now)
   end
 
   def index
