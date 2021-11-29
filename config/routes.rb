@@ -138,5 +138,10 @@ Rails.application.routes.draw do
 
   mount ActionCable.server => '/cable'
 
-  resources :youtube_video, only: [:create, :show, :update, :index]
+  resources :youtube_video, only: [:create, :update, :index] do
+    collection do
+      get 'v/:url', to: 'youtube_video#show'
+      patch 'v/:url/watched', to: 'youtube_video#set_watched'
+    end
+  end
 end
