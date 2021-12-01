@@ -1,9 +1,13 @@
 class YoutubeVideoController < ApplicationController
   def create
-    render json: YoutubeVideo.create({
-      url: params[:url],
-      title: params[:title]
-    })
+    if video_by_url(params[:url])
+      render json: { message: "Video already added." }
+    else
+      render json: YoutubeVideo.create({
+        url: params[:url],
+        title: params[:title]
+      })
+    end
   end
 
   def show
