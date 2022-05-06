@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-	before_action :create_guest_user, unless: :has_user?
+	# before_action :create_guest_user, unless: :has_user?
 
   def record_activity(activity_type, details)
     UserActivity.create(user: current_user, activity_type: activity_type, details: details)

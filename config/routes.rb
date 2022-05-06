@@ -144,4 +144,10 @@ Rails.application.routes.draw do
       patch 'v/:url/watched', to: 'youtube_video#set_watched'
     end
   end
+
+  resources :translation, only: [:create, :index] do
+    collection do
+      get 't/:specifier', to: 'translation#show'
+    end
+  end
 end

@@ -8,7 +8,7 @@ class ArticlesController < ApplicationController
   include PictureFunctions
   include GuestFunctions
 
-  impressionist actions: [:show]
+  # impressionist actions: [:show]
 
   def new
     article = Article.find(params[:reply_to_id])

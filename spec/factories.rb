@@ -1,6 +1,26 @@
 include ActionDispatch::TestProcess
 
 FactoryBot.define do
+  factory :translation_line do
+    translation_page { nil }
+    original { "MyText" }
+    translation { "MyText" }
+    order { 1 }
+  end
+  factory :translation_page do
+    filename { "MyText" }
+    translation { nil }
+    translation_chapter { nil }
+    order { 1 }
+  end
+  factory :translation_chapter do
+    title { "MyText" }
+    translation { nil }
+    order { 1 }
+  end
+  factory :translation do
+    title { "MyText" }
+  end
   factory :youtube_video do
     url { "MyText" }
     title { "MyText" }

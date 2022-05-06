@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_28_232003) do
+ActiveRecord::Schema.define(version: 2022_04_21_234331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -415,6 +415,42 @@ ActiveRecord::Schema.define(version: 2021_11_28_232003) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "translation_chapters", force: :cascade do |t|
+    t.text "title"
+    t.bigint "translation_id", null: false
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["translation_id"], name: "index_translation_chapters_on_translation_id"
+  end
+
+  create_table "translation_lines", force: :cascade do |t|
+    t.bigint "translation_page_id", null: false
+    t.text "original"
+    t.text "translation"
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["translation_page_id"], name: "index_translation_lines_on_translation_page_id"
+  end
+
+  create_table "translation_pages", force: :cascade do |t|
+    t.text "filename"
+    t.bigint "translation_id", null: false
+    t.bigint "translation_chapter_id"
+    t.integer "order"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["translation_chapter_id"], name: "index_translation_pages_on_translation_chapter_id"
+    t.index ["translation_id"], name: "index_translation_pages_on_translation_id"
+  end
+
+  create_table "translations", force: :cascade do |t|
+    t.text "title"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_activities", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.text "activity_type"
@@ -482,6 +518,7 @@ ActiveRecord::Schema.define(version: 2021_11_28_232003) do
     t.datetime "date_watched"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["url"], name: "index_youtube_videos_on_url", unique: true
   end
 
   add_foreign_key "article_taggings", "article_tags"
@@ -506,6 +543,9 @@ ActiveRecord::Schema.define(version: 2021_11_28_232003) do
   add_foreign_key "series_articles", "series"
   add_foreign_key "signal_boosts", "articles", column: "origin_id"
   add_foreign_key "statuses", "users"
+  add_foreign_key "translation_chapters", "translations"
+  add_foreign_key "translation_lines", "translation_pages"
+  add_foreign_key "translation_pages", "translations"
   add_foreign_key "user_activities", "users"
   add_foreign_key "user_languages", "article_tags"
   add_foreign_key "user_languages", "users"
