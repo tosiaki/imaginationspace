@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  root 'pages#home', to: redirect('https://discord.gg/e97QGEA')
+
+  get 'discord', to: redirect('https://discord.gg/e97QGEA'), as: :discord
+  get 'DISCORD', to: redirect('https://discord.gg/e97QGEA')
+  get 'Discord', to: redirect('https://discord.gg/e97QGEA')
+=begin
   root 'pages#home'
   get 'old_home', to: 'pages#old_home'
   get 'about', to: 'pages#about'
@@ -150,4 +156,5 @@ Rails.application.routes.draw do
       get 't/:specifier', to: 'translation#show'
     end
   end
+=end
 end
