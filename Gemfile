@@ -49,7 +49,7 @@ end
 
 group :development, :test do
   # gem 'byebug',  '~> 10.0.2', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'rspec-rails', '~> 3.7'
+  gem 'rspec-rails', '~> 6.1'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40'
   gem 'database_cleaner', '~> 1.7.0'
