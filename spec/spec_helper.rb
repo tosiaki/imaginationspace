@@ -16,6 +16,7 @@ ENV['RAILS_ENV'] ||= 'test'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 # Load RSpec and Capybara
+require 'logger'
 require 'capybara/rspec'
 require 'capybara/dsl'
 require 'factory_bot'
