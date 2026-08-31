@@ -52,7 +52,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 6.1'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40'
-  gem 'database_cleaner', '~> 1.7.0'
+  gem 'database_cleaner', '~> 2.1'
   gem 'cucumber-rails', '~> 2.3.0', require: false
   gem 'factory_bot_rails', "~> 6.5"
   gem 'selenium-webdriver', "~> 3.142.7"
