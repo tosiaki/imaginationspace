@@ -19,6 +19,7 @@ gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'bootstrap-sass'
 gem 'devise'
+gem 'impressionist', '~> 2.0'
 gem 'nokogiri'
 gem 'shrine'
 gem 'image_processing'
@@ -31,8 +32,6 @@ gem 'redis-namespace'
 gem 'webpacker'
 gem 'bootsnap'
 gem 'rack-cors'
-# gem 'impressionist', github: 'charlotte-ruby/impressionist',
-  # ref: '46a582ff8cd3496da64f174b30b91f9d97e86643'
 
 # Not being used on currently active features
 gem 'acts-as-taggable-on', '~> 5.0'
