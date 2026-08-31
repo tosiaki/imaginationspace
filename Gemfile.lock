@@ -234,9 +234,9 @@ GEM
       shellany (~> 0.0)
       thor (>= 0.18.1)
     guard-compat (1.2.1)
-    guard-minitest (2.4.6)
+    guard-minitest (3.0.0)
       guard-compat (~> 1.2)
-      minitest (>= 3.0)
+      minitest (>= 5.0.4, < 7.0)
     hkdf (0.3.0)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
@@ -509,7 +509,7 @@ DEPENDENCIES
   fog-aws
   geckodriver-helper
   guard (~> 2.20)
-  guard-minitest (~> 2.4.6)
+  guard-minitest (~> 3.0)
   image_processing
   jbuilder
   jquery-rails

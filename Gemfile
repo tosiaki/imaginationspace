@@ -70,7 +70,7 @@ group :test do
   gem 'rails-controller-testing', '~> 1.0.2'
   gem 'minitest-reporters',       '~> 1.8'
   gem 'guard',                    '~> 2.20'
-  gem 'guard-minitest',           '~> 2.4.6'
+  gem 'guard-minitest',           '~> 3.0'
 end
 
 group :production, :transfer do
