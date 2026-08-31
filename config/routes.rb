@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'pages#home', to: redirect('https://discord.gg/e97QGEA')
+  root to: redirect('https://discord.gg/e97QGEA')
 
   get 'discord', to: redirect('https://discord.gg/e97QGEA'), as: :discord
   get 'DISCORD', to: redirect('https://discord.gg/e97QGEA')
