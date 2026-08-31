@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '3.3.6'
+ruby '4.0.6'
 
 gem 'rails', '~> 6.1'
 gem 'puma'
@@ -18,8 +18,6 @@ gem 'will_paginate'
 gem 'bootstrap-will_paginate'
 gem 'bootstrap-sass'
 gem 'devise'
-gem 'impressionist', github: 'charlotte-ruby/impressionist',
-  ref: '46a582ff8cd3496da64f174b30b91f9d97e86643'
 gem 'nokogiri'
 gem 'shrine'
 gem 'image_processing'
@@ -32,6 +30,8 @@ gem 'redis-namespace'
 gem 'webpacker'
 gem 'bootsnap'
 gem 'rack-cors'
+# gem 'impressionist', github: 'charlotte-ruby/impressionist',
+  # ref: '46a582ff8cd3496da64f174b30b91f9d97e86643'
 
 # Not being used on currently active features
 gem 'acts-as-taggable-on', '~> 5.0'
@@ -48,7 +48,7 @@ end
 # end
 
 group :development, :test do
-  gem 'byebug',  '~> 10.0.2', platforms: [:mri, :mingw, :x64_mingw]
+  # gem 'byebug',  '~> 10.0.2', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.7'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.2.1'
@@ -61,7 +61,7 @@ end
 
 group :development do
   gem 'web-console', '~> 3.6.2'
-  gem 'listen',                '~> 3.1.5'
+  gem 'listen'
   gem 'spring',                '~> 2.0.2'
   gem 'spring-watcher-listen', '~> 2.0.1'
 end
