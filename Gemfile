@@ -55,7 +55,7 @@ group :development, :test do
   gem 'database_cleaner', '~> 2.1'
   gem 'cucumber-rails', '~> 4.1', require: false
   gem 'factory_bot_rails', "~> 6.5"
-  gem 'selenium-webdriver', "~> 3.142.7"
+  gem 'selenium-webdriver', "~> 4.48"
   gem 'geckodriver-helper'
 end
 
