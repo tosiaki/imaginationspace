@@ -4,7 +4,7 @@ class ComicsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :check_user, only: [:edit, :update,:destroy]
 
-  impressionist actions: [:show]
+  # impressionist actions: [:show]
 
   def new
     @comic = Comic.new

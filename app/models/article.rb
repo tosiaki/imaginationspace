@@ -36,7 +36,7 @@ class Article < ApplicationRecord
   before_destroy :remove_reply_number
   before_destroy :null_signal_boost_origins
 
-  is_impressionable counter_cache: true, unique: :session_hash
+  # is_impressionable counter_cache: true, unique: :session_hash
 
   attr_accessor :signed_in
   attr_accessor :editing_password

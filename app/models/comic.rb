@@ -23,7 +23,7 @@ class Comic < ApplicationRecord
   has_many :kudos, as: :work, dependent: :destroy
   has_many :kudos_giver_users, through: :kudos, source: :user
 
-  is_impressionable
+  # is_impressionable
 
   default_scope -> { order page_addition: :desc }
 

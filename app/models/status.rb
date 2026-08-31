@@ -135,8 +135,8 @@ class Status < ApplicationRecord
       relation = relation.group(article[:signal_boosts_count]).order(article[:signal_boosts_count].desc)
     when 'replies'
       relation = relation.group(article[:reply_number]).order(article[:reply_number].desc)
-    when 'hits'
-      relation = relation.group(article[:impressions_count]).order(article[:impressions_count].desc)
+    # when 'hits'
+    #   relation = relation.group(article[:impressions_count]).order(article[:impressions_count].desc)
     else
       relation = relation.group(status[:timeline_time]).order(status[:timeline_time].desc)
     end

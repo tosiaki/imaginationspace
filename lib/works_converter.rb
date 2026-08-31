@@ -24,7 +24,7 @@ class WorksConverter
       convert_tags
     end
     convert_kudos
-    convert_impressions
+    # convert_impressions
     return @status
   end
 
@@ -80,13 +80,13 @@ class WorksConverter
     end
   end
 
-  def convert_impressions
-    @work.impressions.each do |impression|
-      new_impression = impression.dup
-      new_impression.impressionable = @article
-      new_impression.save
-    end
-  end
+  # def convert_impressions
+  #   @work.impressions.each do |impression|
+  #     new_impression = impression.dup
+  #     new_impression.impressionable = @article
+  #     new_impression.save
+  #   end
+  # end
 
   def convert_drawing_page(drawing)
     new_doc = Nokogiri::HTML::DocumentFragment.parse ""
