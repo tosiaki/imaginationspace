@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
-ruby '4.0.6'
+ruby '3.3.12'
 
 gem 'rails', '~> 6.1'
+gem 'logger'
 gem 'puma'
 gem 'pg'
 gem 'sass-rails'
