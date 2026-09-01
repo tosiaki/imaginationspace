@@ -236,7 +236,6 @@ GEM
     guard-minitest (3.0.0)
       guard-compat (~> 1.2)
       minitest (>= 5.0.4, < 7.0)
-    hkdf (0.3.0)
     i18n (1.15.2)
       concurrent-ruby (~> 1.0)
     image_processing (2.0.3)
@@ -248,8 +247,6 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (2.21.2)
-    jwt (2.10.3)
-      base64
     listen (3.10.0)
       logger
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -466,9 +463,6 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    webpush (1.1.0)
-      hkdf (~> 0.2)
-      jwt (~> 2.0)
     websocket (1.2.11)
     websocket-driver (0.8.2)
       base64
@@ -534,7 +528,6 @@ DEPENDENCIES
   uglifier
   web-console (~> 4.2.1)
   webpacker
-  webpush
   will_paginate
 
 RUBY VERSION
