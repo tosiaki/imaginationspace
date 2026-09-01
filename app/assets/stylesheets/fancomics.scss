@@ -951,7 +951,7 @@ ul.page-actions {
 		border-radius: 50%;
 		height: 2em;
 		width: 2em;
-		font-family: FontAwesome;
+		font-family: inherit;
 		user-select: none;
 		cursor: pointer;
 		transition: background-color .2s cubic-bezier(.164,.84,.44,1);
@@ -1015,7 +1015,7 @@ ul.page-actions {
 	position: absolute;
 	div {
 		user-select: none;
-		font-family: FontAwesome;
+		font-family: inherit;
 		margin-right: .429em;
 		display: inline-flex;
 		align-items: center;
@@ -1080,6 +1080,29 @@ input.make-new-post {
 		max-width: 100%;
 		width: 100%;
 	}
+}
+.editor-icon {
+	display: inline-block;
+	font-family: Arial, sans-serif;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 1;
+}
+.editor-icon-bold {
+	font-weight: 800;
+}
+.editor-icon-italic {
+	font-family: Georgia, serif;
+	font-style: italic;
+}
+.editor-icon-heading {
+	font-family: Georgia, serif;
+}
+.editor-icon-strikethrough {
+	text-decoration: line-through;
+}
+.editor-icon-list {
+	font-size: .85em;
 }
 .uppy-remove-item {
 	grid-row: 1;
