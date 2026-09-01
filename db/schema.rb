@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_21_234331) do
+ActiveRecord::Schema.define(version: 2026_09_01_132000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 2022_04_21_234331) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "bookmarks_count", default: 0
+    t.index ["context", "name"], name: "index_article_tags_on_context_and_name"
   end
 
   create_table "articles", force: :cascade do |t|

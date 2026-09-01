@@ -1,5 +1,13 @@
 class ArticlesController < ApplicationController
+  MAX_LISTING_PAGE = 100
+  MAX_LISTING_TAGS = 5
+  MAX_LISTING_TAG_LENGTH = 100
+  LISTING_ORDERS = %w[updated published reply_time bookmarks kudos signal_boosts replies hits].freeze
+  LISTING_PARAMS = %w[action board commit controller format order page show_replies tags thread_id utf8].freeze
+  LISTING_SCALAR_PARAMS = %w[board order page show_replies tags thread_id].freeze
+
   protect_from_forgery except: [:edit_tags]
+  before_action :validate_public_listing_request, only: :index
   before_action :check_user, only: [:edit, :update, :destroy]
   before_action :check_tag_editor, only: [:edit_tags]
   before_action :authenticate_user!, only: [:new, :create, :edit_tags]
@@ -181,12 +189,14 @@ class ArticlesController < ApplicationController
     else
       @statuses = Status.select_by(tags: @tag_list, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     end
-    ActiveRecord::Associations::Preloader.new.preload(@statuses,
-      [:post, :user,
+    ActiveRecord::Associations::Preloader.new(
+      records: @statuses,
+      associations: [:post, :user,
         article: [:user, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags, :pages,
           thread_posts: [:user, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags, :pages]],
         signal_boost: [origin: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags]],
-      ])
+      ]
+    ).call
     @new_article = Article.new(guest_params)
   end
 
@@ -207,6 +217,53 @@ class ArticlesController < ApplicationController
   end
 
   private
+    def validate_public_listing_request
+      return reject_public_listing unless request.format.html?
+      return reject_public_listing if (params.keys - LISTING_PARAMS).any?
+      return reject_public_listing unless LISTING_SCALAR_PARAMS.all? { |key| params[key].nil? || params[key].is_a?(String) }
+      return reject_public_listing unless valid_listing_page?
+      return reject_public_listing unless valid_listing_order?
+      return reject_public_listing unless valid_show_replies?
+      return reject_public_listing unless valid_listing_tags?
+      return reject_public_listing unless valid_thread_id?
+      return reject_public_listing unless valid_board?
+    end
+
+    def valid_listing_page?
+      params[:page].blank? || (params[:page].match?(/\A[1-9]\d*\z/) && params[:page].to_i <= MAX_LISTING_PAGE)
+    end
+
+    def valid_listing_order?
+      params[:order].blank? || LISTING_ORDERS.include?(params[:order])
+    end
+
+    def valid_show_replies?
+      params[:show_replies].blank? || params[:show_replies] == "1"
+    end
+
+    def valid_listing_tags?
+      return true if params[:tags].blank?
+
+      tags = params[:tags].split(",").map(&:strip).reject(&:blank?).uniq
+      tags.present? && tags.length <= MAX_LISTING_TAGS && tags.all? { |tag| tag.length <= MAX_LISTING_TAG_LENGTH }
+    end
+
+    def valid_thread_id?
+      params[:thread_id].blank? || params[:thread_id].match?(/\A[1-9]\d*\z/)
+    end
+
+    def valid_board?
+      return true if params[:board].blank?
+      return false if params[:board].length > MAX_LISTING_TAG_LENGTH
+
+      ArticleTag.exists?(context: "fandom", name: params[:board])
+    end
+
+    def reject_public_listing
+      response.headers["Cache-Control"] = "public, max-age=300"
+      head :not_found
+    end
+
     def check_user
       if user_signed_in?
         @article = current_user.articles.find(params[:id])
