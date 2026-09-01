@@ -26,6 +26,32 @@ class Article < ApplicationRecord
   has_many :language_tags, -> { where(context: 'language') }, through: :article_taggings, source: 'article_tag'
   has_many :attribution_tags, -> { where(context: 'attribution') }, through: :article_taggings, source: 'article_tag'
 
+  def self.preload_recent_thread_posts(articles, limit: 5, associations: [])
+    articles = articles.to_a
+    return if articles.empty?
+
+    thread_ids = articles.map(&:id)
+    ranked = where(thread_id: thread_ids).select(
+      "articles.*, ROW_NUMBER() OVER (PARTITION BY thread_id ORDER BY created_at DESC) AS thread_rank"
+    )
+    recent_posts = from("(#{ranked.to_sql}) articles")
+      .where("thread_rank <= ?", limit)
+      .order(:thread_id, :created_at)
+      .to_a
+
+    ActiveRecord::Associations::Preloader.new(
+      records: recent_posts,
+      associations: associations
+    ).call if recent_posts.any? && associations.any?
+
+    posts_by_thread = recent_posts.group_by(&:thread_id)
+    articles.each do |article|
+      association = article.association(:thread_posts)
+      association.target = posts_by_thread.fetch(article.id, [])
+      association.loaded!
+    end
+  end
+
   validates :pages, presence: true
   validate :check_editing_password
 

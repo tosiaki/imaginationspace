@@ -11,10 +11,7 @@ class UsersController < ApplicationController
     get_associated_tags
     @statuses = Status.select_by(tags: @tag_list, user: @user, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_maps: !user_signed_in? || current_user.filter_content?)
 
-    ActiveRecord::Associations::Preloader.new(
-      records: @statuses,
-      associations: Status.listing_preloads
-    ).call
+    Status.preload_for_listing(@statuses)
   end
 
   def old_show

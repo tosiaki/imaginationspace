@@ -10,18 +10,39 @@ class Status < ApplicationRecord
   validates :post, presence: true
   validates_associated :post
 
-  def self.listing_preloads
-    article_associations = [
+  def self.article_listing_preloads
+    [
       :user, :pages, :media_tags, :fandom_tags, :character_tags,
       :relationship_tags, :other_tags, :language_tags, :attribution_tags
     ]
+  end
+
+  def self.listing_preloads(include_thread_posts: false)
+    article_associations = article_listing_preloads
+    article_preloads = article_associations.dup
+    if include_thread_posts
+      article_preloads << { thread_posts: article_associations }
+    end
 
     [
       :post,
       :user,
-      { article: article_associations + [{ thread_posts: article_associations }] },
+      { article: article_preloads },
       { signal_boost: [{ origin: article_associations }] }
     ]
+  end
+
+  def self.preload_for_listing(records, full_threads: false)
+    records = records.to_a
+    ActiveRecord::Associations::Preloader.new(
+      records: records,
+      associations: listing_preloads(include_thread_posts: full_threads)
+    ).call
+    return records if full_threads
+
+    articles = records.filter_map { |status| status.article if status.post_type == "Article" }.uniq
+    Article.preload_recent_thread_posts(articles, associations: article_listing_preloads)
+    records
   end
 
   def article

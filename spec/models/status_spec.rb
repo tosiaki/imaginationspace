@@ -30,10 +30,7 @@ RSpec.describe Status, type: :model do
     ])
 
     statuses = Status.where(post_type: "Article", post_id: root_id).to_a
-    ActiveRecord::Associations::Preloader.new(
-      records: statuses,
-      associations: described_class.listing_preloads
-    ).call
+    described_class.preload_for_listing(statuses)
 
     sql = []
     subscriber = lambda do |_name, _start, _finish, _id, payload|

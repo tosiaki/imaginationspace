@@ -189,10 +189,7 @@ class ArticlesController < ApplicationController
     else
       @statuses = Status.select_by(tags: @tag_list, order: params[:order], include_replies: params[:show_replies], page_number: params[:page].present? ? params[:page].to_i : 1, filter_languages_user: current_user, filter_maps: !user_signed_in? || current_user.filter_content?)
     end
-    ActiveRecord::Associations::Preloader.new(
-      records: @statuses,
-      associations: Status.listing_preloads
-    ).call
+    Status.preload_for_listing(@statuses, full_threads: params[:thread_id].present?)
     @new_article = Article.new(guest_params)
   end
 

@@ -4,10 +4,11 @@ class PagesController < ApplicationController
 
   def home
     if false && user_signed_in?
-      @feed_statuses = current_user.feed_statuses.includes(Status.listing_preloads).order(timeline_time: :desc).paginate(page: 1, per_page: 20)
+      @feed_statuses = current_user.feed_statuses.order(timeline_time: :desc).paginate(page: 1, per_page: 20)
+      Status.preload_for_listing(@feed_statuses)
     end
-    @all_statuses = Status.includes(Status.listing_preloads)
-      .joins(:article).merge(Article.where(reply_to: nil)).order(timeline_time: :desc).paginate(page: params[:page] . present? ? params[:page].to_i : 1, per_page: 20)
+    @all_statuses = Status.joins(:article).merge(Article.where(reply_to: nil)).order(timeline_time: :desc).paginate(page: params[:page] . present? ? params[:page].to_i : 1, per_page: 20)
+    Status.preload_for_listing(@all_statuses)
     @new_article = Article.new(guest_params)
     @messages = DiscordMessage.select(
       'discord_messages.*, SUM(discord_reactions.count) as reaction_count'
