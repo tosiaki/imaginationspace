@@ -39,7 +39,7 @@ module PictureFunctions
 
   def picture_content(picture_object)
     result = render_to_body(partial: 'article_pages/image_tag', locals: {picture: picture_object})
-    # result += "\n\n" + render_to_body(partial: 'article_pages/image_note', locals: {picture: picture_object}) if picture_object.picture[:original].width > 1200 || picture_object.picture[:original].height > 2000
+    # result += "\n\n" + render_to_body(partial: 'article_pages/image_note', locals: {picture: picture_object}) if picture_object.picture.width > 1200 || picture_object.picture.height > 2000
     result.html_safe
   end
 
@@ -48,7 +48,7 @@ module PictureFunctions
     page_content.css('img').each do |image_tag|
       if (file_data = image_tag['data-file-data'])
         new_picture = add_picture_object(file_data, page, true)
-        image_tag.attributes["src"].value = new_picture.picture[:original].url
+        image_tag.attributes["src"].value = new_picture.picture.url
         image_tag.remove_attribute "data-file-data"
       end
     end

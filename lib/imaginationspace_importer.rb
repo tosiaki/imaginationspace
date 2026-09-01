@@ -371,8 +371,8 @@ class ImaginationspaceImporter
     new_doc = Nokogiri::HTML::DocumentFragment.parse ""
     Nokogiri::HTML::Builder.with(new_doc) do |doc|
       doc.div {
-        doc.a(href: new_shrine_picture.picture[:original].url) {
-          doc.img src: new_shrine_picture.picture[:original].url
+        doc.a(href: new_shrine_picture.picture.url) {
+          doc.img src: new_shrine_picture.picture.url
         }
       }
     end
