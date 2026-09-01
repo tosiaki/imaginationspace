@@ -2,6 +2,7 @@ require_relative "boot"
 
 require "logger"
 require "rails/all"
+require_relative "../app/middleware/crawler_response_headers"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -24,5 +25,6 @@ module Fancomics
     config.assets.paths << Rails.root.join('node_modules')
     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
     config.active_job.queue_adapter = :async
+    config.middleware.insert_before 0, CrawlerResponseHeaders
   end
 end

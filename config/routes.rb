@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
+  get 'robots.txt', to: proc { |_environment|
+    [200, { "Content-Type" => "text/plain", "Cache-Control" => "public, max-age=86400" }, [CrawlerResponseHeaders::ROBOTS_BODY]]
+  }
+
   root to: redirect('https://discord.gg/e97QGEA')
 
   get 'discord', to: redirect('https://discord.gg/e97QGEA'), as: :discord
   get 'DISCORD', to: redirect('https://discord.gg/e97QGEA')
   get 'Discord', to: redirect('https://discord.gg/e97QGEA')
+
 =begin
   root 'pages#home'
   get 'old_home', to: 'pages#old_home'
@@ -156,4 +161,6 @@ Rails.application.routes.draw do
     end
   end
 =end
+  match '*legacy_path', to: redirect('https://discord.gg/e97QGEA'), via: [:get, :head],
+    constraints: ->(request) { !request.path.start_with?("/rails/") }
 end
