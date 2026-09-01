@@ -79,6 +79,26 @@
     }
   }
 
+  .tag-remove-button,
+  .tag-input-autocomplete-button {
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+  }
+
+  .tag-remove-button,
+  .tag-input-autocomplete-button {
+    cursor: pointer;
+  }
+
+  .tag-input-autocomplete-button {
+    display: block;
+    text-align: left;
+    width: 100%;
+  }
+
   .tag-input-element{ 
     width: auto;
     background-color: transparent;
@@ -107,10 +127,10 @@
 </style>
 
 <div class="tag-input">
-  <div class="tag-input-area" on:click={() => inputElement.focus()}>
+  <div class="tag-input-area">
     <ul class="tag-input-list">
       {#each tags as tag}
-        <li class="tag-input-item">{tag} <span on:click={removeTag(tag)}>(x)</span></li>
+        <li class="tag-input-item">{tag} <button type="button" class="tag-remove-button" aria-label="Remove {tag}" on:click={() => removeTag(tag)}>(x)</button></li>
       {/each}
     </ul>
     <input class="tag-input-element" bind:value={input} on:blur={() => addTag()} on:keydown={handleKeydown} bind:this={inputElement} />
@@ -118,7 +138,7 @@
   {#if showAutocomplete}
     <ul class="tag-input-autocomplete">
       {#each autocompleteItems as autocompleteItem}
-        <li class="tag-input-autocomplete-item" on:mousedown|preventDefault={addTag(autocompleteItem)}>{autocompleteItem}</li>
+        <li class="tag-input-autocomplete-item"><button type="button" class="tag-input-autocomplete-button" on:mousedown|preventDefault on:click={() => addTag(autocompleteItem)}>{autocompleteItem}</button></li>
       {/each}
     </ul>
   {/if}

@@ -146,6 +146,11 @@
 
   .toggle-display {
     cursor: pointer;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    padding: 0;
   }
 
   .options-list {
@@ -217,12 +222,20 @@
       <ul class="options-list">
         <li></li>
         <li>{#if currentPage > 1}<a href="/back" on:click|preventDefault={goBack}>←</a> {/if}Page {currentPage} of {$displayContentStore.pages}{#if showNextPage(currentPage, displayMode)} <a href="/forward" on:click|preventDefault={goForward}>→</a>{/if}</li>
-        <li class="toggle-display" on:click={toggleDisplay}>Display: {displayModeLabels[displayMode]}</li>
+        <li><button type="button" class="toggle-display" on:click={toggleDisplay}>Display: {displayModeLabels[displayMode]}</button></li>
       </ul>
     </div>
   {/if}
 
-  <div class="display-content-area" on:click={handleClick} bind:this={contentArea}>
+  <div
+    class="display-content-area"
+    role="button"
+    tabindex="0"
+    aria-label="Navigate displayed content; use the left and right arrow keys"
+    on:click={handleClick}
+    on:keydown|stopPropagation={handleKeydown}
+    bind:this={contentArea}
+  >
     {#await contentPromise}
       <div>Waiting for content data...</div>
     {:then contentData}

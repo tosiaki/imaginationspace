@@ -20,6 +20,8 @@
   const handleKeydown = ({ key }) => {
     if (key === 'Escape') {
       close();
+    } else if (key === 'Enter' || key === ' ') {
+      toggleDisplay();
     }
   };
 </script>
@@ -54,7 +56,14 @@
 <svelte:window on:keydown={handleKeydown} />
 
 {#if $displayImageStore.image}
-  <div class="display-image-area" on:click={handleClick}>
+  <div
+    class="display-image-area"
+    role="button"
+    tabindex="0"
+    aria-label="Toggle image fit; press Escape to close"
+    on:click={handleClick}
+    on:keydown|stopPropagation={handleKeydown}
+  >
     <div class="display-image-container">
       <img src={$displayImageStore.image} alt={$displayImageStore.alt} bind:this={imageElement} class:fit />
     </div>
