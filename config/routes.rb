@@ -163,4 +163,8 @@ Rails.application.routes.draw do
 =end
   match '*legacy_path', to: redirect('https://discord.gg/e97QGEA'), via: [:get, :head],
     constraints: ->(request) { !request.path.start_with?("/rails/") }
+
+  # Resolve unsupported methods without raising a noisy routing exception. Any
+  # real route added above this fallback continues to take precedence.
+  match '*unsupported_path', to: proc { [404, { "Content-Type" => "text/plain", "Content-Length" => "0" }, []] }, via: :all
 end

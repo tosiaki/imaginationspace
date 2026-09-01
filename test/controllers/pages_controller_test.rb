@@ -9,4 +9,12 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "noindex, nofollow, noarchive, nosnippet", response.headers["X-Robots-Tag"]
   end
 
+  test "returns a quiet not found response for unsupported methods" do
+    post "/articles"
+
+    assert_response :not_found
+    assert_empty response.body
+    assert_equal "noindex, nofollow, noarchive, nosnippet", response.headers["X-Robots-Tag"]
+  end
+
 end

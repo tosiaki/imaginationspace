@@ -1,7 +1,7 @@
-const { merge, webpackConfig } = require('shakapacker')
+const { generateWebpackConfig, merge } = require('shakapacker')
 const svelte = require('./loaders/svelte')
 
-module.exports = merge(webpackConfig, {
+module.exports = merge(generateWebpackConfig(), {
   module: {
     rules: [svelte]
   },
