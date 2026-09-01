@@ -55,7 +55,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'web-console', '~> 4.2.1'
+  gem 'web-console', '~> 4.3.0'
   gem 'listen'
   gem 'spring',                '~> 4.7'
   gem 'spring-watcher-listen', '~> 2.1'
