@@ -10,6 +10,7 @@ RSpec.describe "crawler mitigation", type: :request do
     expect(response.media_type).to eq("text/plain")
     expect(response.body).to eq("User-agent: *\nDisallow: /\n")
     expect(Rails.root.join("public/robots.txt").read).to eq(CrawlerResponseHeaders::ROBOTS_BODY)
+    expect(response.headers["Cache-Control"]).to eq("public, max-age=86400")
     expect(response.headers["X-Robots-Tag"]).to eq("noindex, nofollow, noarchive, nosnippet")
   end
 
