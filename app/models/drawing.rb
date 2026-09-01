@@ -3,8 +3,8 @@ class Drawing < ApplicationRecord
   include WorkFunctions
   include DrawingImage
 
-  enum rating: { not_rated: 0, general_audiences: 1, teen_and_up_audiences: 2, mature: 3, explicit: 4 }
-  enum authorship: { own: 0, scanlation: 1 }
+  enum :rating, { not_rated: 0, general_audiences: 1, teen_and_up_audiences: 2, mature: 3, explicit: 4 }
+  enum :authorship, { own: 0, scanlation: 1 }
 
   default_scope -> { order(created_at: :desc) }
 
