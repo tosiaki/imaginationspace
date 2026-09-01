@@ -32,7 +32,7 @@ gem 'webpacker'
 gem 'bootsnap'
 gem 'rack-cors'
 gem 'acts-as-taggable-on', '~> 13.0'
-gem 'ahoy_matey', '~> 5.2.1'
+gem 'ahoy_matey', '~> 5.5.0'
 
 group :development, :test, :transfer do
   gem 'dotenv-rails'

@@ -79,8 +79,9 @@ GEM
       zeitwerk (>= 2.4, < 3.0)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
-    ahoy_matey (5.2.1)
-      activesupport (>= 6.1)
+    ahoy_matey (5.5.0)
+      activesupport (>= 7.2)
+      cgi
       device_detector (>= 1)
       safely_block (>= 0.4)
     ansi (1.6.0)
@@ -528,7 +529,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on (~> 13.0)
-  ahoy_matey (~> 5.2.1)
+  ahoy_matey (~> 5.5.0)
   aws-sdk-s3
   bcrypt
   bootsnap
