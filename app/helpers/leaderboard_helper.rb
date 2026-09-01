@@ -4,21 +4,27 @@ module LeaderboardHelper
   end
 
   def insert_references(message)
-    message
-      .gsub(/<:\w+:(\d+)>/) { image_tag "https://cdn.discordapp.com/emojis/#{$1}.png", class: "message-emoji" }
-      .gsub(/<@!(\d+)>/) { self.get_author $1 }
-      .html_safe
+    message.to_s.split(/(<:\w+:\d+>|<@!\d+>)/).map do |segment|
+      if (emoji_id = segment.match(/\A<:\w+:(\d+)>\z/)&.captures&.first)
+        image_tag "https://cdn.discordapp.com/emojis/#{emoji_id}.png",
+          class: "message-emoji", loading: "lazy", decoding: "async"
+      elsif (user_id = segment.match(/\A<@!(\d+)>\z/)&.captures&.first)
+        ERB::Util.html_escape(get_author(user_id))
+      else
+        ERB::Util.html_escape(segment)
+      end
+    end.join.html_safe
   end
 
-  def image_from_url(url)
-    begin
-      if Nokogiri::HTML(open(url)).css("meta[property='og:image']").present?
-        Nokogiri::HTML(open(url)).css("meta[property='og:image']").first.attributes['content'].value
-      else
-        url
-      end
-    rescue
-      url
-    end
+  def external_http_url(value)
+    uri = URI.parse(value.to_s)
+    uri.to_s if uri.host.present? && %w[http https].include?(uri.scheme)
+  rescue URI::InvalidURIError
+    nil
+  end
+
+  def external_host?(value, host)
+    url = external_http_url(value)
+    url && URI.parse(url).host == host
   end
 end

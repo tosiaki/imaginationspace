@@ -1,5 +1,5 @@
 <div class="message-item">
-  <div class="message-user-display"><b><%= image_tag message.avatar_url, class: 'message-avatar' %><%= message.user_name %></b></div>
+  <div class="message-user-display"><b><%= image_tag external_http_url(message.avatar_url), class: 'message-avatar', loading: 'lazy', decoding: 'async' if external_http_url(message.avatar_url) %><%= message.user_name %></b></div>
   <div class="message-content">
     <%= insert_references message.content %>
   </div>
@@ -7,35 +7,35 @@
     <% if message.embeds.any? %>
       <% message.embeds.each do |embed| %>
         <div class="embed-description"><%= embed.description %></div>
-        <% if embed.image_url? %>
-          <%= image_tag embed.image_url, class: 'message-image' %>
-        <% elsif embed.image_proxy_url? %>
-          <%= image_tag embed.image_proxy_url, class: 'message-image' %>
-        <% elsif embed.url && embed.url.include?('www.facebook.com') %>
-          <iframe src="<%= "https://www.facebook.com/plugins/video.php?href=#{URI.escape(embed.url)}&show_text=false" %>" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" allowFullScreen="true"></iframe>
-        <% elsif embed.video_url? %>
-          <% if URI.parse(embed.video_url).host == 'www.youtube.com' %>
-            <iframe width="560" height="315" src="<%= embed.video_url %>" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <% if external_http_url(embed.image_url) %>
+          <%= image_tag external_http_url(embed.image_url), class: 'message-image', loading: 'lazy', decoding: 'async' %>
+        <% elsif external_http_url(embed.image_proxy_url) %>
+          <%= image_tag external_http_url(embed.image_proxy_url), class: 'message-image', loading: 'lazy', decoding: 'async' %>
+        <% elsif external_host?(embed.url, 'www.facebook.com') %>
+          <iframe src="<%= "https://www.facebook.com/plugins/video.php?href=#{ERB::Util.url_encode(external_http_url(embed.url))}&show_text=false" %>" title="Facebook video" loading="lazy" scrolling="no" frameborder="0" allowfullscreen="true" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        <% elsif external_http_url(embed.video_url) %>
+          <% if external_host?(embed.video_url, 'www.youtube.com') %>
+            <iframe width="560" height="315" src="<%= external_http_url(embed.video_url) %>" title="YouTube video" loading="lazy" frameborder="0" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
           <% else %>
-            <video class="message-video" controls loop><source src="<%= embed.video_url %>" /></video>
+            <video class="message-video" controls loop preload="none"><source src="<%= external_http_url(embed.video_url) %>" /></video>
           <% end %>
-        <% elsif embed.url %>
-          <%= image_tag image_from_url(embed.url), class: 'message-image' %>
+        <% elsif external_http_url(embed.url) %>
+          <%= link_to 'View linked content', external_http_url(embed.url), target: '_blank', rel: 'nofollow ugc noopener noreferrer' %>
         <% end %>
       <% end %>
     <% end %>
   </div>
   <% if message.attachments.any? %>
     <% message.attachments.each do |attachment| %>
-      <% if attachment.url? %>
-        <%= image_tag attachment.url, class: 'message-image' %>
+      <% if external_http_url(attachment.url) %>
+        <%= image_tag external_http_url(attachment.url), class: 'message-image', loading: 'lazy', decoding: 'async' %>
       <% end %>
     <% end %>
   <% end %>
   <div class="message-reactions">
     <% message.reactions.each do |reaction| %>
-      <% if reaction.emoji_url %>
-        <%= image_tag reaction.emoji_url, class: 'reaction-emoji-image' %>
+      <% if external_http_url(reaction.emoji_url) %>
+        <%= image_tag external_http_url(reaction.emoji_url), class: 'reaction-emoji-image', loading: 'lazy', decoding: 'async' %>
       <% else %>
         <%= reaction.emoji_name %>
       <% end %>
