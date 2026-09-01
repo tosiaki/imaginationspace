@@ -71,4 +71,18 @@ RSpec.describe ArticlesController, type: :controller do
     expect(response).to have_http_status(:ok)
   end
 
+  it "loads all tag facets with one aggregate query" do
+    media_tag = ArticleTag.new(context: "media", name: "Comic")
+    language_tag = ArticleTag.new(context: "language", name: "English")
+    expect(ArticleTag).to receive(:associate_tags).once.and_return([media_tag, language_tag])
+    allow(Status).to receive(:select_by).and_return([])
+
+    get :index
+
+    expect(response).to have_http_status(:ok)
+    expect(assigns(:tag_hash)["media"]).to eq([media_tag])
+    expect(assigns(:tag_hash)["language"]).to eq([language_tag])
+    expect(assigns(:tag_hash)["fandom"]).to eq([])
+  end
+
 end

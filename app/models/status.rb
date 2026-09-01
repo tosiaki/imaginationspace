@@ -32,10 +32,10 @@ class Status < ApplicationRecord
   def self.select_by(tags: nil, board: nil, user: nil, order: nil, bookmarked_by: nil, page_number: 1, count: false, thread: nil, include_replies: false, filter_languages_user: nil, filter_maps: true)
     status = Arel::Table.new(:statuses)
 
-    if count
-      relation = status.project("COUNT(*)")
+    relation = if count
+      status.project(status[:id].count(true))
     else
-      relation = status.project(status[Arel.sql("*")])
+      status.project(status[Arel.sql("*")])
     end
 
     article = Arel::Table.new(:articles)
@@ -134,6 +134,10 @@ class Status < ApplicationRecord
       relation = relation.join(bookmarks_table).on(article[:id].eq(bookmarks_table[:bookmarkable_id]).and(bookmarks_table[:bookmarkable_type].eq("Article"))).where(bookmarks_table[:user_id].eq(bookmarked_by.id))
     end
 
+    if count
+      return connection.select_value(relation.to_sql).to_i
+    end
+
     relation = relation.group(status[:id])
 
     case order
@@ -155,24 +159,20 @@ class Status < ApplicationRecord
       relation = relation.group(status[:timeline_time]).order(status[:timeline_time].desc)
     end
 
-    if count
-      self.find_by_sql(relation.to_sql).count
-    else
-      relation = relation.skip((page_number-1)*self.number_per_page).take(self.number_per_page)
-      result = self.find_by_sql(relation.to_sql)
+    relation = relation.skip((page_number-1)*self.number_per_page).take(self.number_per_page)
+    result = self.find_by_sql(relation.to_sql)
 
-      class << result
-        attr_accessor :total_entries, :per_page, :current_page, :preloaded_records
+    class << result
+      attr_accessor :total_entries, :per_page, :current_page, :preloaded_records
 
-        def total_pages
-          (total_entries/per_page.to_f).ceil
-        end
+      def total_pages
+        (total_entries/per_page.to_f).ceil
       end
-      result.total_entries = self.select_by(tags: tags, board: board, user: user, order: order, bookmarked_by: bookmarked_by, page_number: page_number, count: true, thread: thread, include_replies: include_replies, filter_maps: filter_maps)
-      result.per_page = self.number_per_page
-      result.current_page = page_number
-      result
     end
+    result.total_entries = self.select_by(tags: tags, board: board, user: user, order: order, bookmarked_by: bookmarked_by, page_number: page_number, count: true, thread: thread, include_replies: include_replies, filter_maps: filter_maps)
+    result.per_page = self.number_per_page
+    result.current_page = page_number
+    result
   end
 
   def self.number_per_page

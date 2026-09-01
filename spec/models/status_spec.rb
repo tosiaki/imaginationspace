@@ -51,4 +51,37 @@ RSpec.describe Status, type: :model do
 
     expect(sql).to be_empty
   end
+
+  it "counts distinct statuses without grouping or ordering the count query" do
+    now = Time.current
+    article_id = Article.insert_all!([{
+      title: "Root", thread_id: nil, reply_to_id: nil,
+      anonymous: false, created_at: now, updated_at: now
+    }], returning: ["id"]).rows.first.first
+    Article.where(id: article_id).update_all(thread_id: article_id)
+    Status.insert_all!([{
+      post_type: "Article", post_id: article_id, timeline_time: now,
+      created_at: now, updated_at: now
+    }])
+    tag_ids = ArticleTag.insert_all!([
+      { name: "shared", context: "fandom", created_at: now, updated_at: now },
+      { name: "shared", context: "other", created_at: now, updated_at: now }
+    ], returning: ["id"]).rows.flatten
+    ArticleTagging.insert_all!(tag_ids.map do |tag_id|
+      { article_id: article_id, article_tag_id: tag_id, created_at: now, updated_at: now }
+    end)
+
+    sql = []
+    subscriber = lambda do |_name, _start, _finish, _id, payload|
+      sql << payload[:sql] unless %w[SCHEMA TRANSACTION CACHE].include?(payload[:name])
+    end
+    result = ActiveSupport::Notifications.subscribed(subscriber, "sql.active_record") do
+      described_class.select_by(tags: ["shared"], count: true, filter_maps: false)
+    end
+
+    expect(result).to eq(1)
+    expect(sql.length).to eq(1)
+    expect(sql.first).to include('COUNT(DISTINCT "statuses"."id")')
+    expect(sql.first).not_to match(/GROUP BY|ORDER BY/)
+  end
 end
