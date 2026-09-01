@@ -3,18 +3,31 @@ function fileUpload(uppyNode, fileInputElement, inPostingBoxElement) {
   uppyInfoContainer.classList.add("uppy-info-container");
 
   var uppyInnerContainer = document.createElement('div');
+  uppyInnerContainer.setAttribute('role', 'status');
+
+  var uppyProgress = document.createElement('progress');
+  uppyProgress.max = 100;
+  uppyProgress.value = 0;
+  uppyProgress.setAttribute('aria-label', 'Upload progress');
 
   uppyNode.appendChild(uppyInfoContainer);
   uppyInfoContainer.appendChild(uppyInnerContainer);
+  uppyInfoContainer.appendChild(uppyProgress);
 
-  var uppyRemoveItem = document.createElement('div');
+  var uppyRemoveItem = document.createElement('button');
+  uppyRemoveItem.type = 'button';
+  uppyRemoveItem.setAttribute('aria-label', 'Remove upload');
   uppyRemoveItem.classList.add("uppy-remove-item");
   var removalTextNode = document.createTextNode("❌");
   uppyRemoveItem.appendChild(removalTextNode);
   uppyNode.appendChild(uppyRemoveItem);
 
+  var uppy;
+
   uppyRemoveItem.addEventListener('click', function() {
-    preview_area = uppyNode.parentNode;
+    uppy.cancelAll();
+    uppy.destroy();
+    var preview_area = uppyNode.parentNode;
     preview_area.removeChild(uppyNode);
     if (preview_area.children.length === 0) {
       preview_area.style.display = "none";
@@ -24,26 +37,27 @@ function fileUpload(uppyNode, fileInputElement, inPostingBoxElement) {
     }
   });
 
-  var uppy = Uppy.Core({
+  uppy = window.createDirectUploader({
       id: fileInputElement.id,
       autoProceed: true,
       restrictions: {
         allowedFileTypes: fileInputElement.accept.split(','),
       }
-    })
-    .use(Uppy.Informer, {
-      target: uppyInnerContainer,
-    })
-    .use(Uppy.ProgressBar, {
-      target: uppyInnerContainer,
     });
 
-  uppy.use(Uppy.AwsS3, {
-    serverUrl: '/', // will call Shrine's presign endpoint on `/s3/params`
+  uppy.on('upload-progress', function (_file, progress) {
+    uppyProgress.value = progress.bytesTotal ? (progress.bytesUploaded / progress.bytesTotal) * 100 : 0;
+    uppyInnerContainer.textContent = 'Uploading…';
+  });
+
+  uppy.on('upload-error', function (_file, error) {
+    uppyInnerContainer.textContent = 'Upload failed: ' + error.message;
   });
 
   uppy.on('upload-success', function (file, data) {
-    object_key = file.meta['key'].match(new RegExp("^" + fileInputElement.dataset.prefix + "\\/(.+)"))[1];
+    uppyProgress.value = 100;
+    uppyInnerContainer.textContent = 'Upload complete';
+    var object_key = file.meta['key'].match(new RegExp("^" + fileInputElement.dataset.prefix + "\\/(.+)"))[1];
 
     // construct uploaded file data in the format that Shrine expects
     var uploadedFileData = JSON.stringify({

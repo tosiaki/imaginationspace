@@ -184,22 +184,19 @@ $(document).on('turbolinks:load', function(){
 			currentParagraph = window.getSelection().getRangeAt(0).cloneRange().startContainer;
 
 			(function(currentParagraph) {
-				var uppy = Uppy.Core({
+				var uppy = window.createDirectUploader({
 					autoProceed: true,
 					restrictions: {
 						allowedFileTypes: inlinePictureElement.accept.split(','),
 					}
 				});
 
-				uppy.use(Uppy.AwsS3, {
-					serverUrl: '/', // will call Shrine's presign endpoint on `/s3/params`
-				});
 				uppy.on("upload-success", function(file, data) {
 					showImageElement = document.createElement('img');
 					showImageElement.src = URL.createObjectURL(file.data);
 					currentParagraph.appendChild(showImageElement);
 
-					object_key = file.meta['key'].match(new RegExp("^" + inlinePictureElement.dataset.prefix + "\\/(.+)"))[1];
+					var object_key = file.meta['key'].match(new RegExp("^" + inlinePictureElement.dataset.prefix + "\\/(.+)"))[1];
 
 					// construct uploaded file data in the format that Shrine expects
 					var uploadedFileData = JSON.stringify({

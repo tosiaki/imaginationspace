@@ -1076,6 +1076,10 @@ input.make-new-post {
 	grid-row: 1;
 	grid-column: 1;
 	margin: auto 0;
+	progress {
+		max-width: 100%;
+		width: 100%;
+	}
 }
 .uppy-remove-item {
 	grid-row: 1;
