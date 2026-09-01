@@ -16,5 +16,5 @@
 //= require activestorage
 //= require turbolinks
 //= require page_navigation
-//= require @yaireo/tagify/dist/tagify.min.js
+//= require @yaireo/tagify/dist/tagify.js
 //= require_tree .
