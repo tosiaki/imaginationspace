@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '3.3.12'
 
-gem 'rails', '~> 6.1'
+gem 'rails', '~> 7.0.0'
 gem 'logger'
 gem 'puma'
 gem 'pg'
