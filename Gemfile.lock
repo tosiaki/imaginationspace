@@ -501,7 +501,7 @@ DEPENDENCIES
   content_disposition
   cucumber-rails (~> 4.1)
   database_cleaner (~> 2.1)
-  devise
+  devise (~> 4.9.4)
   dotenv-rails
   factory_bot_rails (~> 6.5)
   faker
