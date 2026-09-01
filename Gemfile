@@ -36,7 +36,6 @@ gem 'ahoy_matey', '~> 5.2.1'
 
 # Not being used on currently active features
 gem 'webpush'
-gem 'serviceworker-rails'
 
 group :development, :test, :transfer do
   gem 'dotenv-rails'
