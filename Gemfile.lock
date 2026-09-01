@@ -80,8 +80,9 @@ GEM
       mutex_m
       securerandom (>= 0.3)
       tzinfo (~> 2.0)
-    acts-as-taggable-on (10.0.0)
-      activerecord (>= 6.1, < 7.2)
+    acts-as-taggable-on (13.0.0)
+      activerecord (>= 7.1, < 8.2)
+      zeitwerk (>= 2.4, < 3.0)
     addressable (2.9.0)
       public_suffix (>= 2.0.2, < 8.0)
     ahoy_matey (5.2.1)
@@ -532,7 +533,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  acts-as-taggable-on (~> 10.0)
+  acts-as-taggable-on (~> 13.0)
   ahoy_matey (~> 5.2.1)
   aws-sdk-s3
   bcrypt

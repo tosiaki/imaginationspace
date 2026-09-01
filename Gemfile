@@ -31,7 +31,7 @@ gem 'redis-namespace'
 gem 'webpacker'
 gem 'bootsnap'
 gem 'rack-cors'
-gem 'acts-as-taggable-on', '~> 10.0'
+gem 'acts-as-taggable-on', '~> 13.0'
 gem 'ahoy_matey', '~> 5.2.1'
 
 group :development, :test, :transfer do
