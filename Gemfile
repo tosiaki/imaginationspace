@@ -33,11 +33,11 @@ gem 'webpacker'
 gem 'bootsnap'
 gem 'rack-cors'
 gem 'acts-as-taggable-on', '~> 10.0'
+gem 'ahoy_matey', '~> 5.2.1'
 
 # Not being used on currently active features
 gem 'webpush'
 gem 'serviceworker-rails'
-gem 'ahoy_matey'
 
 group :development, :test, :transfer do
   gem 'dotenv-rails'

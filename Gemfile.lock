@@ -492,7 +492,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts-as-taggable-on (~> 10.0)
-  ahoy_matey
+  ahoy_matey (~> 5.2.1)
   aws-sdk-s3
   bcrypt
   bootsnap
