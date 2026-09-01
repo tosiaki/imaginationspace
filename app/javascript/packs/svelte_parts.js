@@ -5,6 +5,17 @@ import FlashMessages from '../components/FlashMessages.svelte';
 import DisplayContent from '../components/DisplayContent.svelte';
 import DisplayImage from '../components/DisplayImage.svelte';
 import { displayContentStore, displayImageStore } from '../stores';
+import { mount, unmount } from 'svelte';
+
+let mountedComponents = [];
+
+const mountComponent = (component, target, props = {}) => {
+  if (!target) return;
+
+  target.replaceChildren();
+  const instance = mount(component, { target, props });
+  mountedComponents.push(instance);
+};
 
 const tagsOfCategory = (element, category) => 
   Array.prototype.map.call(
@@ -13,42 +24,27 @@ const tagsOfCategory = (element, category) =>
   );
 
 document.addEventListener('turbolinks:load', event => {
+  mountedComponents.forEach(component => unmount(component));
+  mountedComponents = [];
   displayContentStore.set({});
   const createSeriesButton = document.getElementById('create-series-button');
-  createSeriesButton && (createSeriesButton.innerHTML = '');
-  new CreateSeriesButton({
-    target: createSeriesButton
-  });
+  mountComponent(CreateSeriesButton, createSeriesButton);
 
   for (let addToSeriesButton of document.getElementsByClassName('add-to-series')) {
-    addToSeriesButton.innerHTML = '';
-    new AddToSeriesButton({
-      target: addToSeriesButton,
-      props: {
-        articleId: addToSeriesButton.dataset.articleId
-      }
+    mountComponent(AddToSeriesButton, addToSeriesButton, {
+      articleId: addToSeriesButton.dataset.articleId
     });
   }
 
   const modalWindows = document.getElementById('modal-windows');
-  modalWindows.innerHTML = '';
-  new ModalWindows({
-    target: modalWindows
-  });
+  mountComponent(ModalWindows, modalWindows);
 
   const flashMessages = document.getElementById('flash-messages');
-  flashMessages.innerHTML = '';
-  new FlashMessages({
-    target: flashMessages
-  });
+  mountComponent(FlashMessages, flashMessages);
 
   const displayContent = document.getElementById('display-content');
-  displayContent.innerHTML = '';
-  new DisplayContent({
-    target: displayContent,
-    props: {
-      tagEditor: JSON.parse(document.body.dataset.tagEditor)
-    }
+  mountComponent(DisplayContent, displayContent, {
+    tagEditor: JSON.parse(document.body.dataset.tagEditor)
   });
 
   for (let statusArea of document.getElementsByClassName('status-content')) {
@@ -73,10 +69,7 @@ document.addEventListener('turbolinks:load', event => {
   }
 
   const displayImage = document.getElementById('display-image');
-  displayImage.innerHTML = '';
-  new DisplayImage({
-    target: displayImage
-  });
+  mountComponent(DisplayImage, displayImage);
 
   for (let messageImage of document.getElementsByClassName('message-image')) {
     messageImage.addEventListener('click', event => {

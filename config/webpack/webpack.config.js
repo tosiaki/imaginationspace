@@ -9,6 +9,7 @@ module.exports = merge(generateWebpackConfig(), {
     alias: {
       '@components': 'app/javascript/components'
     },
+    conditionNames: ['svelte', '...'],
     extensions: ['.svelte']
   }
 })
