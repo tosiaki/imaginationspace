@@ -31,4 +31,22 @@ class LeaderboardHelperTest < ActionView::TestCase
     assert_includes rendered, 'loading="lazy"'
     assert_includes rendered, 'decoding="async"'
   end
+
+  test "renders user mentions from the preloaded name map" do
+    @discord_user_names = { 12345 => "Example User" }
+
+    assert_equal "hello @Example User", insert_references("hello <@!12345>")
+  end
+
+  test "renders an unknown user mention without querying" do
+    @discord_user_names = {}
+
+    assert_equal "hello @12345", insert_references("hello <@!12345>")
+  end
+
+  test "renders Discord mentions without the legacy exclamation mark" do
+    @discord_user_names = { 12345 => "Example User" }
+
+    assert_equal "hello @Example User", insert_references("hello <@12345>")
+  end
 end

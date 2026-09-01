@@ -1,14 +1,15 @@
 module LeaderboardHelper
   def get_author(user_id)
-    "@#{DiscordUser.find_by(user_id: user_id).user_display_name}"
+    display_name = (@discord_user_names || {})[user_id.to_i]
+    "@#{display_name || user_id}"
   end
 
   def insert_references(message)
-    message.to_s.split(/(<:\w+:\d+>|<@!\d+>)/).map do |segment|
+    message.to_s.split(/(<:\w+:\d+>|<@!?\d+>)/).map do |segment|
       if (emoji_id = segment.match(/\A<:\w+:(\d+)>\z/)&.captures&.first)
         image_tag "https://cdn.discordapp.com/emojis/#{emoji_id}.png",
           class: "message-emoji", loading: "lazy", decoding: "async"
-      elsif (user_id = segment.match(/\A<@!(\d+)>\z/)&.captures&.first)
+      elsif (user_id = segment.match(/\A<@!?(\d+)>\z/)&.captures&.first)
         ERB::Util.html_escape(get_author(user_id))
       else
         ERB::Util.html_escape(segment)
