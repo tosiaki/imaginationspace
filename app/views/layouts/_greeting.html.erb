@@ -4,7 +4,7 @@
                         <li id="create-series-button"></li>
 			<li><%= link_to "Hi, #{current_user.name}!", current_user %></li>
 			<li><%= link_to "Preferences", preferences_user_path(current_user) %></li>
-			<li><%= link_to "Logout", logout_path %></li>
+			<li><%= link_to "Logout", logout_path, method: :delete %></li>
 		<% else %>
 			<li><%= link_to "Login", login_path %></li>
 			<li><%= link_to "Signup", signup_path %></li>

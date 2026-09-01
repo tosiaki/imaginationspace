@@ -1,13 +1,17 @@
 require "rails_helper"
 
 RSpec.feature "Guest queries a tag", :type => :feature do
+  def search_for(tag)
+    page.driver.submit :post, works_search_path, tags: tag
+  end
+
   context 'when there are works found' do
     describe 'the comics display' do
       let!(:comic) { create(:comic) }
 
       context 'with no nonzero stats' do
         background do
-          visit works_search_path(tags: 'Tutorial')
+          search_for('Tutorial')
         end
 
         it 'displays the title' do
@@ -15,10 +19,10 @@ RSpec.feature "Guest queries a tag", :type => :feature do
         end
 
         it 'displays the tags' do
-          expect(page.body).to have_link(comic.fandom_list.first)
-          expect(page.body).to have_link(comic.character_list.first)
-          expect(page.body).to have_link(comic.relationship_list.first)
-          expect(page.body).to have_link(comic.tag_list.first)
+          expect(page.body).to have_button(comic.fandom_list.first)
+          expect(page.body).to have_button(comic.character_list.first)
+          expect(page.body).to have_button(comic.relationship_list.first)
+          expect(page.body).to have_button(comic.tag_list.first)
         end
 
         it 'displays the summary information' do
@@ -43,9 +47,9 @@ RSpec.feature "Guest queries a tag", :type => :feature do
           comment.user_id = user_id
           comment.work = comic
           comment.save
-          visit works_search_path(tags: 'Tutorial')
+          search_for('Tutorial')
           click_link "ComicTitle"
-          visit works_search_path(tags: 'Tutorial')
+          search_for('Tutorial')
         end
 
         it 'does display stats' do

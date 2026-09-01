@@ -1653,22 +1653,35 @@ a.thumbnail-title {
 ul.outer-fandom-list {
 	display: inline;
 }
-a.summary-relationship {
+.summary-relationship {
 	background: #eee;
 }
 a.title-link {
 	font-weight: 700;
 }
-a.tag {
+.tag {
 	color: #111;
 	line-height: 1.5;
 	text-decoration: none;
 	padding: 0;
 	border-bottom: 1px dotted;
 }
-a.tag:hover {
+.tag:hover {
 	background: #900;
 	color: #fff;
+}
+.transient-search-form {
+	display: inline;
+
+	button {
+		appearance: none;
+		background: none;
+		border-left: 0;
+		border-right: 0;
+		border-top: 0;
+		cursor: pointer;
+		font: inherit;
+	}
 }
 ul.stats li {
 	float: left;

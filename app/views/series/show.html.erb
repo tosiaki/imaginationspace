@@ -7,9 +7,9 @@
         <%= link_to series_chapter_title(article, index), article %>
         <% if user_signed_in? %>
           <span>
-            <%= link_to 'move up', series_move_up_path(@series.url, article.id) if index > 0 %>
-            <%= link_to 'move down', series_move_down_path(@series.url, article.id) if index < @series.articles.length - 1 %>
-            <%= link_to 'remove', series_remove_path(@series.url, article.id) %>
+            <%= link_to 'move up', series_move_up_path(@series.url, article.id), method: :patch if index > 0 %>
+            <%= link_to 'move down', series_move_down_path(@series.url, article.id), method: :patch if index < @series.articles.length - 1 %>
+            <%= link_to 'remove', series_remove_path(@series.url, article.id), method: :delete %>
           </span>
         <% end %>
       </li>

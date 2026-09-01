@@ -1,6 +1,6 @@
 class SeriesController < ApplicationController
-  protect_from_forgery except: [:create]
-  before_action :authenticate_user!, only: [:create, :update, :destroy]
+  before_action :authenticate_user!, only: [:create, :add, :move_up, :move_down, :remove, :update, :destroy]
+  before_action :set_owned_series, only: [:move_up, :move_down, :remove, :update, :destroy]
 
   def create
     render json: current_user.series.create({
@@ -20,19 +20,30 @@ class SeriesController < ApplicationController
 
   def add
     article = Article.find(params[:articleId])
-    params[:series].each do |series_url|
-      series = Series.find_by(url: series_url)
-      series.series_articles.create(article: article, position: series.series_articles.count + 1)
+    series_urls = Array(params[:series]).map(&:to_s).reject(&:blank?).uniq
+    raise ActiveRecord::RecordNotFound if series_urls.empty?
+
+    series_by_url = current_user.series.where(url: series_urls).index_by(&:url)
+    raise ActiveRecord::RecordNotFound unless series_by_url.size == series_urls.size
+
+    Series.transaction do
+      series_urls.each do |series_url|
+        series = series_by_url.fetch(series_url)
+        series.with_lock do
+          series.series_articles.find_or_create_by!(article: article) do |listing|
+            listing.position = series.series_articles.maximum(:position).to_i + 1
+          end
+        end
+      end
     end
-    record_activity('add to series', "Added article #{params[:articleId]} to series #{params[:series].join(',')}.")
+    record_activity('add to series', "Added article #{params[:articleId]} to series #{series_urls.join(',')}.")
     render json: "Added"
   end
 
   def move_up
-    ActiveRecord::Base.transaction do
-      series = Series.find_by(url: params[:series])
-      listing = series.series_articles.find_by(article: params[:article])
-      previous_item = series.series_articles.find_by(position: listing.position - 1)
+    @series.with_lock do
+      listing = @series.series_articles.find_by!(article: params[:article])
+      previous_item = @series.series_articles.find_by!(position: listing.position - 1)
       listing.decrement!(:position)
       previous_item.increment!(:position)
       record_activity('move article', "Moved article #{params[:article]} up and #{previous_item.id} down.")
@@ -41,10 +52,9 @@ class SeriesController < ApplicationController
   end
 
   def move_down
-    ActiveRecord::Base.transaction do
-      series = Series.find_by(url: params[:series])
-      listing = series.series_articles.find_by(article: params[:article])
-      next_item = series.series_articles.find_by(position: listing.position + 1)
+    @series.with_lock do
+      listing = @series.series_articles.find_by!(article: params[:article])
+      next_item = @series.series_articles.find_by!(position: listing.position + 1)
       listing.increment!(:position)
       next_item.decrement!(:position)
       record_activity('move article', "Moved article #{params[:article]} down and #{next_item.id} up.")
@@ -53,10 +63,9 @@ class SeriesController < ApplicationController
   end
 
   def remove
-    series = Series.find_by(url: params[:series])
-    series.articles.delete(Article.find(params[:article]))
+    @series.articles.delete(Article.find(params[:article]))
     redirect_back(fallback_location: root_path)
-    record_activity('delete series', "Deleted series #{params[:series]}.")
+    record_activity('remove from series', "Removed article #{params[:article]} from series #{params[:series]}.")
   end
 
   def update
@@ -70,5 +79,9 @@ class SeriesController < ApplicationController
   private
     def series_by_url
       Series.find_by(url: params[:url])
+    end
+
+    def set_owned_series
+      @series = current_user.series.find_by!(url: params[:series] || params[:id] || params[:url])
     end
 end

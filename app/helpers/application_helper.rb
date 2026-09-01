@@ -17,15 +17,46 @@ module ApplicationHelper
 
   def summary_display_links(work)
     all_tags = work.relationship_list.collect do |relationship|
-      link_to relationship, works_search_path(tags: relationship), class: "summary-relationship tag"
+      transient_work_search_button relationship, tags: relationship, class: "summary-relationship tag"
     end
     all_tags += work.character_list.collect do |character|
-      link_to character, works_search_path(tags: character), class: "tag"
+      transient_work_search_button character, tags: character, class: "tag"
     end
     all_tags += work.tag_list.collect do |tag|
-      link_to tag, works_search_path(tags: tag), class: "tag"
+      transient_work_search_button tag, tags: tag, class: "tag"
     end
     all_tags.join(", ").html_safe
+  end
+
+  def transient_work_search_button(label, tags:, **options)
+    button_to label, works_search_path,
+      method: :post,
+      params: { tags: tags },
+      form: { class: "transient-search-form" },
+      **options
+  end
+
+  def transient_work_pagination(collection, param_name:)
+    return if collection.total_pages <= 1
+
+    current_page = collection.current_page
+    controls = []
+    controls << transient_work_page_button("Previous", param_name, current_page - 1) if current_page > 1
+    controls << content_tag(:span, "Page #{current_page} of #{collection.total_pages}")
+    controls << transient_work_page_button("Next", param_name, current_page + 1) if current_page < collection.total_pages
+    content_tag(:nav, safe_join(controls), class: "pagination actions", aria: { label: "Search results pages" })
+  end
+
+  def transient_work_page_button(label, param_name, page)
+    search_params = {
+      tags: @search_tags.join(","),
+      comics_page: @comics_page,
+      drawings_page: @drawings_page
+    }.merge(param_name => page)
+    button_to label, works_search_path,
+      method: :post,
+      params: search_params,
+      form: { class: "transient-search-form" }
   end
 
   def display_time_string
@@ -145,7 +176,7 @@ module ApplicationHelper
 
   def author_link(work)
     if work.authorship == 'scanlation'
-      work.author_list.collect { |author| link_to author, works_search_path(tags: author)}.join(", ").html_safe
+      work.author_list.collect { |author| transient_work_search_button(author, tags: author) }.join(", ").html_safe
     else
       link_to work.user.name, work.user
     end

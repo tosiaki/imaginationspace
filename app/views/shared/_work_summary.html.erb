@@ -5,7 +5,7 @@
 		<li><%= link_to work.title, work, class: "title-link" %>
 			(<ul class="outer-fandom-list">
 				<% work.fandom_list.each do |fandom| %>
-					<%= link_to fandom, works_search_path(tags: fandom), class: "tag" %>
+					<%= transient_work_search_button fandom, tags: fandom, class: "tag" %>
 				<% end %>
 			</ul>)
 			by <%= author_link work %></li>

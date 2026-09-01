@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     get 'login', to: 'users/sessions#new', as: :login
     # get 'login', to: 'users/sessions#new', as: :new_user_session
     post 'login', to: 'users/sessions#create'
-    get 'logout', to: 'users/sessions#destroy', as: :logout
+    delete 'logout', to: 'users/sessions#destroy', as: :logout
     get 'resend_confirmation', to: 'users/confirmations#new', as: :resend_confirmation
     post 'resend_confirmation', to: 'users/confirmations#create'
     get 'reset_password', to: 'users/passwords#new', as: :reset_password
@@ -111,14 +111,13 @@ Rails.application.routes.draw do
   end
 
   resources :works, only: :index
-  get 'works/search', to: 'works#search', as: :works_search
-  get 'works/new_search', to: 'works#parse_search', as: :parse_search
+  post 'works/search', to: 'works#search', as: :works_search
 
   resources :series, only: [:create, :show, :index, :update, :destroy]
   post 'series/add', to: 'series#add'
-  get 'series/:series/move_up/:article', to: 'series#move_up', as: :series_move_up
-  get 'series/:series/move_down/:article', to: 'series#move_down', as: :series_move_down
-  get 'series/:series/remove/:article', to: 'series#remove', as: :series_remove
+  patch 'series/:series/move_up/:article', to: 'series#move_up', as: :series_move_up
+  patch 'series/:series/move_down/:article', to: 'series#move_down', as: :series_move_down
+  delete 'series/:series/remove/:article', to: 'series#remove', as: :series_remove
 
   get 'leaderboard', to: 'leaderboard#weekly'
 
