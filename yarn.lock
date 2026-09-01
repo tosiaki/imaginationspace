@@ -3347,7 +3347,7 @@ webpack-dev-server@6.0.0:
     webpack-dev-middleware "^8.0.3"
     ws "^8.20.0"
 
-webpack-merge@5.10.0, webpack-merge@^5.8.0:
+webpack-merge@^5.8.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/webpack-merge/-/webpack-merge-5.10.0.tgz#a3ad5d773241e9c682803abf628d4cd62b8a4177"
   integrity sha512-+4zXKdx7UnO+1jaN4l2lHVD+mFvnlZQP/6ljaJVb4SZiwIKeUnrT5l0gkT8z+n4hKpC+jpOv6O9R+gLtag7pSA==
