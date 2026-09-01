@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2026_09_01_132000) do
+ActiveRecord::Schema.define(version: 2026_09_01_143000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2026_09_01_132000) do
     t.bigint "article_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["article_id", "article_tag_id"], name: "index_article_taggings_on_article_id_and_article_tag_id", unique: true
     t.index ["article_id"], name: "index_article_taggings_on_article_id"
     t.index ["article_tag_id"], name: "index_article_taggings_on_article_tag_id"
   end
@@ -97,6 +98,7 @@ ActiveRecord::Schema.define(version: 2026_09_01_132000) do
     t.integer "pages_count", default: 0
     t.bigint "thread_id"
     t.datetime "reply_time"
+    t.index ["reply_time"], name: "index_articles_on_reply_time"
     t.index ["reply_to_id"], name: "index_articles_on_reply_to_id"
     t.index ["thread_id"], name: "index_articles_on_thread_id"
   end
@@ -164,6 +166,7 @@ ActiveRecord::Schema.define(version: 2026_09_01_132000) do
     t.text "url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_message_id"], name: "index_discord_attachments_on_discord_message_id"
   end
 
   create_table "discord_embeds", force: :cascade do |t|
@@ -177,6 +180,7 @@ ActiveRecord::Schema.define(version: 2026_09_01_132000) do
     t.text "video_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_message_id"], name: "index_discord_embeds_on_discord_message_id"
   end
 
   create_table "discord_messages", force: :cascade do |t|
@@ -191,6 +195,7 @@ ActiveRecord::Schema.define(version: 2026_09_01_132000) do
     t.bigint "reference"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["message_created_at"], name: "index_discord_messages_on_message_created_at"
   end
 
   create_table "discord_reactions", force: :cascade do |t|
@@ -201,6 +206,7 @@ ActiveRecord::Schema.define(version: 2026_09_01_132000) do
     t.text "emoji_url"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["discord_message_id"], name: "index_discord_reactions_on_discord_message_id"
   end
 
   create_table "discord_users", force: :cascade do |t|
@@ -388,6 +394,7 @@ ActiveRecord::Schema.define(version: 2026_09_01_132000) do
     t.datetime "updated_at", null: false
     t.datetime "timeline_time"
     t.index ["post_type", "post_id"], name: "index_statuses_on_post_type_and_post_id"
+    t.index ["timeline_time"], name: "index_statuses_on_timeline_time"
     t.index ["user_id"], name: "index_statuses_on_user_id"
   end
 

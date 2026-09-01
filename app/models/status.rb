@@ -10,6 +10,20 @@ class Status < ApplicationRecord
   validates :post, presence: true
   validates_associated :post
 
+  def self.listing_preloads
+    article_associations = [
+      :user, :pages, :media_tags, :fandom_tags, :character_tags,
+      :relationship_tags, :other_tags, :language_tags, :attribution_tags
+    ]
+
+    [
+      :post,
+      :user,
+      { article: article_associations + [{ thread_posts: article_associations }] },
+      { signal_boost: [{ origin: article_associations }] }
+    ]
+  end
+
   def article
     return unless post_type == "Article"
     super

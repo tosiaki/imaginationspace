@@ -6,6 +6,7 @@ class LeaderboardController < ApplicationController
     joins(:reactions).
     includes(:embeds).
     includes(:attachments).
+    preload(:reactions).
     group('discord_messages.id').
     where('message_created_at > ?', 30.days.ago).
     order('reaction_count DESC').

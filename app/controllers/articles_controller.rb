@@ -191,11 +191,7 @@ class ArticlesController < ApplicationController
     end
     ActiveRecord::Associations::Preloader.new(
       records: @statuses,
-      associations: [:post, :user,
-        article: [:user, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags, :pages,
-          thread_posts: [:user, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags, :pages]],
-        signal_boost: [origin: [:user, :pages, :media_tags, :fandom_tags, :character_tags, :relationship_tags, :other_tags, :attribution_tags]],
-      ]
+      associations: Status.listing_preloads
     ).call
     @new_article = Article.new(guest_params)
   end
