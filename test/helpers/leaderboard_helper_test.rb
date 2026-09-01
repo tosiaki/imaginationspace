@@ -49,4 +49,17 @@ class LeaderboardHelperTest < ActionView::TestCase
 
     assert_equal "hello @Example User", insert_references("hello <@12345>")
   end
+
+  test "defers third-party video frames until an explicit action" do
+    rendered = deferred_video_embed("https://www.youtube.com/embed/example", title: "YouTube video")
+
+    assert_includes rendered, 'data-embed-src="https://www.youtube.com/embed/example"'
+    assert_includes rendered, "Load YouTube video"
+    assert_includes rendered, 'rel="nofollow ugc noopener noreferrer"'
+    refute_includes rendered, "<iframe"
+  end
+
+  test "does not render a deferred embed for unsafe URLs" do
+    assert_nil deferred_video_embed("javascript:alert(1)", title: "Unsafe video")
+  end
 end

@@ -28,4 +28,17 @@ module LeaderboardHelper
     url = external_http_url(value)
     url && URI.parse(url).host == host
   end
+
+  def deferred_video_embed(source_url, title:, external_url: source_url)
+    source = external_http_url(source_url)
+    destination = external_http_url(external_url)
+    return unless source && destination
+
+    content_tag(:div, class: "deferred-video-embed") do
+      button_tag("Load #{title}", type: "button", class: "deferred-video-load",
+        data: { embed_src: source, embed_title: title }) +
+        link_to("Open on provider", destination, target: "_blank",
+          rel: "nofollow ugc noopener noreferrer", class: "deferred-video-link")
+    end
+  end
 end

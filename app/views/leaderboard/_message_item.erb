@@ -12,10 +12,10 @@
         <% elsif external_http_url(embed.image_proxy_url) %>
           <%= image_tag external_http_url(embed.image_proxy_url), class: 'message-image', loading: 'lazy', decoding: 'async' %>
         <% elsif external_host?(embed.url, 'www.facebook.com') %>
-          <iframe src="<%= "https://www.facebook.com/plugins/video.php?href=#{ERB::Util.url_encode(external_http_url(embed.url))}&show_text=false" %>" title="Facebook video" loading="lazy" scrolling="no" frameborder="0" allowfullscreen="true" allow="encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          <%= deferred_video_embed "https://www.facebook.com/plugins/video.php?href=#{ERB::Util.url_encode(external_http_url(embed.url))}&show_text=false", title: "Facebook video", external_url: embed.url %>
         <% elsif external_http_url(embed.video_url) %>
           <% if external_host?(embed.video_url, 'www.youtube.com') %>
-            <iframe width="560" height="315" src="<%= external_http_url(embed.video_url) %>" title="YouTube video" loading="lazy" frameborder="0" allow="encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <%= deferred_video_embed embed.video_url, title: "YouTube video" %>
           <% else %>
             <video class="message-video" controls loop preload="none"><source src="<%= external_http_url(embed.video_url) %>" /></video>
           <% end %>

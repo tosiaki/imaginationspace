@@ -38,6 +38,24 @@
         max-width: 100%;
 }
 
+.deferred-video-embed {
+        display: flex;
+        align-items: center;
+        gap: 0.7em;
+        min-height: 3em;
+}
+
+.deferred-video-embed iframe {
+        width: 100%;
+        max-width: 560px;
+        aspect-ratio: 16 / 9;
+        border: 0;
+}
+
+.deferred-video-load {
+        cursor: pointer;
+}
+
 .embed-description:not(:first-child) {
         margin-top: 0.4em;
 }
