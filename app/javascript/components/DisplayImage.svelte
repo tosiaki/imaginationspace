@@ -56,7 +56,7 @@
 {#if $displayImageStore.image}
   <div class="display-image-area" on:click={handleClick}>
     <div class="display-image-container">
-      <img src={$displayImageStore.image} bind:this={imageElement} class:fit />
+      <img src={$displayImageStore.image} alt={$displayImageStore.alt} bind:this={imageElement} class:fit />
     </div>
   </div>
 {/if}

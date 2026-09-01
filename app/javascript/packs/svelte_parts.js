@@ -82,7 +82,8 @@ document.addEventListener('turbolinks:load', event => {
     messageImage.addEventListener('click', event => {
       event.preventDefault();
       displayImageStore.set({
-        image: messageImage.getAttribute('src')
+        image: messageImage.getAttribute('src'),
+        alt: messageImage.getAttribute('alt') || ''
       });
     });
   }
