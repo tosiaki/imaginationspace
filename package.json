@@ -16,7 +16,7 @@
     "svelte-preprocess": "6.0.5",
     "terser-webpack-plugin": "5.6.1",
     "webpack": "5.110.2",
-    "webpack-assets-manifest": "5.2.1",
+    "webpack-assets-manifest": "6.5.2",
     "webpack-cli": "5.1.4",
     "webpack-merge": "5.10.0",
     "webpack-sources": "3.5.1"
