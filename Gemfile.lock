@@ -473,8 +473,6 @@ GEM
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
     ssrf_filter (1.5.0)
-    sucker_punch (3.3.0)
-      concurrent-ruby (~> 1.0)
     sys-uname (1.5.1)
       ffi (~> 1.1)
       memoist3 (~> 1.0.0)
@@ -567,7 +565,6 @@ DEPENDENCIES
   shrine
   spring (~> 4.7)
   spring-watcher-listen (~> 2.1)
-  sucker_punch
   turbolinks
   tzinfo-data
   uglifier
