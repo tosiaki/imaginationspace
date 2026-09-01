@@ -30,7 +30,7 @@ gem 'redis'
 gem 'redis-namespace'
 gem 'webpacker'
 gem 'bootsnap'
-gem 'rack-cors'
+gem 'rack-cors', '~> 3.0'
 gem 'acts-as-taggable-on', '~> 13.0'
 gem 'ahoy_matey', '~> 5.5.0'
 
