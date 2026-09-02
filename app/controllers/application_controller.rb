@@ -12,6 +12,14 @@ class ApplicationController < ActionController::Base
 
   protected
 
+    def require_authenticated_user!
+      return if user_signed_in?
+
+      store_location_for(:user, request.fullpath) if request.get?
+      redirect_to login_path
+      response.headers["Cache-Control"] = "no-store"
+    end
+
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :site_updates])
     end
