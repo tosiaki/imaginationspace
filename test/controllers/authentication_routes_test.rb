@@ -53,6 +53,7 @@ class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
     queries = count_database_queries { get account_path }
 
     assert_redirected_to login_path
+    assert_equal "no-store", response.headers["Cache-Control"]
     assert_empty queries
   end
 

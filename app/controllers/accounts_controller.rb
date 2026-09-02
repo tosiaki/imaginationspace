@@ -1,4 +1,5 @@
 class AccountsController < ApplicationController
+  before_action :prevent_account_response_caching
   before_action :authenticate_user!
   after_action :prevent_account_response_caching
 
