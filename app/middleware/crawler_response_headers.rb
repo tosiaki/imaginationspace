@@ -10,7 +10,7 @@ class CrawlerResponseHeaders
   def call(environment)
     status, headers, body = @app.call(environment)
     headers["X-Robots-Tag"] ||= ROBOTS_DIRECTIVE
-    headers["Cache-Control"] = REDIRECT_CACHE_CONTROL if status.between?(300, 399)
+    headers["Cache-Control"] = REDIRECT_CACHE_CONTROL if [301, 308].include?(status)
     if status == 200 && environment["PATH_INFO"] == "/robots.txt"
       headers["Cache-Control"] = REDIRECT_CACHE_CONTROL
     end
