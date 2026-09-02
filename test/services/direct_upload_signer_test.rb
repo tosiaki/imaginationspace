@@ -10,7 +10,7 @@ class DirectUploadSignerTest < ActiveSupport::TestCase
 
   test "signs a bounded single-part upload with a short lifetime" do
     storage = FakeStorage.new([])
-    key = "c56a4180-65aa-42ec-a945-5fd21dec0538.png"
+    key = "uploads/c56a4180-65aa-42ec-a945-5fd21dec0538.png"
 
     result = DirectUploadSigner.new(storage: storage).call(method: "PUT", key: key, size: 123)
 
@@ -22,12 +22,12 @@ class DirectUploadSignerTest < ActiveSupport::TestCase
 
   test "rejects unsupported operations, unsafe keys, and invalid sizes" do
     signer = DirectUploadSigner.new(storage: FakeStorage.new([]))
-    key = "c56a4180-65aa-42ec-a945-5fd21dec0538.png"
+    key = "uploads/c56a4180-65aa-42ec-a945-5fd21dec0538.png"
 
     assert_raises(DirectUploadSigner::InvalidRequest) { signer.call(method: "DELETE", key: key, size: 1) }
     assert_raises(DirectUploadSigner::InvalidRequest) { signer.call(method: "PUT", key: "../stored-file", size: 1) }
     assert_raises(DirectUploadSigner::InvalidRequest) do
-      signer.call(method: "PUT", key: "c56a4180-65aa-42ec-a945-5fd21dec0538.exe", size: 1)
+      signer.call(method: "PUT", key: "uploads/c56a4180-65aa-42ec-a945-5fd21dec0538.exe", size: 1)
     end
     assert_raises(DirectUploadSigner::InvalidRequest) { signer.call(method: "PUT", key: key, size: 0) }
     assert_raises(DirectUploadSigner::InvalidRequest) do

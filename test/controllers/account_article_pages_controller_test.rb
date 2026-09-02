@@ -119,7 +119,7 @@ class AccountArticlePagesControllerTest < ActionDispatch::IntegrationTest
   test "consumes valid upload authorization and creates a Shrine attachment" do
     article_id = insert_article_with_pages(users(:one))
     log_in users(:one)
-    key = "c56a4180-65aa-42ec-a945-5fd21dec0538.png"
+    key = "uploads/c56a4180-65aa-42ec-a945-5fd21dec0538.png"
     image_bytes = Base64.decode64("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=")
     size = image_bytes.bytesize
     authorization = Rails.application.message_verifier(:direct_upload_authorization).generate(
@@ -157,7 +157,7 @@ class AccountArticlePagesControllerTest < ActionDispatch::IntegrationTest
   test "rejects cached content whose bytes are not a supported image" do
     article_id = insert_article_with_pages(users(:one))
     log_in users(:one)
-    key = "c56a4180-65aa-42ec-a945-5fd21dec0538.png"
+    key = "uploads/c56a4180-65aa-42ec-a945-5fd21dec0538.png"
     image_bytes = "plain text presented as a PNG"
     size = image_bytes.bytesize
     authorization = Rails.application.message_verifier(:direct_upload_authorization).generate(

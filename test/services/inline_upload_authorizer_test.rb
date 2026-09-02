@@ -1,7 +1,7 @@
 require "test_helper"
 
 class InlineUploadAuthorizerTest < ActiveSupport::TestCase
-  def upload_data(user:, key: "c56a4180-65aa-42ec-a945-5fd21dec0538.png", size: 8)
+  def upload_data(user:, key: "uploads/c56a4180-65aa-42ec-a945-5fd21dec0538.png", size: 8)
     verifier = Rails.application.message_verifier(:direct_upload_authorization)
     authorization = verifier.generate(
       { user_id: user.id, key: key, size: size },

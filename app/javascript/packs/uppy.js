@@ -42,7 +42,7 @@ window.createDirectUploader = options => {
   uppy.use(AwsS3, {
     shouldUseMultipart: false,
     generateObjectKey: file => {
-      const key = `${crypto.randomUUID()}${extensionFor(file.name)}`;
+      const key = `uploads/${crypto.randomUUID()}${extensionFor(file.name)}`;
       uploadSizes.set(key, file.size);
       return key;
     },

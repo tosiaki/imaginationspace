@@ -17,7 +17,7 @@ class DirectUploadsControllerTest < ActionController::TestCase
     @request.env["devise.mapping"] = Devise.mappings[:user]
     @parameters = {
       method: "PUT",
-      key: "c56a4180-65aa-42ec-a945-5fd21dec0538.png",
+      key: "uploads/c56a4180-65aa-42ec-a945-5fd21dec0538.png",
       size: 123
     }
   end

@@ -43,7 +43,7 @@ class DirectUploadBrowserTest < ApplicationSystemTestCase
     authorization = JSON.parse(signing_request.fetch("options").fetch("body"))
     assert_equal "PUT", authorization.fetch("method")
     assert_equal 8, authorization.fetch("size")
-    assert_match(/\A[0-9a-f-]{36}\.png\z/, authorization.fetch("key"))
+    assert_match(/\Auploads\/[0-9a-f-]{36}\.png\z/, authorization.fetch("key"))
 
     storage_request = page.evaluate_script("window.testStorageRequest")
     assert_equal "PUT", storage_request.fetch("method")
