@@ -196,7 +196,7 @@ $(document).on('turbolinks:load', function(){
 					showImageElement.src = URL.createObjectURL(file.data);
 					currentParagraph.appendChild(showImageElement);
 
-					var object_key = window.directUploadObjectKey(file);
+					var object_key = window.directUploadObjectKey(data);
 
 					// construct uploaded file data in the format that Shrine expects
 					var uploadedFileData = JSON.stringify({

@@ -48,4 +48,4 @@ window.createDirectUploader = options => {
   return uppy;
 };
 
-window.directUploadObjectKey = file => file.response.body.key;
+window.directUploadObjectKey = uploadResponse => uploadResponse.body.key;
