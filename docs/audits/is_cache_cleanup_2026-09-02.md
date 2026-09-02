@@ -118,8 +118,60 @@ Only after all checks passed were the 423 exact manifest keys deleted.
 - remaining legacy objects outside `is_cache/uploads/`: 0
 
 The active `is_cache/uploads/` namespace was explicitly excluded from both the
-archive and deletion. The 36 previously identified unattached database rows
-were not modified; their historical S3 targets are now available only through
-the local archive when they were among these retained objects or through the
-previously documented exact-copy survivor when they referred to the earlier
-cleanup set.
+archive and deletion. At the end of this S3 phase, the 36 previously identified
+unattached database rows remained unchanged; their historical S3 targets were
+available through the local archive when they were among these retained objects
+or through the previously documented exact-copy survivor when they referred to
+the earlier cleanup set. Their later database cleanup is documented below.
+
+The local archive was subsequently copied to the removable volume labelled
+`Lexar` at:
+
+`F:\imaginationspace-archives\is_cache-legacy-2026-09-02`
+
+Although Windows reported the FAT32 volume health as `Warning`, a full
+post-copy verification succeeded: the manifest digest matched and all 358
+unique blobs matched both their recorded sizes and SHA-256 digests. The copy is
+an interim backup and is intended to move into another project's archival
+system later; that transfer should be recorded and independently verified when
+it occurs.
+
+## Orphan cache-reference row inspection and removal
+
+Before database deletion, all 36 rows were re-read from production with their
+raw `picture_data`. Every row had null `page_type` and `page_id`, had
+`inline_picture = false`, and pointed to Shrine cache storage. The set contained
+28 unique cache keys:
+
+- 19 rows referred to objects preserved in the local archive.
+- 17 rows referred to objects from the earlier exact-copy cleanup.
+- Nine rows described zero-byte legacy GIF uploads.
+- Several clusters repeated the same key and metadata across multiple rows,
+  consistent with retried or interrupted attachment creation.
+
+Adjacent-row and timestamp checks found successful page-import activity around
+several clusters. Exact-copy survivors included promoted objects associated
+with pages 4086, 7924, 8355, 9560, 11497, and 11500; some other promoted copies
+used an orphan row's own ID without completing its database association. The
+2019 `028.png` cache object also preceded article 991's page-import sequence by
+about six minutes. These observations explain the rows as incomplete upload or
+association attempts rather than live page attachments.
+
+Heroku database backup `b607` completed before deletion. A canonical projection
+of row ID, association fields, inline flag, and raw attachment JSON contained
+exactly 36 rows and had SHA-256:
+
+`de3f781c7499539a2fb4f08a6039133388cad162503c0b70cf58e3b2d8592587`
+
+The deletion transaction locked and re-derived that exact projection, aborting
+unless both its ordered IDs and digest matched. It then deleted exactly the 36
+rows. The production cache-orphan predicate returned zero afterward.
+
+This exposed a separate historical residue that was not deleted:
+
+- 10,450 unattached `ShrinePicture` rows have null `picture_data` and therefore
+  contain no attachment reference.
+- Ten unattached rows contain stored original and derivative attachment JSON.
+  No indirect references to their `picture/<id>/` paths were found in page
+  content, page display-image fields, or signal-boost comments, but their S3
+  objects require a separate archive and exact-reference audit before removal.
