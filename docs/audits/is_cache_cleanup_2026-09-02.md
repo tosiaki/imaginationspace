@@ -200,3 +200,43 @@ match, however. Therefore, original-image duplication alone is not a safe
 deletion rule for these prefixes. The complete 30-object set remains untouched
 and should be archived with payload hashes before either its S3 objects or ten
 database rows are removed.
+
+The 30 objects were subsequently archived in content-addressed form at both:
+
+- `C:\Users\aworl\Documents\imaginationspace-archives\detached-store-2026-09-02`
+- `G:\imaginationspace-archives\detached-store-2026-09-02`
+
+The archive contains 28 unique payload blobs. Both copies were independently
+verified against the manifest and every payload SHA-256 before deletion.
+
+- objects: 30
+- logical bytes: 16,443,453
+- unique blobs: 28
+- manifest SHA-256:
+  `fa3b7791a955c5ebdd16c16e878ea7b2f6e4b86f125395e892a3aba5746f5a2f`
+
+The deletion phase re-listed only the ten recorded `is/picture/<id>/` prefixes,
+required the live key/size/ETag/timestamp/storage-class projection to match the
+manifest, and re-hashed every local payload. It then deleted exactly 30 objects
+with no errors and verified that all ten target prefixes were empty.
+
+The corresponding ten database rows were separately locked and checked against
+a canonical raw-row SHA-256 of
+`db1279e9912e036189b6480714748d1957df0a80a9fc7c7ed6cd4016126427db`.
+Exactly those ten rows were deleted, leaving no unattached row with non-null
+attachment data.
+
+### Empty historical row cleanup
+
+The remaining 10,450 unattached rows were all uniform empty shells:
+
+- `page_type` null
+- `page_id` null
+- `picture_data` null
+- `inline_picture = false`
+
+Their ordered ID projection ranged from 353 through 19,441 and had SHA-256
+`81b486fff22433727aaa3d4e2b92197d33b20a8705bc6a3b2be688e8e809ed89`.
+A transaction locked and re-derived that exact set and deleted only those IDs.
+Post-deletion verification found zero empty targets and zero unattached
+`ShrinePicture` rows of any kind. The 11,298 associated picture rows remained.
