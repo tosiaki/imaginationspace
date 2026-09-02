@@ -1,41 +1,51 @@
 import Uppy from '@uppy/core';
 import AwsS3 from '@uppy/aws-s3';
 
-const getPresignedPost = async (file, signal) => {
-  const location = new URL('/s3/params', window.location.origin);
-  location.search = new URLSearchParams({
-    filename: file.name,
-    type: file.type || 'application/octet-stream'
-  });
+const csrfToken = () => {
+  const token = document.querySelector('meta[name="csrf-token"]')?.content;
+  if (!token) throw new Error('Unable to authorize upload (missing CSRF token)');
+  return token;
+};
 
-  const response = await fetch(location, {
+const extensionFor = filename => {
+  const match = filename.toLowerCase().match(/\.([a-z0-9]{1,10})$/);
+  return match ? `.${match[1]}` : '';
+};
+
+const authorizeRequest = async (request, size) => {
+  const response = await fetch('/s3/params', {
+    method: 'POST',
     credentials: 'same-origin',
-    headers: { Accept: 'application/json' },
-    signal
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': csrfToken()
+    },
+    body: JSON.stringify({ ...request, size }),
   });
 
   if (!response.ok) {
     throw new Error(`Unable to authorize upload (${response.status})`);
   }
 
-  const parameters = await response.json();
-  return {
-    ...parameters,
-    method: parameters.method.toUpperCase()
-  };
+  return response.json();
 };
 
 window.createDirectUploader = options => {
   const uppy = new Uppy(options);
+  const uploadSizes = new Map();
 
   uppy.use(AwsS3, {
     shouldUseMultipart: false,
-    getUploadParameters: async (file, { signal }) => {
-      const parameters = await getPresignedPost(file, signal);
-      uppy.setFileMeta(file.id, { key: parameters.fields.key });
-      return parameters;
-    }
+    generateObjectKey: file => {
+      const key = `${crypto.randomUUID()}${extensionFor(file.name)}`;
+      uploadSizes.set(key, file.size);
+      return key;
+    },
+    signRequest: request => authorizeRequest(request, uploadSizes.get(request.key))
   });
 
   return uppy;
 };
+
+window.directUploadObjectKey = file => file.response.body.key;

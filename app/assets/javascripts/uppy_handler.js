@@ -57,7 +57,7 @@ function fileUpload(uppyNode, fileInputElement, inPostingBoxElement) {
   uppy.on('upload-success', function (file, data) {
     uppyProgress.value = 100;
     uppyInnerContainer.textContent = 'Upload complete';
-    var object_key = file.meta['key'].match(new RegExp("^" + fileInputElement.dataset.prefix + "\\/(.+)"))[1];
+    var object_key = window.directUploadObjectKey(file);
 
     // construct uploaded file data in the format that Shrine expects
     var uploadedFileData = JSON.stringify({

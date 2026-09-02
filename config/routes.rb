@@ -90,7 +90,7 @@ Rails.application.routes.draw do
 
   resources :article_tags, only: :index
 
-  mount Shrine.presign_endpoint(:cache) => "/s3/params"
+  post "s3/params", to: "direct_uploads#create"
 
   resources :drawings, only: [:new, :create, :show, :index, :edit, :update, :destroy], parent: "Drawing" do
     resources :comments, only: :create
