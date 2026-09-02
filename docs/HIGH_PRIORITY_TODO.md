@@ -7,6 +7,10 @@ rule, independently verified deletion, retained-object findings, and scoped
 future lifecycle rule are recorded in
 `docs/audits/is_cache_cleanup_2026-09-02.md`.
 
+The final 423 unmatched historical objects were later preserved in a verified
+local content-addressed archive and removed from S3. No legacy cache objects
+remain outside the active `is_cache/uploads/` namespace.
+
 The original safety requirements are retained below as historical context.
 
 Do not delete these objects or add an expiration lifecycle rule until their

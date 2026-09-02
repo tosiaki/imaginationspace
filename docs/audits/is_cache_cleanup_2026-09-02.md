@@ -87,3 +87,39 @@ The rule cannot match the 423 retained historical objects because those use
 legacy keys outside `is_cache/uploads/`. The application currently uses
 single-part direct uploads, but the multipart setting prevents future aborted
 multipart sessions from accumulating if that implementation changes.
+
+## Historical-object archival and removal
+
+The remaining 423 legacy cache objects were subsequently archived locally
+before removal from S3. The archive is stored outside the repository at:
+
+`E:\imaginationspace-archives\is_cache-legacy-2026-09-02`
+
+The content-addressed archive contains a manifest preserving every original S3
+key, size, ETag, modification time, storage class, payload SHA-256, and blob
+mapping. This avoids losing key provenance while storing internally duplicated
+payloads only once.
+
+- manifest objects: 423
+- manifest logical bytes: 473,472,700
+- unique SHA-256 blobs: 358
+- unique bytes stored locally: 331,493,496
+- manifest SHA-256:
+  `b398a5054d5cf6f7205167b4fa4e3e2653f89959fff9b2c7a4bba9bc9e5b3ea6`
+
+Before deletion, the archival utility independently re-listed the live prefix
+and required every key, size, ETag, modification time, and storage class to
+match the manifest. It then rechecked the size and SHA-256 of every local blob.
+Only after all checks passed were the 423 exact manifest keys deleted.
+
+- deleted: 423 objects / 473,472,700 bytes
+- deletion errors: 0
+- archived keys still present after deletion: 0
+- remaining legacy objects outside `is_cache/uploads/`: 0
+
+The active `is_cache/uploads/` namespace was explicitly excluded from both the
+archive and deletion. The 36 previously identified unattached database rows
+were not modified; their historical S3 targets are now available only through
+the local archive when they were among these retained objects or through the
+previously documented exact-copy survivor when they referred to the earlier
+cleanup set.
