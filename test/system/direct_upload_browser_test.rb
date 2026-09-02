@@ -60,6 +60,78 @@ class DirectUploadBrowserTest < ApplicationSystemTestCase
     image&.close!
   end
 
+  test "inserts an inline upload into the rich-text editor" do
+    markup = <<~HTML
+      <!doctype html>
+      <html>
+        <head><meta name="csrf-token" content="browser-test-csrf"></head>
+        <body>
+          <div class="text-options">
+            <div class="bold-option"></div><div class="italic-option"></div>
+            <div class="link-option"></div><div class="heading-option"></div>
+            <div class="strikethrough-option"></div><div class="ol-option"></div>
+            <div class="ul-option"></div><div class="blockquote-option"></div>
+          </div>
+          <div class="link-addition-form"><input><button type="button">Done</button></div>
+          <div class="link-options">
+            <button class="link-input-edit-button" type="button">Edit</button>
+            <button class="link-input-remove-button" type="button">Remove</button>
+            <button class="link-input-open-button" type="button">Open</button>
+          </div>
+          <div class="line-options">
+            <input id="inline_picture" class="inline-picture-field"
+              type="file" accept="image/png">
+          </div>
+          <div class="posting-form-unit">
+            <textarea class="page-content-input" placeholder="Content"></textarea>
+            <input type="submit" value="Save">
+          </div>
+        </body>
+      </html>
+    HTML
+
+    visit "data:text/html;charset=utf-8,#{ERB::Util.url_encode(markup)}"
+    install_network_fakes
+    load_uppy_pack
+    page.execute_script Rails.root.join("app/assets/javascripts/content_editable.js").read
+    page.execute_script <<~JAVASCRIPT
+      window.testTurbolinksCallbacks.forEach(function(callback) { callback(); });
+      var editor = document.querySelector('.javascript-editor');
+      editor.innerHTML = '<div><br></div>';
+      editor.focus();
+      var range = document.createRange();
+      range.selectNodeContents(editor.firstElementChild);
+      range.collapse(false);
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    JAVASCRIPT
+
+    image = Tempfile.new(["inline-upload", ".png"])
+    image.binmode
+    image.write("\x89PNG\r\n\x1a\n")
+    image.close
+
+    attach_file "inline_picture", image.path, make_visible: true
+    assert_selector ".javascript-editor img[data-file-data]", wait: 10
+
+    authorization = JSON.parse(
+      page.evaluate_script("window.testSigningRequest").fetch("options").fetch("body")
+    )
+    image_data = find(".javascript-editor img[data-file-data]")["data-file-data"]
+    attachment = JSON.parse(image_data)
+
+    assert_equal "PUT", authorization.fetch("method")
+    assert_equal 8, authorization.fetch("size")
+    assert_equal authorization.fetch("key"), attachment.fetch("id")
+    assert_equal "cache", attachment.fetch("storage")
+    assert_equal 8, attachment.dig("metadata", "size")
+    assert_match(/\Ainline-upload.*\.png\z/, attachment.dig("metadata", "filename"))
+    assert_equal "image/png", attachment.dig("metadata", "mime_type")
+  ensure
+    image&.close!
+  end
+
   private
 
   def load_uppy_pack
@@ -75,7 +147,23 @@ class DirectUploadBrowserTest < ApplicationSystemTestCase
     page.execute_script <<~JAVASCRIPT
       window.testSigningRequest = null;
       window.testStorageRequest = null;
-      window.$ = function() { return { on: function() {} }; };
+      window.testTurbolinksCallbacks = [];
+      window.$ = function(target) {
+        return {
+          on: function(eventName, callback) {
+            if (eventName === 'turbolinks:load') {
+              window.testTurbolinksCallbacks.push(callback);
+            }
+          },
+          hide: function() {
+            if (typeof target === 'string') {
+              document.querySelectorAll(target).forEach(function(element) {
+                element.style.display = 'none';
+              });
+            }
+          }
+        };
+      };
       Object.defineProperty(window.crypto, 'randomUUID', {
         value: function() { return 'c56a4180-65aa-42ec-a945-5fd21dec0538'; }
       });
