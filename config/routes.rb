@@ -185,7 +185,13 @@ Rails.application.routes.draw do
     end
   end
 =end
-  match '*legacy_path', to: proc { [410, { "Content-Type" => "text/plain", "Content-Length" => "0" }, []] }, via: [:get, :head],
+  match '*legacy_path', to: proc {
+    [410, {
+      "Content-Type" => "text/plain",
+      "Content-Length" => "0",
+      "Cache-Control" => CrawlerResponseHeaders::PUBLIC_RETIREMENT_CACHE_CONTROL
+    }, []]
+  }, via: [:get, :head],
     constraints: ->(request) { !request.path.start_with?("/rails/") }
 
   # Resolve unsupported methods without raising a noisy routing exception. Any
