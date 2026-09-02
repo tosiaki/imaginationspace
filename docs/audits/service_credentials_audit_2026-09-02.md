@@ -38,8 +38,12 @@ removed, the Redis-free release was verified, and the free add-on was removed.
 - `SENDGRID_USERNAME` and `SENDGRID_PASSWORD` have been removed.
 - Repository history confirms those legacy names were introduced as the 2018
   Heroku SendGrid add-on's plain-auth SMTP username and password. The deleted
-  password's internal format cannot be proven after deletion, but the app did
-  not use the modern fixed `apikey` username until the 2026 migration.
+  password's internal format cannot be proven after deletion. A retained 2021
+  SendGrid notice states that API keys and account 2FA had become mandatory,
+  and mail continued working afterward. Operationally, this makes it likely
+  that the credential stored under the legacy variable name had already been
+  migrated to an API key even though the application did not adopt the modern
+  fixed `apikey` username convention until 2026.
 - Password recovery and confirmation are restored with generic anti-enumeration
   responses, five-request/30-minute mail-trigger limits, uncached lightweight
   pages, and six-hour password-reset tokens. Signup and notification mail remain
@@ -47,6 +51,9 @@ removed, the Redis-free release was verified, and the free add-on was removed.
 - The default sender is now `do-not-reply@windyfall.com`. Because this key lacks
   sender-read permission, sender/domain verification must be confirmed in the
   SendGrid dashboard or by a controlled delivery test.
+- A controlled production password-reset test delivered successfully and the
+  complete password-change flow was confirmed. SendGrid domain authentication
+  remains in progress while the new DNS host records propagate.
 
 ## AWS/S3
 
@@ -64,6 +71,5 @@ removed, the Redis-free release was verified, and the free add-on was removed.
 
 ## Recommended sequence
 
-1. Confirm `windyfall.com` sender/domain verification in SendGrid.
-2. Request a password reset for a controlled account and confirm delivery and
-   the complete password-change flow.
+1. Confirm `windyfall.com` domain authentication in SendGrid after DNS
+   propagation completes.

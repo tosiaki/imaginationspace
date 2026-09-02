@@ -75,3 +75,21 @@ A second raw 1,496-request window around the removal observed 7.92 requests per
 second: 1,363 for `www.windyfall.com`, 103 for `www.imaginationspace.org`, and
 30 for `www.fancomics.org`. Because this bounded window overlaps propagation,
 it is not evidence that the retired names remain routed after the live checks.
+
+## Post-propagation follow-up
+
+A later raw Heroku router window covered 2026-09-02 18:38:09 through 19:10:49
+UTC (1,466 parsed requests over 1,960 seconds):
+
+- observed request rate: 0.75 requests/second
+- hosts: 1,466 `www.windyfall.com`; no retired-domain requests
+- status counts: 1,053 410, 394 301, 14 200, and 5 302
+- service time: p50 1 ms, p95 1 ms, p99 5 ms, maximum 521 ms
+- leading paths: 941 `/articles`, 394 `/`, and 31 `/users/263`
+
+The three slowest requests (236-521 ms) were controlled password-reset POSTs
+that performed SMTP delivery, not crawler content requests. The remaining
+non-410 responses were the controlled account-recovery flow, its static assets,
+`robots.txt`, and root redirects. This sample provides no evidence of another
+crawler-exposed application page requiring immediate mitigation. Continued
+observation is more useful than adding application branches at this point.

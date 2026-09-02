@@ -1,6 +1,13 @@
 # High-priority TODOs
 
-## Investigate `is_cache/` before changing or deleting it
+## Completed: investigate `is_cache/` before changing or deleting it
+
+Completed 2026-09-02. The raw inventory, database reconciliation, exact-copy
+rule, independently verified deletion, retained-object findings, and scoped
+future lifecycle rule are recorded in
+`docs/audits/is_cache_cleanup_2026-09-02.md`.
+
+The original safety requirements are retained below as historical context.
 
 Do not delete these objects or add an expiration lifecycle rule until their
 relationships to database records and promoted objects have been examined from
@@ -31,4 +38,3 @@ prove that an object is unreferenced. Before proposing cleanup:
    bucket versioning is disabled.
 7. Add a future cache lifecycle rule only after confirming the longest valid
    unfinished-upload and form-session lifetime.
-
