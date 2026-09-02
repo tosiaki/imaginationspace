@@ -51,10 +51,12 @@ class User < ApplicationRecord
 
   def valid_password?(password)
     if legacy_password == 1
-      if legacy_user.validate(password)
+      if legacy_user&.validate(password)
         self.password = password
         self.legacy_password = 0
-        self.save!
+        # Historical rows can predate current profile validations. A verified
+        # legacy credential must still be able to migrate atomically.
+        self.save!(validate: false)
         true
       else
         false
