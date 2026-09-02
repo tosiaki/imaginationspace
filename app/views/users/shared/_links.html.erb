@@ -6,11 +6,11 @@
   Don't have an account? <%= link_to "Create an account now", registration_path %><br />
 <% end -%>
 
-<%- if Rails.application.routes.named_routes.route_defined?(:reset_password) && devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+<%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
   Forgot your password or user name? <%= link_to "Reset password", reset_password_path %><br />
 <% end -%>
 
-<%- if Rails.application.routes.named_routes.route_defined?(:resend_confirmation) && devise_mapping.confirmable? && controller_name != 'confirmations' %>
+<%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
   Didn't receive confirmation instructions? <%= link_to "Resend new confirmation here", resend_confirmation_path %><br />
 <% end -%>
 

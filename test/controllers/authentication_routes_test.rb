@@ -1,8 +1,13 @@
 require "test_helper"
 
 class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
+  include ActionMailer::TestHelper
+  include ActiveJob::TestHelper
+
   setup do
     Users::SessionsController::LOGIN_RATE_LIMIT_STORE.clear
+    Users::PasswordsController::RECOVERY_RATE_LIMIT_STORE.clear
+    Users::ConfirmationsController::CONFIRMATION_RATE_LIMIT_STORE.clear
   end
 
   def log_in(user)
@@ -24,7 +29,61 @@ class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
     assert_select 'link[href*="authentication"][rel="stylesheet"]', count: 1
     assert_select 'link[href*="application"][rel="stylesheet"]', count: 0
     assert_select 'a[href="/signup"]', count: 0
-    assert_select 'a[href="/reset_password"]', count: 0
+    assert_select 'a[href="/reset_password"]', count: 1
+    assert_select 'a[href="/resend_confirmation"]', count: 1
+  end
+
+
+  test "serves lightweight uncached account recovery forms" do
+    get reset_password_path
+
+    assert_response :success
+    assert_equal "no-store", response.headers["Cache-Control"]
+    assert_select 'form[action="/reset_password"][method="post"]'
+    assert_select 'link[href*="authentication"][rel="stylesheet"]', count: 1
+    assert_select 'script[src*="packs"]', count: 0
+
+    get resend_confirmation_path
+
+    assert_response :success
+    assert_equal "no-store", response.headers["Cache-Control"]
+    assert_select 'form[action="/resend_confirmation"][method="post"]'
+  end
+
+  test "does not reveal whether a recovery email exists" do
+    post reset_password_path, params: { user: { email: "missing@example.test" } }
+
+    assert_redirected_to login_path
+    assert_equal "no-store", response.headers["Cache-Control"]
+  end
+
+  test "sends an existing user a working password reset link" do
+    assert_emails 1 do
+      post reset_password_path, params: { user: { email: users(:one).email } }
+    end
+
+    message = ActionMailer::Base.deliveries.last
+    link = Nokogiri::HTML(message.html_part&.body&.decoded || message.body.decoded)
+      .at_css('a[href*="/reset_password/edit"]')
+    assert link
+
+    get URI(link["href"]).request_uri
+
+    assert_response :success
+    assert_equal "no-store", response.headers["Cache-Control"]
+    assert_select 'form[action="/reset_password"]'
+    assert_select 'input[name="user[reset_password_token]"]', count: 1
+  end
+
+  test "rate limits repeated password recovery mail requests" do
+    5.times do
+      post reset_password_path, params: { user: { email: "missing@example.test" } }
+      assert_not_equal 429, response.status
+    end
+
+    post reset_password_path, params: { user: { email: "missing@example.test" } }
+
+    assert_response :too_many_requests
   end
 
   test "allows a confirmed existing user to log in and out" do

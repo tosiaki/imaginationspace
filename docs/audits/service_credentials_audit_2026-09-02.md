@@ -32,10 +32,21 @@ removed, the Redis-free release was verified, and the free add-on was removed.
 - Authentication-only connection test: successful
 - Test messages sent: 0
 
-The current SMTP credentials work, but legacy username/password credentials do
-not offer the explicit least-privilege scope reporting available to a modern
-SendGrid API key. Signup, confirmation, and password-reset routes remain
-retired, so no presently exposed route requires outbound mail.
+- `SENDGRID_API_KEY` is now present and authenticates successfully.
+- The key has `mail.send` scope and does not have `verified_senders.read` scope.
+- Authentication-only SMTP negotiation succeeded; no test message was sent.
+- `SENDGRID_USERNAME` and `SENDGRID_PASSWORD` have been removed.
+- Repository history confirms those legacy names were introduced as the 2018
+  Heroku SendGrid add-on's plain-auth SMTP username and password. The deleted
+  password's internal format cannot be proven after deletion, but the app did
+  not use the modern fixed `apikey` username until the 2026 migration.
+- Password recovery and confirmation are restored with generic anti-enumeration
+  responses, five-request/30-minute mail-trigger limits, uncached lightweight
+  pages, and six-hour password-reset tokens. Signup and notification mail remain
+  retired.
+- The default sender is now `do-not-reply@windyfall.com`. Because this key lacks
+  sender-read permission, sender/domain verification must be confirmed in the
+  SendGrid dashboard or by a controlled delivery test.
 
 ## AWS/S3
 
@@ -53,7 +64,6 @@ retired, so no presently exposed route requires outbound mail.
 
 ## Recommended sequence
 
-1. Decide whether outbound application email will be restored soon.
-2. If yes, replace legacy SendGrid credentials with a restricted key and test
-   the exact required mail flow. If no, remove the unused paid add-on after
-   preserving any account-level evidence the user needs.
+1. Confirm `windyfall.com` sender/domain verification in SendGrid.
+2. Request a password reset for a controlled account and confirm delivery and
+   the complete password-change flow.
