@@ -1,0 +1,22 @@
+<% content_for :title, "Manage article pages" %>
+
+<h2>Manage pages for <%= @article.title.presence || "Untitled article" %></h2>
+
+<% if @pages.empty? %>
+  <p>No pages found.</p>
+<% else %>
+  <ol class="account-page-list">
+    <% @pages.each do |page| %>
+      <li data-page-number="<%= page.page_number %>">
+        <strong><%= page.title.presence || "Page #{page.page_number}" %></strong>
+        <%= button_to "Edit page", edit_account_article_page_path(@article, page.page_number) %>
+      </li>
+    <% end %>
+  </ol>
+<% end %>
+
+<% if @next_cursor %>
+  <%= button_to "Next pages", account_article_pages_path(@article), params: { after_page: @next_cursor } %>
+<% end %>
+
+<%= button_to "Back to content", account_articles_path %>

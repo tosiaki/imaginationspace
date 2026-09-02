@@ -1,0 +1,32 @@
+<% content_for :title, "Edit article page" %>
+
+<h2>Edit page <%= @page.page_number %> of <%= @article.title.presence || "Untitled article" %></h2>
+
+<% if @updated %>
+  <p role="status">Page updated.</p>
+<% end %>
+
+<% if @page.errors.any? %>
+  <div role="alert">
+    <p>Page could not be updated:</p>
+    <ul>
+      <% @page.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @page, url: account_article_page_path(@article, @page.page_number), method: :patch do |form| %>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </p>
+  <p>
+    <%= form.label :content, "Page HTML" %><br>
+    <%= form.text_area :content, required: true %>
+  </p>
+  <%= form.submit "Update page" %>
+<% end %>
+
+<%= button_to "Back to pages", account_article_pages_path(@article) %>

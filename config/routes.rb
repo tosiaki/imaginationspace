@@ -23,6 +23,12 @@ Rails.application.routes.draw do
     constraints: { id: /[1-9]\d*/ }
   patch "account/articles/:id", to: "account_articles#update", as: :account_article,
     constraints: { id: /[1-9]\d*/ }
+  post "account/articles/:article_id/pages", to: "account_article_pages#index", as: :account_article_pages,
+    constraints: { article_id: /[1-9]\d*/ }
+  post "account/articles/:article_id/pages/:page_number/edit", to: "account_article_pages#edit", as: :edit_account_article_page,
+    constraints: { article_id: /[1-9]\d*/, page_number: /[1-9]\d*/ }
+  patch "account/articles/:article_id/pages/:page_number", to: "account_article_pages#update", as: :account_article_page,
+    constraints: { article_id: /[1-9]\d*/, page_number: /[1-9]\d*/ }
 
 =begin
   root 'pages#home'

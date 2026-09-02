@@ -12,6 +12,7 @@
         <span><%= pluralize(article.pages_count, "page") %></span>
         <time datetime="<%= article.updated_at.iso8601 %>">Updated <%= article.updated_at.to_date.to_fs(:long) %></time>
         <%= button_to "Edit metadata", edit_account_article_path(article) %>
+        <%= button_to "Edit pages", account_article_pages_path(article) %>
       </li>
     <% end %>
   </ol>
