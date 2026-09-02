@@ -5,6 +5,4 @@ test:
   adapter: test
 
 production:
-  adapter: redis
-  url: <%= ENV.fetch("REDISCLOUD_URL") %>
-  channel_prefix: fancomics_production
+  adapter: async
