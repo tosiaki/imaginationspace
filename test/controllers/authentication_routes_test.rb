@@ -12,18 +12,6 @@ class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
     follow_redirect!
   end
 
-  def count_database_queries
-    queries = []
-    callback = lambda do |_name, _start, _finish, _id, payload|
-      next if payload[:cached] || payload[:name] == "SCHEMA" || payload[:sql].match?(/\A(?:BEGIN|COMMIT|ROLLBACK|SAVEPOINT|RELEASE)/)
-
-      queries << payload[:sql]
-    end
-
-    ActiveSupport::Notifications.subscribed(callback, "sql.active_record") { yield }
-    queries
-  end
-
   test "serves a minimal uncached login page without application bundles" do
     get login_path
 

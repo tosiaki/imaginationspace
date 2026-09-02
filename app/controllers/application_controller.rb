@@ -20,6 +20,10 @@ class ApplicationController < ActionController::Base
       response.headers["Cache-Control"] = "no-store"
     end
 
+    def prevent_private_response_caching
+      response.headers["Cache-Control"] = "no-store"
+    end
+
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: [:name, :site_updates])
     end

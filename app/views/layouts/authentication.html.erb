@@ -14,6 +14,7 @@
         <nav>
           <% if user_signed_in? %>
             <%= link_to "Account", account_path %>
+            <%= button_to "Manage content", account_articles_path %>
             <%= button_to "Log out", logout_path, method: :delete %>
           <% else %>
             <%= link_to "Log in", login_path %>

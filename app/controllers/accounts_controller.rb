@@ -1,7 +1,7 @@
 class AccountsController < ApplicationController
-  before_action :prevent_account_response_caching
+  before_action :prevent_private_response_caching
   before_action :require_authenticated_user!
-  after_action :prevent_account_response_caching
+  after_action :prevent_private_response_caching
 
   layout "authentication"
 
@@ -25,7 +25,4 @@ class AccountsController < ApplicationController
     params.require(:user).permit(:name, :title, :bio, :website)
   end
 
-  def prevent_account_response_caching
-    response.headers["Cache-Control"] = "no-store"
-  end
 end

@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   end
 
   resource :account, only: [:show, :update]
+  post "account/articles", to: "account_articles#index", as: :account_articles
 
 =begin
   root 'pages#home'
