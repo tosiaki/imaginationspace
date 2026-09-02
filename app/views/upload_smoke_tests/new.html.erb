@@ -1,0 +1,24 @@
+<% content_for :title, "Upload smoke test" %>
+
+<h2>Upload smoke test</h2>
+
+<p>
+  Choose a small GIF, JPEG, PNG, or WebP image. The test uploads it through the
+  production direct-upload path, verifies it through the application, and then
+  deletes the temporary object. It does not create a database record.
+</p>
+
+<p>
+  <%= label_tag :upload_smoke_test_file, "Test image" %><br>
+  <%= file_field_tag :upload_smoke_test_file,
+    accept: "image/gif,image/jpeg,image/png,image/webp",
+    data: { upload_smoke_test: true } %>
+</p>
+
+<p role="status" data-upload-smoke-status>Waiting for an image.</p>
+
+<p><%= link_to "Back to account", account_path %></p>
+
+<% content_for :javascript do %>
+  <%= javascript_pack_tag "upload_smoke_test" %>
+<% end %>

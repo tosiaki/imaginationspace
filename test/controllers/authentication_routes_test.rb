@@ -57,6 +57,7 @@ class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
     assert_select 'input[name="_method"][value="patch"]'
     assert_select 'input[name="user[email]"]', count: 0
     assert_select 'input[name="user[password]"]', count: 0
+    assert_select 'a[href="/account/upload-smoke-test"]', count: 1
     assert_select 'script[src*="packs"]', count: 0
     assert_operator queries.length, :<=, 1, "account GET exceeded its query budget: #{queries.inspect}"
   end

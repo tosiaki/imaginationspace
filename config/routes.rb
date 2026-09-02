@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   end
 
   resource :account, only: [:show, :update]
+  get "account/upload-smoke-test", to: "upload_smoke_tests#new", as: :upload_smoke_test
+  post "account/upload-smoke-test/verify", to: "upload_smoke_tests#create", as: :verify_upload_smoke_test
   post "account/articles", to: "account_articles#index", as: :account_articles
   post "account/articles/:id/edit", to: "account_articles#edit", as: :edit_account_article,
     constraints: { id: /[1-9]\d*/ }
