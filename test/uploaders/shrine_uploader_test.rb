@@ -82,4 +82,21 @@ class ShrineUploaderTest < ActiveSupport::TestCase
     image&.close!
     ShrineUploader.storages = previous_storages
   end
+
+  test 'detects MIME type from bytes and rejects deceptive image metadata' do
+    file = Tempfile.new(['not-an-image', '.png'])
+    file.binmode
+    file.write("plain text presented as a PNG")
+    file.rewind
+    file.define_singleton_method(:original_filename) { 'not-an-image.png' }
+    file.define_singleton_method(:content_type) { 'image/png' }
+
+    picture = ShrinePicture.new(picture: file)
+
+    assert_not picture.valid?
+    assert_includes picture.errors[:picture], "type must be one of: image/gif, image/jpeg, image/png, image/webp"
+    assert_not_equal "image/png", picture.picture.mime_type
+  ensure
+    file&.close!
+  end
 end

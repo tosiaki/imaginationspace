@@ -154,6 +154,44 @@ class AccountArticlePagesControllerTest < ActionDispatch::IntegrationTest
     Shrine.storages[:cache].delete(key) if key && Shrine.storages[:cache].exists?(key)
   end
 
+  test "rejects cached content whose bytes are not a supported image" do
+    article_id = insert_article_with_pages(users(:one))
+    log_in users(:one)
+    key = "c56a4180-65aa-42ec-a945-5fd21dec0538.png"
+    image_bytes = "plain text presented as a PNG"
+    size = image_bytes.bytesize
+    authorization = Rails.application.message_verifier(:direct_upload_authorization).generate(
+      { user_id: users(:one).id, key: key, size: size },
+      expires_in: DirectUploadSigner::URL_LIFETIME
+    )
+    Shrine.storages[:cache].upload(
+      StringIO.new(image_bytes), key,
+      shrine_metadata: { "filename" => "image.png", "size" => size, "mime_type" => "image/png" }
+    )
+    upload_data = {
+      id: key, storage: "cache",
+      metadata: {
+        size: size, filename: "image.png", mime_type: "image/png",
+        upload_authorization: authorization
+      }
+    }
+    original_content = Page.find_by!(article_id: article_id, page_number: 1).content
+
+    assert_no_difference("ShrinePicture.count") do
+      patch account_article_page_path(article_id, 1), params: {
+        page: {
+          content: %(<p>Before</p><img src="blob:test" data-file-data='#{ERB::Util.html_escape(upload_data.to_json)}'>)
+        }
+      }
+    end
+
+    assert_response :unprocessable_content
+    assert_select '[role="alert"]', text: /not a valid supported image/
+    assert_equal original_content, Page.find_by!(article_id: article_id, page_number: 1).content
+  ensure
+    Shrine.storages[:cache].delete(key) if key && Shrine.storages[:cache].exists?(key)
+  end
+
   test "does not reveal another user's article or page" do
     article_id = insert_article_with_pages(users(:two))
     log_in users(:one)

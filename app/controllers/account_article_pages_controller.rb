@@ -45,9 +45,9 @@ class AccountArticlePagesController < ApplicationController
     else
       render :edit, status: :unprocessable_content
     end
-  rescue InlineUploadAuthorizer::InvalidUpload => error
+  rescue InlineUploadAuthorizer::InvalidUpload, ActiveRecord::RecordInvalid => error
     @page.assign_attributes(page_params)
-    @page.errors.add(:content, error.message)
+    @page.errors.add(:content, upload_error_message(error))
     render :edit, status: :unprocessable_content
   end
 
@@ -76,5 +76,11 @@ class AccountArticlePagesController < ApplicationController
 
   def inline_upload_data?(content)
     Nokogiri::HTML.fragment(content.to_s).css("[data-file-data]").any?
+  end
+
+  def upload_error_message(error)
+    return error.message if error.is_a?(InlineUploadAuthorizer::InvalidUpload)
+
+    "Upload content is not a valid supported image"
   end
 end

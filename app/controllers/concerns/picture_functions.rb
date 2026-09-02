@@ -2,7 +2,7 @@ module PictureFunctions
   extend ActiveSupport::Concern
 
   def add_picture_object(picture, page, inline_picture = false)
-    new_picture = ShrinePicture.create(picture: picture, inline_picture: inline_picture)
+    new_picture = ShrinePicture.create!(picture: picture, inline_picture: inline_picture)
     page.shrine_pictures << new_picture
     new_picture
   end

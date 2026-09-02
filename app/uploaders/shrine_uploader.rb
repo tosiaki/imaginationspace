@@ -1,9 +1,18 @@
 require "image_processing/mini_magick"
 
 class ShrineUploader < Shrine
+  ALLOWED_MIME_TYPES = %w[image/gif image/jpeg image/png image/webp].freeze
+
+  plugin :determine_mime_type, analyzer: :marcel
+  plugin :validation_helpers
   plugin :refresh_metadata
   plugin :derivatives, create_on_promote: true, versions_compatibility: true
   plugin :store_dimensions
+
+  Attacher.validate do
+    validate_mime_type_inclusion ALLOWED_MIME_TYPES
+    validate_max_size DirectUploadSigner::MAXIMUM_FILE_SIZE
+  end
 
   plugin :upload_options, store: -> (io, context) do
     io.is_a?(Shrine::UploadedFile) ? { metadata_directive: "REPLACE" } : {}
