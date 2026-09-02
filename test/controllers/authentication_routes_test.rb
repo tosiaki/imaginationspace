@@ -21,6 +21,8 @@ class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
     assert_select 'meta[name="robots"][content="noindex, nofollow, noarchive, nosnippet"]'
     assert_select 'form[action="/login"][method="post"]'
     assert_select 'script[src*="packs"]', count: 0
+    assert_select 'link[href*="authentication"][rel="stylesheet"]', count: 1
+    assert_select 'link[href*="application"][rel="stylesheet"]', count: 0
     assert_select 'a[href="/signup"]', count: 0
     assert_select 'a[href="/reset_password"]', count: 0
   end
@@ -57,6 +59,8 @@ class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
     assert_select 'input[name="_method"][value="patch"]'
     assert_select 'input[name="user[email]"]', count: 0
     assert_select 'input[name="user[password]"]', count: 0
+    assert_select 'link[href*="authentication"][rel="stylesheet"]', count: 1
+    assert_select 'link[href*="application"][rel="stylesheet"]', count: 0
     assert_select 'a[href="/account/upload-smoke-test"]', count: 1
     assert_select 'script[src*="packs"]', count: 0
     assert_operator queries.length, :<=, 1, "account GET exceeded its query budget: #{queries.inspect}"

@@ -47,16 +47,17 @@ retired, so no presently exposed route requires outbound mail.
   deleted a 14,971-byte object through the real browser-to-S3 path.
 - A read-only IAM capability check returned `AccessDenied`; the deployed
   application key cannot inspect or rotate its own IAM access keys.
-- Rotation therefore requires an AWS management identity or console session.
+- The keys were rotated through an AWS management identity, the old key was
+  deleted, and the application was restarted.
+- A post-rotation smoke test uploaded, verified, and deleted a 117,182-byte
+  object successfully. Rotation is complete.
 
 ## Recommended sequence
 
-1. Use an AWS management identity to rotate the application credentials, then
-   immediately repeat the authenticated upload smoke test.
-3. Decide whether outbound application email will be restored soon.
-4. If yes, replace legacy SendGrid credentials with a restricted key and test
+1. Decide whether outbound application email will be restored soon.
+2. If yes, replace legacy SendGrid credentials with a restricted key and test
    the exact required mail flow. If no, remove the unused paid add-on after
    preserving any account-level evidence the user needs.
-5. Ask Redis Cloud whether the stale endpoint/database can be recovered. Only
+3. Ask Redis Cloud whether the stale endpoint/database can be recovered. Only
    then decide between credential rotation, replacement, or removing Redis and
    its currently inactive application integrations.
