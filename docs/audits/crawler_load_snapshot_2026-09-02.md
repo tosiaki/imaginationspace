@@ -60,3 +60,16 @@ changes:
 
 The first two require an explicit product choice; the third adds a third-party
 service and remains outside the current preference.
+
+## Domain retirement follow-up
+
+`www.imaginationspace.org` and `www.fancomics.org` were subsequently removed
+manually. Heroku now lists only `www.windyfall.com` as a custom domain. Live
+HTTP resolution checks could no longer reach either retired hostname, although
+one local DNS query briefly returned the old `www.imaginationspace.org` CNAME,
+consistent with resolver-cache propagation.
+
+A second raw 1,496-request window around the removal observed 7.92 requests per
+second: 1,363 for `www.windyfall.com`, 103 for `www.imaginationspace.org`, and
+30 for `www.fancomics.org`. Because this bounded window overlaps propagation,
+it is not evidence that the retired names remain routed after the live checks.
