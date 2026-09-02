@@ -26,6 +26,9 @@ class DirectUploadSignerTest < ActiveSupport::TestCase
 
     assert_raises(DirectUploadSigner::InvalidRequest) { signer.call(method: "DELETE", key: key, size: 1) }
     assert_raises(DirectUploadSigner::InvalidRequest) { signer.call(method: "PUT", key: "../stored-file", size: 1) }
+    assert_raises(DirectUploadSigner::InvalidRequest) do
+      signer.call(method: "PUT", key: "c56a4180-65aa-42ec-a945-5fd21dec0538.exe", size: 1)
+    end
     assert_raises(DirectUploadSigner::InvalidRequest) { signer.call(method: "PUT", key: key, size: 0) }
     assert_raises(DirectUploadSigner::InvalidRequest) do
       signer.call(method: "PUT", key: key, size: DirectUploadSigner::MAXIMUM_FILE_SIZE + 1)

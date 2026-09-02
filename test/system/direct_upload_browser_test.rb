@@ -132,12 +132,55 @@ class DirectUploadBrowserTest < ApplicationSystemTestCase
     image&.close!
   end
 
+  test "inserts an authorized upload into the private page textarea" do
+    markup = <<~HTML
+      <!doctype html>
+      <html>
+        <head><meta name="csrf-token" content="browser-test-csrf"></head>
+        <body>
+          <textarea name="page[content]">Existing content</textarea>
+          <input type="file" id="private_page_upload" data-private-page-upload
+            accept="image/gif,image/jpeg,image/png,image/webp">
+          <span data-upload-status role="status"></span>
+        </body>
+      </html>
+    HTML
+
+    visit "data:text/html;charset=utf-8,#{ERB::Util.url_encode(markup)}"
+    install_network_fakes
+    load_pack("private_page_editor")
+
+    image = Tempfile.new(["private-page-upload", ".png"])
+    image.binmode
+    image.write("\x89PNG\r\n\x1a\n")
+    image.close
+
+    attach_file "private_page_upload", image.path
+    assert_selector "[data-upload-status]", text: /uploaded\. Save the page/, wait: 10
+
+    content = find('textarea[name="page[content]"]').value
+    attachment = JSON.parse(Nokogiri::HTML.fragment(content).at_css("img")["data-file-data"])
+    signing_request = JSON.parse(
+      page.evaluate_script("window.testSigningRequest").fetch("options").fetch("body")
+    )
+
+    assert_equal signing_request.fetch("key"), attachment.fetch("id")
+    assert_equal "browser-upload-authorization", attachment.dig("metadata", "upload_authorization")
+    assert_equal "image/png", attachment.dig("metadata", "mime_type")
+  ensure
+    image&.close!
+  end
+
   private
 
   def load_uppy_pack
+    load_pack("uppy")
+  end
+
+  def load_pack(entrypoint)
     Shakapacker.compile
     manifest = JSON.parse(Rails.root.join("public/packs-test/manifest.json").read)
-    manifest.dig("entrypoints", "uppy", "assets", "js").each do |asset|
+    manifest.dig("entrypoints", entrypoint, "assets", "js").each do |asset|
       relative_asset = asset.delete_prefix("/packs-test/")
       page.execute_script Rails.root.join("public/packs-test", relative_asset).read
     end
@@ -175,7 +218,10 @@ class DirectUploadBrowserTest < ApplicationSystemTestCase
           ok: true,
           status: 200,
           json: async function() {
-            return { url: 'https://uploads.example.test/' + request.key + '?signed=true' };
+            return {
+              url: 'https://uploads.example.test/' + request.key + '?signed=true',
+              authorization: 'browser-upload-authorization'
+            };
           }
         };
       };

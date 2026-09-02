@@ -1,6 +1,8 @@
 class AccountArticlePagesController < ApplicationController
   PAGE_SIZE = 50
 
+  include PictureFunctions
+
   before_action :prevent_private_response_caching
   before_action :require_authenticated_user!
   before_action :load_owned_article
@@ -26,18 +28,27 @@ class AccountArticlePagesController < ApplicationController
   end
 
   def update
-    if inline_upload_data?(page_params[:content])
-      @page.assign_attributes(page_params)
-      @page.errors.add(:content, "contains disabled upload data")
-      return render :edit, status: :unprocessable_content
+    attributes = page_params
+    if inline_upload_data?(attributes[:content])
+      attributes = attributes.to_h
+      attributes["content"] = InlineUploadAuthorizer.new(user: current_user).call(attributes["content"])
+      @page.assign_attributes(attributes)
+      @page.content = process_inline_uploads(@page)
+      saved = @page.save
+    else
+      saved = @page.update(attributes)
     end
 
-    if @page.update(@page_params)
+    if saved
       @updated = true
       render :edit
     else
       render :edit, status: :unprocessable_content
     end
+  rescue InlineUploadAuthorizer::InvalidUpload => error
+    @page.assign_attributes(page_params)
+    @page.errors.add(:content, error.message)
+    render :edit, status: :unprocessable_content
   end
 
   private

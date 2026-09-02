@@ -84,13 +84,16 @@ class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
     assert_operator queries.length, :<=, 2, "account PATCH exceeded its query budget: #{queries.inspect}"
   end
 
-  test "keeps content and upload routes retired" do
+  test "keeps public content retired while requiring authentication for uploads" do
     get "/articles"
     assert_redirected_to "https://discord.gg/e97QGEA"
 
     post "/s3/params", params: { method: "PUT" }
-    assert_response :not_found
+    assert_redirected_to login_path
     assert_empty response.body
+
+    get "/s3/params"
+    assert_redirected_to "https://discord.gg/e97QGEA"
   end
 
   test "rate limits repeated login attempts before they can amplify CPU load" do

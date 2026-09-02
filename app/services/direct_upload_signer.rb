@@ -1,6 +1,6 @@
 class DirectUploadSigner
-  MAXIMUM_FILE_SIZE = 1.gigabyte
-  KEY_PATTERN = /\A[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}(?:\.[a-z0-9]{1,10})?\z/
+  MAXIMUM_FILE_SIZE = 25.megabytes
+  KEY_PATTERN = /\A[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.(?:gif|jpe?g|png|webp)\z/
   URL_LIFETIME = 15.minutes
 
   class InvalidRequest < StandardError; end

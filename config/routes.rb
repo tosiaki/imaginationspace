@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     constraints: { article_id: /[1-9]\d*/, page_number: /[1-9]\d*/ }
   patch "account/articles/:article_id/pages/:page_number", to: "account_article_pages#update", as: :account_article_page,
     constraints: { article_id: /[1-9]\d*/, page_number: /[1-9]\d*/ }
+  post "s3/params", to: "direct_uploads#create"
 
 =begin
   root 'pages#home'

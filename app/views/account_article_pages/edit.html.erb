@@ -26,7 +26,18 @@
     <%= form.label :content, "Page HTML" %><br>
     <%= form.text_area :content, required: true %>
   </p>
+  <p>
+    <%= label_tag :private_page_upload, "Upload an image" %><br>
+    <%= file_field_tag :private_page_upload,
+      accept: "image/gif,image/jpeg,image/png,image/webp",
+      data: { private_page_upload: true } %>
+    <span role="status" data-upload-status></span>
+  </p>
   <%= form.submit "Update page" %>
 <% end %>
 
 <%= button_to "Back to pages", account_article_pages_path(@article) %>
+
+<% content_for :javascript do %>
+  <%= javascript_pack_tag "private_page_editor" %>
+<% end %>

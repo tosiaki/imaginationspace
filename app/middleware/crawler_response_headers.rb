@@ -2,7 +2,7 @@ class CrawlerResponseHeaders
   ROBOTS_BODY = "User-agent: *\nDisallow: /\n".freeze
   ROBOTS_DIRECTIVE = "noindex, nofollow, noarchive, nosnippet".freeze
   REDIRECT_CACHE_CONTROL = "public, max-age=86400".freeze
-  PRIVATE_PATHS = ["/account", "/login", "/logout"].freeze
+  PRIVATE_PATHS = ["/account", "/login", "/logout", "/s3"].freeze
 
   def initialize(app)
     @app = app

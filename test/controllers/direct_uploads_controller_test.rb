@@ -6,6 +6,7 @@ class DirectUploadsControllerTest < ActionController::TestCase
   tests DirectUploadsController
 
   setup do
+    DirectUploadsController::SIGNING_RATE_LIMIT_STORE.clear
     @routes = ActionDispatch::Routing::RouteSet.new
     @routes.draw do
       devise_for :users
@@ -50,11 +51,24 @@ class DirectUploadsControllerTest < ActionController::TestCase
       { url: "https://uploads.example.test/signed" }
     end
     @controller.define_singleton_method(:upload_signer) { signer }
+    authorization_calls = []
+    verifier = Object.new
+    verifier.define_singleton_method(:generate) do |payload, expires_in:|
+      authorization_calls << [payload, expires_in]
+      "upload-authorization"
+    end
+    @controller.define_singleton_method(:upload_authorization_verifier) { verifier }
 
     post :create, params: @parameters, format: :json
 
     assert_response :success
-    assert_equal({ "url" => "https://uploads.example.test/signed" }, response.parsed_body)
+    assert_equal(
+      { "url" => "https://uploads.example.test/signed", "authorization" => "upload-authorization" },
+      response.parsed_body
+    )
+    assert_equal "no-store", response.headers["Cache-Control"]
+    assert_equal users(:one).id, authorization_calls.dig(0, 0, :user_id)
+    assert_equal DirectUploadSigner::URL_LIFETIME, authorization_calls.dig(0, 1)
     assert_equal 1, calls.size
     assert_equal "PUT", calls.fetch(0).fetch(:method)
     assert_equal @parameters.fetch(:key), calls.fetch(0).fetch(:key)

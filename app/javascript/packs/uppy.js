@@ -28,8 +28,12 @@ const authorizeRequest = async (request, size) => {
     throw new Error(`Unable to authorize upload (${response.status})`);
   }
 
-  return response.json();
+  const authorization = await response.json();
+  uploadAuthorizations.set(request.key, authorization.authorization);
+  return authorization;
 };
+
+const uploadAuthorizations = new Map();
 
 window.createDirectUploader = options => {
   const uppy = new Uppy(options);
@@ -49,3 +53,4 @@ window.createDirectUploader = options => {
 };
 
 window.directUploadObjectKey = uploadResponse => uploadResponse.body.key;
+window.directUploadAuthorization = objectKey => uploadAuthorizations.get(objectKey);
