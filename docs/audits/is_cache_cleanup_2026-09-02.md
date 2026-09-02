@@ -136,6 +136,17 @@ an interim backup and is intended to move into another project's archival
 system later; that transfer should be recorded and independently verified when
 it occurs.
 
+A second copy was later placed on the healthy NTFS volume labelled `My Book`
+at:
+
+`G:\imaginationspace-archives\is_cache-legacy-2026-09-02`
+
+The G: copy was independently verified rather than inferred from the copy
+operation: its manifest SHA-256 matched and all 358 unique blobs matched their
+recorded sizes and SHA-256 digests. Another mounted volume was also labelled
+`My Book`, so the drive letter and archive path are material parts of this
+record.
+
 ## Orphan cache-reference row inspection and removal
 
 Before database deletion, all 36 rows were re-read from production with their
@@ -175,3 +186,17 @@ This exposed a separate historical residue that was not deleted:
   No indirect references to their `picture/<id>/` paths were found in page
   content, page display-image fields, or signal-boost comments, but their S3
   objects require a separate archive and exact-reference audit before removal.
+
+### Detached stored-object follow-up
+
+The ten content-bearing rows were compared with a fresh raw inventory of all
+40,784 bucket objects. Together, their `is/picture/<id>/` prefixes contain 30
+objects (original, show-page, and thumbnail variants) totaling 16,443,453
+bytes.
+
+Every original payload has at least one exact ETag-and-size match elsewhere in
+the bucket. Some derived show-page and thumbnail objects do not have an exact
+match, however. Therefore, original-image duplication alone is not a safe
+deletion rule for these prefixes. The complete 30-object set remains untouched
+and should be archived with payload hashes before either its S3 objects or ten
+database rows are removed.
