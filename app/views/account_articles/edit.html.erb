@@ -1,0 +1,32 @@
+<% content_for :title, "Edit article metadata" %>
+
+<h2>Edit article metadata</h2>
+
+<% if @updated %>
+  <p role="status">Article metadata updated.</p>
+<% end %>
+
+<% if @article.errors.any? %>
+  <div role="alert">
+    <p>Article could not be updated:</p>
+    <ul>
+      <% @article.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @article, url: account_article_path(@article), method: :patch do |form| %>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title, maxlength: 255 %>
+  </p>
+  <p>
+    <%= form.label :description %><br>
+    <%= form.text_area :description %>
+  </p>
+  <%= form.submit "Update metadata" %>
+<% end %>
+
+<%= button_to "Back to content", account_articles_path %>

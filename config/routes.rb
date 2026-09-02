@@ -19,6 +19,10 @@ Rails.application.routes.draw do
 
   resource :account, only: [:show, :update]
   post "account/articles", to: "account_articles#index", as: :account_articles
+  post "account/articles/:id/edit", to: "account_articles#edit", as: :edit_account_article,
+    constraints: { id: /[1-9]\d*/ }
+  patch "account/articles/:id", to: "account_articles#update", as: :account_article,
+    constraints: { id: /[1-9]\d*/ }
 
 =begin
   root 'pages#home'

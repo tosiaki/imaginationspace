@@ -53,6 +53,7 @@ class Article < ApplicationRecord
   end
 
   validates :pages, presence: true
+  validates :title, length: { maximum: 255 }
   validate :check_editing_password
 
   before_save :normalize_planned_pages

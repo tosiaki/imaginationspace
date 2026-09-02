@@ -11,6 +11,7 @@
         <strong><%= article.title.presence || "Untitled article" %></strong>
         <span><%= pluralize(article.pages_count, "page") %></span>
         <time datetime="<%= article.updated_at.iso8601 %>">Updated <%= article.updated_at.to_date.to_fs(:long) %></time>
+        <%= button_to "Edit metadata", edit_account_article_path(article) %>
       </li>
     <% end %>
   </ol>
