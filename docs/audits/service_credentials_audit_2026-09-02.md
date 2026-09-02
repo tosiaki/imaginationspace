@@ -15,12 +15,11 @@ account identifiers, or secret fragments were recorded.
 - Redis connection: failed before authentication because the configured host
   does not resolve
 
-The failure is therefore stale provider/add-on state rather than the Redis 6
-URL parser. Action Cable and the three legacy Redis namespaces are currently
-nonfunctional if invoked. Because the endpoint cannot be reached, the raw key
-inventory could not be inspected. The add-on must not be destroyed or replaced
-until the user decides whether its inaccessible legacy data needs provider-side
-recovery.
+The failure was stale provider/add-on state rather than the Redis 6 URL parser.
+Every application reference was subsequently traced to transient state for the
+removed main-page minigame and its Action Cable broadcasts; Redis was not an
+upload queue or durable content store. The dead integration and Redis gems were
+removed, the Redis-free release was verified, and the free add-on was removed.
 
 ## SendGrid
 
@@ -58,6 +57,3 @@ retired, so no presently exposed route requires outbound mail.
 2. If yes, replace legacy SendGrid credentials with a restricted key and test
    the exact required mail flow. If no, remove the unused paid add-on after
    preserving any account-level evidence the user needs.
-3. Ask Redis Cloud whether the stale endpoint/database can be recovered. Only
-   then decide between credential rotation, replacement, or removing Redis and
-   its currently inactive application integrations.

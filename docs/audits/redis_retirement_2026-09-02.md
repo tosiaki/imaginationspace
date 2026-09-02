@@ -36,5 +36,6 @@ inactive production Cable adapter now uses process-local `async`, so Rails boot
 has no Redis dependency. The stale worker process declaration was also removed.
 
 The Redis Cloud endpoint was already unreachable because its provider hostname
-did not resolve. Its free add-on can now be removed without affecting an active
-or durable application feature.
+did not resolve. After the Redis-free release booted successfully, the free
+Redis Cloud add-on was removed. Heroku removed `REDISCLOUD_URL` and restarted
+the app; the root redirect and login page remained healthy afterward.
