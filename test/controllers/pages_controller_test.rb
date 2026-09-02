@@ -17,4 +17,15 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_equal "noindex, nofollow, noarchive, nosnippet", response.headers["X-Robots-Tag"]
   end
 
+  test "returns a quiet cacheable gone response for retired legacy pages" do
+    queries = count_database_queries { get "/articles/12345" }
+
+    assert_response :gone
+    assert_empty response.body
+    assert_equal "0", response.headers["Content-Length"]
+    assert_equal "public, max-age=86400", response.headers["Cache-Control"]
+    assert_equal "noindex, nofollow, noarchive, nosnippet", response.headers["X-Robots-Tag"]
+    assert_empty queries
+  end
+
 end

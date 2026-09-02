@@ -49,7 +49,8 @@ class AccountArticlesControllerTest < ActionDispatch::IntegrationTest
   test "does not expose the management listing through a plain GET" do
     queries = count_database_queries { get account_articles_path }
 
-    assert_redirected_to "https://discord.gg/e97QGEA"
+    assert_response :gone
+    assert_empty response.body
     assert_equal "public, max-age=86400", response.headers["Cache-Control"]
     assert_empty queries
   end
@@ -155,7 +156,7 @@ class AccountArticlesControllerTest < ActionDispatch::IntegrationTest
 
     get "/account/articles/#{article_id}/edit"
 
-    assert_redirected_to "https://discord.gg/e97QGEA"
+    assert_response :gone
   end
 
   test "rejects metadata that exceeds the database title limit" do

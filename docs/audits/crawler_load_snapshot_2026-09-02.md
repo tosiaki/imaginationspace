@@ -55,7 +55,9 @@ Further reduction requires one of the following semantic or infrastructure
 changes:
 
 1. Retire obsolete custom domains at both DNS and Heroku.
-2. Return 404/410 for retired legacy URLs instead of redirecting them.
+2. Completed 2026-09-02: retired wildcard legacy URLs now return an empty,
+   publicly cacheable `410 Gone`; the root and explicit Discord routes retain
+   their redirects.
 3. Put an edge/cache service in front of the dyno.
 
 The first two require an explicit product choice; the third adds a third-party

@@ -43,14 +43,16 @@ retired, so no presently exposed route requires outbound mail.
 - Static access and secret keys are both present.
 - They remain required for the newly restored direct-upload flow and for
   Shrine promotion.
-- Rotation remains intentionally deferred until an authenticated production
-  upload smoke test succeeds, avoiding simultaneous credential and application
-  changes during first-use verification.
+- An authenticated production smoke test successfully uploaded, verified, and
+  deleted a 14,971-byte object through the real browser-to-S3 path.
+- A read-only IAM capability check returned `AccessDenied`; the deployed
+  application key cannot inspect or rotate its own IAM access keys.
+- Rotation therefore requires an AWS management identity or console session.
 
 ## Recommended sequence
 
-1. Complete an authenticated production upload smoke test.
-2. Rotate AWS credentials and immediately repeat the smoke test.
+1. Use an AWS management identity to rotate the application credentials, then
+   immediately repeat the authenticated upload smoke test.
 3. Decide whether outbound application email will be restored soon.
 4. If yes, replace legacy SendGrid credentials with a restricted key and test
    the exact required mail flow. If no, remove the unused paid add-on after

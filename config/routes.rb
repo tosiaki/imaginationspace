@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get 'robots.txt', to: proc { |_environment|
-    [200, { "Content-Type" => "text/plain", "Cache-Control" => "public, max-age=86400" }, [CrawlerResponseHeaders::ROBOTS_BODY]]
+    [200, { "Content-Type" => "text/plain", "Cache-Control" => CrawlerResponseHeaders::PUBLIC_RETIREMENT_CACHE_CONTROL }, [CrawlerResponseHeaders::ROBOTS_BODY]]
   }
 
   root to: redirect('https://discord.gg/e97QGEA')
@@ -185,7 +185,7 @@ Rails.application.routes.draw do
     end
   end
 =end
-  match '*legacy_path', to: redirect('https://discord.gg/e97QGEA'), via: [:get, :head],
+  match '*legacy_path', to: proc { [410, { "Content-Type" => "text/plain", "Content-Length" => "0" }, []] }, via: [:get, :head],
     constraints: ->(request) { !request.path.start_with?("/rails/") }
 
   # Resolve unsupported methods without raising a noisy routing exception. Any

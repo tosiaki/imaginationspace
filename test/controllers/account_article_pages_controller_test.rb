@@ -206,9 +206,9 @@ class AccountArticlePagesControllerTest < ActionDispatch::IntegrationTest
     article_id = insert_article_with_pages(users(:one))
 
     get "/account/articles/#{article_id}/pages"
-    assert_redirected_to "https://discord.gg/e97QGEA"
+    assert_response :gone
 
     get "/account/articles/#{article_id}/pages/1/edit"
-    assert_redirected_to "https://discord.gg/e97QGEA"
+    assert_response :gone
   end
 end

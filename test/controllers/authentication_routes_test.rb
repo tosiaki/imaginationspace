@@ -87,14 +87,16 @@ class AuthenticationRoutesTest < ActionDispatch::IntegrationTest
 
   test "keeps public content retired while requiring authentication for uploads" do
     get "/articles"
-    assert_redirected_to "https://discord.gg/e97QGEA"
+    assert_response :gone
+    assert_empty response.body
 
     post "/s3/params", params: { method: "PUT" }
     assert_redirected_to login_path
     assert_empty response.body
 
     get "/s3/params"
-    assert_redirected_to "https://discord.gg/e97QGEA"
+    assert_response :gone
+    assert_empty response.body
   end
 
   test "rate limits repeated login attempts before they can amplify CPU load" do
