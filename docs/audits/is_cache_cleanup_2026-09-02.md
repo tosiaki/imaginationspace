@@ -69,3 +69,21 @@ The post-cleanup database reconciliation found 36 orphan cache-reference rows
 covering 28 unique keys. Nineteen rows still point to retained objects and 17
 point to deleted exact-copy objects. All 36 remain unattached: none has both a
 `page_type` and `page_id`. No database rows were changed during this cleanup.
+
+## Future cache lifecycle
+
+Release v421 (`2247dbe`) moved all newly signed direct uploads into the
+`is_cache/uploads/` namespace. The signer and page-upload authorizer accept
+only keys in that namespace.
+
+After confirming the bucket still had no lifecycle configuration, the enabled
+S3 rule `expire-imaginationspace-direct-upload-cache` was installed with:
+
+- Prefix: `is_cache/uploads/`
+- Object expiration: 7 days
+- Incomplete multipart upload abortion: 1 day
+
+The rule cannot match the 423 retained historical objects because those use
+legacy keys outside `is_cache/uploads/`. The application currently uses
+single-part direct uploads, but the multipart setting prevents future aborted
+multipart sessions from accumulating if that implementation changes.
