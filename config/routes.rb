@@ -9,6 +9,13 @@ Rails.application.routes.draw do
   get 'DISCORD', to: redirect('https://discord.gg/e97QGEA')
   get 'Discord', to: redirect('https://discord.gg/e97QGEA')
 
+  devise_for :users, skip: :all, controllers: { sessions: "users/sessions" }
+  devise_scope :user do
+    get "login", to: "users/sessions#new", as: :login
+    post "login", to: "users/sessions#create"
+    delete "logout", to: "users/sessions#destroy", as: :logout
+  end
+
 =begin
   root 'pages#home'
   get 'old_home', to: 'pages#old_home'
