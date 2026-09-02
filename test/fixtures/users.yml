@@ -6,7 +6,9 @@
 #
 one:
   email: one@example.test
+  confirmed_at: <%= Time.current %>
 
 two:
   email: two@example.test
+  confirmed_at: <%= Time.current %>
 # column: value
