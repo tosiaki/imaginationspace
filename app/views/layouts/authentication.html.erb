@@ -11,7 +11,15 @@
     <header class="fancomics-header">
       <div class="header-container">
         <h1 class="heading"><%= link_to "WindyFall", root_path, id: "logo" %></h1>
-        <nav><%= link_to "Discord", discord_path %></nav>
+        <nav>
+          <% if user_signed_in? %>
+            <%= link_to "Account", account_path %>
+            <%= button_to "Log out", logout_path, method: :delete %>
+          <% else %>
+            <%= link_to "Log in", login_path %>
+          <% end %>
+          <%= link_to "Discord", discord_path %>
+        </nav>
       </div>
     </header>
     <main id="main"><div id="main-container"><%= yield %></div></main>

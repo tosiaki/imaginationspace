@@ -11,10 +11,13 @@ Rails.application.routes.draw do
 
   devise_for :users, skip: :all, controllers: { sessions: "users/sessions" }
   devise_scope :user do
+    get "login", to: "users/sessions#new", as: :new_user_session
     get "login", to: "users/sessions#new", as: :login
     post "login", to: "users/sessions#create"
     delete "logout", to: "users/sessions#destroy", as: :logout
   end
+
+  resource :account, only: [:show, :update]
 
 =begin
   root 'pages#home'

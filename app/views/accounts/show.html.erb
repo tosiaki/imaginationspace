@@ -1,0 +1,38 @@
+<% content_for :title, "Account" %>
+
+<h2>Account</h2>
+
+<% if notice.present? %>
+  <p role="status"><%= notice %></p>
+<% end %>
+
+<% if @user.errors.any? %>
+  <div role="alert">
+    <p>Account could not be updated:</p>
+    <ul>
+      <% @user.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @user, url: account_path, method: :patch do |form| %>
+  <p>
+    <%= form.label :name %><br>
+    <%= form.text_field :name, maxlength: 255, required: true %>
+  </p>
+  <p>
+    <%= form.label :title %><br>
+    <%= form.text_field :title, maxlength: 255 %>
+  </p>
+  <p>
+    <%= form.label :bio, "About me" %><br>
+    <%= form.text_area :bio, maxlength: 2000 %>
+  </p>
+  <p>
+    <%= form.label :website %><br>
+    <%= form.url_field :website, maxlength: 255 %>
+  </p>
+  <%= form.submit "Update account" %>
+<% end %>

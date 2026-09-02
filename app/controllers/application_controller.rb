@@ -31,6 +31,10 @@ class ApplicationController < ActionController::Base
       stored_location_for(resource_or_scope) || request.referrer || super
     end
 
+    def after_sign_in_path_for(_resource)
+      stored_location_for(:user) || account_path
+    end
+
 		def has_user?
 			if user_signed_in?
 				current_user
